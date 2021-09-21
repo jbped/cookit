@@ -8,6 +8,7 @@
     "express": "^4.17.1",
     "fractions": "^1.0.2",
     "graphql": "^15.5.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.5"
   },
   "devDependencies": {
