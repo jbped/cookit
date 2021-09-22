@@ -2,9 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "dependencies": {
     "apollo-server-express": "^3.3.0",
+    "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "fractions": "^1.0.2",
     "graphql": "^15.5.3",
@@ -16,7 +17,9 @@
     "nodemon": "^2.0.12"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node server.js",
+    "watch": "nodemon"
   },
   "keywords": [],
   "author": "",
