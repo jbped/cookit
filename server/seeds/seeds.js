@@ -24,7 +24,26 @@ let letter = '';
 
     fetch(fullUrl)
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => {
+            if (data.meals === null){
+                return;
+            }
+            console.log(data.meals[0].strCategory)
+            // for (let j = 0; j < data.meals.length; j++) {
+
+            //     let recipe = new Recipe({
+            //         public: true,
+            //         username: CooKitChef,
+            //         recipeTitle: data.meals[j].strMeal,
+            //          type: data.meals[0].strCategory or strArea,
+            //          season: "Any",
+            //          difficulty: ,
+            //          servings: ,
+            //          cookTime: ,
+            //     })
+            // }
+
+        })
     
     // fullUrl.meals.map(
     //     async fullUrl => {
