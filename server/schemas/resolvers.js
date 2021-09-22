@@ -33,8 +33,8 @@ const resolvers = {
               .select('-__v -password')
         },
 
-        recipe: async (parent, { recipeTitle }) => {
-            return Recipe.findOne({ recipeTitle })
+        recipe: async (parent, { _id }) => {
+            return Recipe.findOne({ _id })
         }
     },
     Mutation: {
