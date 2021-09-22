@@ -7,8 +7,13 @@ function App() {
   return (
     <div className="App">
       <ThemeProvider>
-      <Sidenav/>
-     
+        <header>
+          <Sidenav/>
+        </header>
+        <main>
+        </main>
+        <footer>
+        </footer>
       </ThemeProvider>
     </div>
   );
