@@ -1,5 +1,5 @@
-export function idbPromis(kitName, method, object) {
-    return new Promis((resolve, reject) => {
+export function idbPromise(kitName, method, object) {
+    return new Promise((resolve, reject) => {
         const request = window.indexedDB.open('cookit', 1);
 
         let db, tx, store;
