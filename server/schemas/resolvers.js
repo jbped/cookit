@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Ingredient } = require('../models');
+const { User, Ingredient, Recipe } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -31,6 +31,10 @@ const resolvers = {
         user: async (parent, { username }) => {
             return User.findOne({ username })
               .select('-__v -password')
+        },
+
+        recipe: async (parent, { recipeTitle }) => {
+            return Recipe.findOne({ recipeTitle })
         }
     },
     Mutation: {
@@ -61,6 +65,12 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
+
+        addRecipe: async (parent, args) => {
+            const recipe = await Recipe.create(args);
+
+            return recipe
+        }
     }
 };
 
