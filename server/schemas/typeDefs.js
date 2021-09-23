@@ -15,6 +15,7 @@ const typeDefs = gql`
         email: String
         groceryList: [Ingredient]
         recipeKit: [Recipe]
+        savedRecipes: [Recipe]
     }
 
     type Recipe {
@@ -45,6 +46,7 @@ const typeDefs = gql`
         addUser(username: String!, email: String!, password: String!): Auth
         addIngredient(ingredientName: String!, measurement: String, quantity: Int!, preparationNotes: String): Ingredient
         addRecipe(public: Boolean!, creator: String, recipeTitle: String!, type: String, season: String, difficulty: Int, servings: Int cookTime: Int, ingredients: [ingredientInput]): Recipe
+        saveRecipe(_id: ID): Recipe
     }
 
     type Auth {

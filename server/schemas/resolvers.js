@@ -17,7 +17,8 @@ const resolvers = {
                 const userData = await User.findOne({ _id: context.user._id })
                   .select('-__v -password')
                   .populate('groceryList')
-                  .populate('recipeKit');
+                  .populate('recipeKit')
+                  .populate('savedRecipes');
 
                 return userData;
             }
@@ -110,6 +111,19 @@ const resolvers = {
 
             throw new AuthenticationError('You need to be logged in!');
         },
+
+
+        //For saving a recipe to a user's savedRecipes list.
+        saveRecipe: async (parent, args, context) => {
+            console.log(context.user);
+            const user = await User.findByIdAndUpdate(
+                context.user._id,
+                { $push: { savedRecipes: args._id} },
+                { new: true }
+            );
+
+            return user;
+        }
     }
 };
 
