@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Ingredient } = require('../models');
+const { User, Ingredient, Recipe } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -16,6 +16,7 @@ const resolvers = {
             if (context.user) {
                 const userData = await User.findOne({ _id: context.user._id })
                   .select('-__v -password')
+                  .populate('groceryList');
 
                 return userData;
             }
@@ -31,15 +32,34 @@ const resolvers = {
         user: async (parent, { username }) => {
             return User.findOne({ username })
               .select('-__v -password')
+              .populate('groceryList');
+        },
+
+        recipes: async () => {
+            return Recipe.find()
+              .populate('ingredients');
         }
     },
     Mutation: {
-        addIngredient: async (parent, args) => {
-            const ingredient = await Ingredient.create(args);
 
-            return ingredient;
+        //Ingredient mutations
+        addIngredient: async (parent, args, context) => {
+            // context if user is adding ingredient to grocerylist
+            if (context.user) {
+                const ingredient = await Ingredient.create(args);
+                await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $push: { groceryList: ingredient._id } },
+                    { new: true }
+                );
+
+                return ingredient;
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
         },
 
+        //User mutations
         addUser: async (parent, args) => {
             const user = await User.create(args);
             const token = signToken(user);
@@ -60,6 +80,23 @@ const resolvers = {
 
             const token = signToken(user);
             return { token, user };
+        },
+
+        //Recipe mutations
+        addRecipe: async (parent, args, context) => {
+            //Context if user is creating recipe
+            if (context.user) {
+                const recipe = await Recipe.create(args);
+                await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $push: { recipeKit: recipe._id } },
+                    { new: true }
+                );
+
+                return recipe;
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
         },
     }
 };

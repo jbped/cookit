@@ -13,6 +13,22 @@ const typeDefs = gql`
         _id: ID
         username: String
         email: String
+        groceryList: [Ingredient]
+        recipeKit: [Recipe]
+    }
+
+    type Recipe {
+        _id: ID
+        public: Boolean
+        user: User
+        createdAt: String
+        recipeTitle: String
+        type: String
+        season: String
+        difficulty: Int
+        servings: Int
+        cookTime: Int
+        ingredients: [Ingredient]
     }
 
     type Query {

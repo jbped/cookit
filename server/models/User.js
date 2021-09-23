@@ -21,22 +21,23 @@ const userSchema = new Schema(
       minlength: 5
     },
     // Reference arrays -
-    // groceryList: [
-    //     {
-    //         type: Schema.types.ObjectId,
-    //         ref: 'Ingredient'
-    //     }
-    // ],
+    groceryList: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Ingredient'
+      }
+    ],
+    recipeKit: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Recipe'
+      }
+    ]
     // savedRecipes: [
     //      {
     //          type: Schema.types.ObjectId,
     //          ref: 'Recipe'
     //      }
-    // ],
-    // comments: [
-    //     {
-    //         type: Schema.types.ObjectId
-    //     }
     // ]
   },
   {
@@ -46,7 +47,7 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
   if (this.isNew || this.isModified('password')) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(this.password, saltRounds);
@@ -55,7 +56,7 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-userSchema.methods.isCorrectPassword = async function(password) {
+userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 

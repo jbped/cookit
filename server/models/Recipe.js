@@ -5,11 +5,7 @@ const recipeSchema = new Schema(
         public: {
             type: Boolean,
             required: 'Recipe must be either public or private.'
-        },
-        username: {
-            type: String,
-            required: true
-        },
+        }
         createdAt: {
             type: Date,
             default: Date.now,
@@ -22,15 +18,16 @@ const recipeSchema = new Schema(
             minLength: 5,
             maxlength: 30
         },
+        // type as in breakfast, lunch, dinner etc.
         type: {
             type: String,
             required: 'Recipe must have a type.',
             minLength: 5,
             maxLength: 35
         },
+        // season for christmas, thanksgiving etc.
         season: {
             type: String,
-            required: 'Recipe must have a season.',
             minLength: 3,
             maxLength: 15
         },
@@ -46,18 +43,22 @@ const recipeSchema = new Schema(
             type: Number,
             required: 'Recipe must have estimated time.'
         },
+        User: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        },
         // steps: [
         //     {
         //         type: Schema.Types.ObjectId,
         //         ref: 'Step'
         //     }
         // ],
-        // ingredients: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'Ingredient'
-        //     }
-        // ],
+        ingredients: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Ingredient'
+            }
+        ],
         // cookware: [
         //     {
         //         type: Schema.Types.ObjectId,
