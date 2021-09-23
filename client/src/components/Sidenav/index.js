@@ -1,27 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 
 import { GiKnifeFork, GiForkKnifeSpoon } from 'react-icons/gi';
-import { MdExpandMore, MdSearch, MdSettings } from 'react-icons/md';
+import { MdSearch, MdSettings, MdMenu } from 'react-icons/md';
 import { RiCompassDiscoverLine } from 'react-icons/ri';
 import { IoIosJournal, IoIosLogIn } from 'react-icons/io';
 
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import ImageListBar from '@mui/material/ImageListItemBar';
+import MenuList from '@mui/material/MenuList';
+import MenuItem from '@mui/material/MenuItem';
+import Grid from '@mui/material/Grid';
 
 
 export default function Sidenav() {
   const [state, setState] = React.useState({
-    Menu: false,
+    left: false,
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -40,43 +44,45 @@ export default function Sidenav() {
   ]
 
   const list = (anchor) => (
+    <Router>
+      <Switch>
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <List>
+      <List container rowSpacing={1}>
           <ListItem>
             <ListItemIcon>
             <p><span><GiKnifeFork/></span>  CooKit</p>
             </ListItemIcon>
           </ListItem>
       </List>
-      <Divider />
-      <List>
-          <ListItem button >
+            <Divider />
+                <MenuList container rowSpacing={1}>
+          <MenuItem button >
           <ListItemIcon>
-            <p><span><RiCompassDiscoverLine/></span>  Discover</p>
+            <Route to="/discover"><p><span><RiCompassDiscoverLine/></span>  Discover</p></Route>
             </ListItemIcon>
-        </ListItem>
-        <ListItem button >
+        </MenuItem>
+        <MenuItem button>
           <ListItemIcon>
-            <p><span><MdSearch/></span>  Search</p>
+            <Route to="/search"><p><span><MdSearch/></span>  Search</p></Route>
             </ListItemIcon>
-        </ListItem>
-        <ListItem button >
+        </MenuItem>
+        <MenuItem button>
           <ListItemIcon>
-            <p><span><GiForkKnifeSpoon/></span>  My Kit</p>
+            <Route to="/my-kit"><p><span><GiForkKnifeSpoon/></span>  My Kit</p></Route>
             </ListItemIcon>
-        </ListItem>
-        <ListItem button >
+        </MenuItem>
+        <MenuItem button>
           <ListItemIcon>
-            <p><span><IoIosJournal/></span>  Meal Planner</p>
+            <Route to="/meal-planner"><p><span><IoIosJournal/></span>  Meal Planner</p></Route>
             </ListItemIcon>
-          </ListItem>
-      </List>
-      <ImageList variant="masonry" cols={1} gap={0}>
+          </MenuItem>
+      </MenuList>
+      <ImageList variant="masonry" cols={1} gap={0} container>
         <ImageListItem>
           <img
             src={`${imageData[0].img}?w=248&fit=crop&auto=format`}
@@ -85,33 +91,45 @@ export default function Sidenav() {
           />
         </ImageListItem>
       </ImageList>
-      <List>
-        <ListItem button>
+      <MenuList container rowSpacing={1}>
+        <MenuItem button>
           <ListItemIcon>
-          <p><span><MdSettings/></span>  Settings</p>
+          <Route to="/settings"><p><span><MdSettings/></span>  Settings</p></Route>
           </ListItemIcon>
-        </ListItem>
-        <ListItem button>
+        </MenuItem>
+        <MenuItem button>
           <ListItemIcon>
-          <p><span><IoIosLogIn/></span>  Login/Logout</p>
+          <Route to="/login-logout"><p><span><IoIosLogIn/></span>  Login/Logout</p></Route>
           </ListItemIcon>
-        </ListItem>
-      </List>
+        </MenuItem>
+      </MenuList>
     </Box>
+      </Switch>
+      </Router>
   )
   return (
     <div>
-    {['Menu'].map((anchor) => (
+    {['left'].map((anchor) => (
       <React.Fragment key={anchor}>
-        <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-        <Drawer
-          anchor={anchor}
-          open={state[anchor]}
-          onClose={toggleDrawer(anchor, false)}
-        >
-          {list(anchor)}
-        </Drawer>
-      </React.Fragment>
+        <Grid container spacing={2}>
+          <Grid item lg={4}>
+            <MenuList>
+              <MenuItem  onClick={toggleDrawer(anchor, true)}>
+                <ListItemIcon fontSize="large">                  
+                  <MdMenu/>
+                </ListItemIcon>
+              </MenuItem>
+            </MenuList>
+        <Drawer
+          anchor={anchor}
+          open={state[anchor]}
+          onClose={toggleDrawer(anchor, false)}
+        >
+          {list(anchor)}
+        </Drawer>
+      </Grid>
+    </Grid>
+  </React.Fragment>
     ))}
   </div>
     )
