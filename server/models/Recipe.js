@@ -1,10 +1,15 @@
 const { Schema, model } = require('mongoose');
+const { Ingredient } = require('../models');
 
 const recipeSchema = new Schema(
     {
         public: {
             type: Boolean,
             required: 'Recipe must be either public or private.'
+        },
+        creator: {
+            type: String,
+            required: true
         },
         createdAt: {
             type: Date,
@@ -16,7 +21,8 @@ const recipeSchema = new Schema(
             required: 'Recipe must have a title.',
             trim: true,
             minLength: 5,
-            maxlength: 30
+            maxlength: 30,
+            unique: false
         },
         // type as in breakfast, lunch, dinner etc.
         type: {
@@ -38,10 +44,6 @@ const recipeSchema = new Schema(
         },
         cookTime: {
             type: Number
-        },
-        User: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
         },
         // steps: [
         //     {
