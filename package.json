@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/jbped/cookit#readme",
   "dependencies": {
-    "concurrently": "^6.2.1"
+    "concurrently": "^6.2.1",
+    "monaco-editor": "^0.28.0"
   }
 }
