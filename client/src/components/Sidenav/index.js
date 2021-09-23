@@ -11,7 +11,7 @@ import {
     SidebarContent,
     SidebarFooter
 } from 'react-pro-sidebar';
-import 'react-pro-sidebar/dist/css/styles.css';
+import './styles.scss';
 
 
 function Sidenav() {
