@@ -12,6 +12,7 @@ const typeDefs = gql`
     type Recipe {
         _id: ID
         public: Boolean
+        username: String
         recipeTitle: String
         type: String
         season: String
@@ -33,13 +34,14 @@ const typeDefs = gql`
         ingredients: [Ingredient]
         ingredient(ingredientName: String!): Ingredient
         recipe(_id: ID!): Recipe
+        allRecipes: [Recipe]
     }
 
     type Mutation {
         login(email: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
         addIngredient(ingredientName: String!, measurement: String, quantity: Int!, preparationNotes: String): Ingredient
-        addRecipe(public: Boolean!, recipeTitle: String!, type: String!, season: String!, diffculty: Int!, servings: Int!, cookTime: Int!): Recipe
+        addRecipe(public: Boolean!, username: String!, recipeTitle: String!, type: String!, season: String!, diffculty: Int, servings: Int!, cookTime: Int!): Recipe
     }
 
     type Auth {

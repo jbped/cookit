@@ -35,6 +35,10 @@ const resolvers = {
 
         recipe: async (parent, { _id }) => {
             return Recipe.findOne({ _id })
+        },
+
+        allRecipes: async () => {
+            return Recipe.find()
         }
     },
     Mutation: {

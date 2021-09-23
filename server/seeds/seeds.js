@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 const db = require('../config/connection')
 
 const { Recipe } = require('../models')
+const { addRecipe } = require('../schemas/resolvers')
 const fetch = require("node-fetch")
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz'
@@ -34,25 +35,33 @@ db.once('open', async () => {
                     return;
                 }
                 console.log(data)
-                // // for (let j = 0; j < data.meals.length; j++) {
+                for (let j = 0; j < data.meals.length; j++) {
 
-                    let recipe = new Recipe({
+                    let recipe = {
                         public: true,
                         username: "CooKitChef",
-                        recipeTitle: data.meals[0].strMeal,
-                        type: data.meals[0].strCategory,
+                        recipeTitle: data.meals[j].strMeal,
+                        type: data.meals[j].strCategory,
                         season: "Any",
                         difficulty: 1,
                         servings: 2,
                         cookTime: 25
-                    })
+                    }
+                    addRecipe(recipe)
                     console.log("3", recipe)
+                    recipe.save(() => {
+                        console.log("saved" + recipe)
+                        
+                        saveCounter++;
                     
-                // }
+                        
+                    })
+                }
 
         
         
     // }
+    console.log(saveCounter)
     console.log('all done!');
     process.exit(0);
 });
