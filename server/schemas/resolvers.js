@@ -16,7 +16,8 @@ const resolvers = {
             if (context.user) {
                 const userData = await User.findOne({ _id: context.user._id })
                   .select('-__v -password')
-                  .populate('groceryList');
+                  .populate('groceryList')
+                  .populate('recipeKit');
 
                 return userData;
             }
@@ -32,7 +33,8 @@ const resolvers = {
         user: async (parent, { username }) => {
             return User.findOne({ username })
               .select('-__v -password')
-              .populate('groceryList');
+              .populate('groceryList')
+              .populate('recipeKit');
         },
 
         recipes: async () => {
@@ -86,12 +88,22 @@ const resolvers = {
         addRecipe: async (parent, args, context) => {
             //Context if user is creating recipe
             if (context.user) {
-                const recipe = await Recipe.create(args);
+                console.log(args);
+                const { ingredients, ...editedArgs } = args;
+                const recipe = await Recipe.create({ ...editedArgs, creator: context.user.username });
                 await User.findByIdAndUpdate(
-                    { _id: context.user._id },
+                     context.user._id,
                     { $push: { recipeKit: recipe._id } },
                     { new: true }
                 );
+                await Promise.all(args.ingredients.map(async ing => {
+                    const ingredient = await Ingredient.create(ing);
+                    await Recipe.findByIdAndUpdate(
+                        recipe._id,
+                        { $push: { ingredients: ingredient._id} },
+                        { new: true }
+                    );
+                }));
 
                 return recipe;
             }
