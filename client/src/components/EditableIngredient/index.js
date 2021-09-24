@@ -5,9 +5,6 @@ import {
   TextField,
   Box,
   MenuItem,
-  ToggleButtonGroup,
-  ToggleButton,
-  Button,
 } from '@mui/material'
 
 // Custom SCSS.... 
@@ -98,16 +95,16 @@ export default function EditableIngredient(props) {
   return (
     <Box sx={{
       mt: 2,
+      py: 2, 
       width: '100%',
-      height: '200px',
       border: 1,
       borderRadius: '4px',
       borderColor: 'grey.300'
     }}>
       <Box sx={{
         display: 'flex',
-        mt: 2,
-        ml: 2,
+        alignItems: 'center',
+        mx:2,
       }}>
         <div className="TextField-no-border-right">
           <TextField
@@ -124,10 +121,10 @@ export default function EditableIngredient(props) {
               flexGrow: '1'
             }}
             InputLabelProps={{ shrink: true }}
-            onBlur={handleChange}          
+            onBlur={handleChange}
           />
         </div>
-        <div className="TextField-no-border-left" style={{marginLeft: '-1px'}}>
+        <div className="TextField-no-border-left" style={{ marginLeft: '-1px' }}>
           <TextField
             id="outlined-size-small"
             size="small"
@@ -151,6 +148,53 @@ export default function EditableIngredient(props) {
             ))}
           </TextField>
         </div>
+      </Box>
+      <Box
+      sx={{
+        mt: 2,
+        mx: 2,
+      }}>
+      <TextField
+        id="outlined-size-small"
+        size="small"
+        label="Ingredient"
+        name="ingredient"
+        type="text"
+        defaultValue={quantity}
+        sx={{
+          width: '100%',
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
+          flexGrow: '1'
+        }}
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        onBlur={handleChange}
+      />
+      </Box>
+      <Box
+      sx={{
+        mt: 2,
+        mx: 2,
+      }}>
+      <TextField
+        id="outlined-size-small"
+        size="small"
+        label="Notes"
+        name="notes"
+        type="text"
+        multiline
+        defaultValue={notes}
+        sx={{
+          width: '100%',
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
+          flexGrow: '1'
+        }}
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        onBlur={handleChange}
+      />
       </Box>
     </Box>
   )

@@ -8,13 +8,14 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   Button,
+  IconButton
 } from '@mui/material'
 
 // Other Components/Hooks.... 
 import {
   usePopupState,
-  bindTrigger,
   bindPopover,
+  bindTrigger,
   bindHover,
 } from 'material-ui-popup-state/hooks'
 import HoverPopover from 'material-ui-popup-state/HoverPopover'
@@ -24,10 +25,13 @@ import {
   MdEdit,
   MdSave,
   MdAccessAlarm,
+  MdLibraryAdd
 } from "react-icons/md";
 
 // Custom Components.... 
 import EditableIngredient from '../components/EditableIngredient';
+import EditableStep from '../components/EditableStep';
+import ConfirmLeavePage from '../components/ConfirmLeavePage'
 
 // Custom SCSS.... 
 import '../scss/textfields.scss'
@@ -46,6 +50,7 @@ export default function NewRecipe() {
     time: '',
     partySize: 1,
     public: 'private',
+    description: '',
     ingredients: [],
     directions: []
   });
@@ -142,29 +147,56 @@ export default function NewRecipe() {
     <Box
       component="form"
     >
+      <ConfirmLeavePage completed={false}/>
       {/* Recipe Name Text box */}
-      <Box sx={{
+      <Box Box sx={{
         display: 'flex',
         alignItems: 'center',
         marginTop: '.4rem',
         borderBottom: 1,
         borderColor: 'grey.300'
-      }}>
+      }
+      }>
         {recipeName || recipeName.length ?
           <>
-            <TextField id="recipe-name" label="Recipe Name" name="recipeName" size="small" style={{ margin: '6px 0 5px 0' }} onBlur={handleChange} />
-            <MdSave size={25} style={{ marginLeft: '2rem' }} onClick={saveName} />
+            <TextField
+              id="recipe-name"
+              label="Recipe Name"
+              name="recipeName"
+              size="small"
+              sx={{
+                margin: '6px 0 5px 0'
+              }}
+              onBlur={handleChange} />
+            <IconButton
+              onClick={saveName}
+              sx={{
+                ml: 2
+              }}
+            >
+              <MdSave
+                size={25}
+
+              />
+            </IconButton>
           </>
           :
           <>
             <h2>{recipeForm.recipeName}</h2>
-            <MdEdit size={25} style={{ marginLeft: '2rem' }} onClick={() => setRecipeName(true)} />
+            <IconButton onClick={() => setRecipeName(true)} >
+              <MdEdit
+                size={25}
+                sx={{
+                  marginLeft: '2rem'
+                }}
+              />
+            </IconButton>
           </>
         }
-      </Box>
+      </Box >
 
       {/* Recipe Total Time Section */}
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+      < Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
         <MdAccessAlarm
           size={25}
           style={{ marginRight: '1rem' }}
@@ -195,7 +227,7 @@ export default function NewRecipe() {
           value={recipeForm.time}
           onChange={handleChange}
           sx={{
-            width: 220,
+            flexGrow: 1
           }}
         >
           {timeOptions.map((option) => (
@@ -204,10 +236,10 @@ export default function NewRecipe() {
             </MenuItem>
           ))}
         </TextField>
-      </Box>
+      </Box >
 
       {/* Recipe Serving Size */}
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+      < Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
         <BsPeople
           size={25}
           style={{ marginRight: '1rem' }}
@@ -275,9 +307,10 @@ export default function NewRecipe() {
             fontSize: 22
           }}
         >+</Button>
-      </Box>
+      </Box >
+
       {/* Public Recipe Toggle */}
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+      < Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
         <AiOutlineEye
           size={25} style={{ marginRight: '1rem' }}
           {...bindTrigger(publicPopState)}
@@ -313,7 +346,34 @@ export default function NewRecipe() {
           <ToggleButton value="private" name="public" sx={{ flexGrow: 1 }}>Private</ToggleButton>
           <ToggleButton value="public" name="public" sx={{ flexGrow: 1 }}>Public</ToggleButton>
         </ToggleButtonGroup>
-      </Box>
+      </Box >
+
+      {/* Description Title  */}
+      < Box sx={{
+        borderBottom: 1,
+        borderColor: 'grey.300'
+      }}>
+        <h2>Description</h2>
+      </Box >
+      <TextField
+        id="outlined-size-small"
+        size="small"
+        label="Desciption"
+        name="description"
+        type="text"
+        multiline
+        defaultValue={recipeForm.description}
+        sx={{
+          mt: 2,
+          width: '100%',
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
+          flexGrow: '1'
+        }}
+        fullWidth
+        InputLabelProps={{ shrink: true }}
+        onBlur={handleChange}
+      />
 
       {/* Ingredients Title */}
       <Box sx={{
@@ -322,8 +382,36 @@ export default function NewRecipe() {
       }}>
         <h2>Ingredients</h2>
       </Box>
-      <EditableIngredient></EditableIngredient>
-    </Box>
+      <EditableIngredient ingredients={recipeForm.ingredients}></EditableIngredient>
+      <Button variant="text"
+        sx={{
+          textTransform: 'none',
+          fontSize: 16,
+          fontWeight: 'lighter',
+          fontStyle: 'italic',
+          color: 'primary'
+        }}>
+        <MdLibraryAdd />&nbsp;Add a new ingredient
+      </Button>
+
+      {/* Directions Title */}
+      <Box sx={{
+        borderBottom: 1,
+        borderColor: 'grey.300'
+      }}>
+        <h2>Directions</h2>
+      </Box>
+      <EditableStep directions={recipeForm.directions}></EditableStep>
+      <Button variant="text"
+        sx={{
+          textTransform: 'none',
+          fontSize: 16,
+          fontWeight: 'lighter',
+          fontStyle: 'italic'
+        }}>
+        <MdLibraryAdd />&nbsp;Add a new step to directions
+      </Button>
+    </Box >
   )
 }
 
