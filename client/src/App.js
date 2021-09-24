@@ -1,32 +1,39 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-
+// Themes....
+import theme from './theme.js'
+import './App.scss';
 
 // React Router Pages....
 import NewRecipe from './pages/NewRecipe';
-import './App.css';
+
+// Components....
+import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
-import { ThemeProvider } from '@mui/styles';
+import { Box, ThemeProvider } from '@mui/system';
 
 function App() {
   return (
     <div className="App">
-      <ThemeProvider>
-        <Router>
+      <ThemeProvider theme={theme}>
         <header>
           <Sidenav/>
+          <Header></Header>
         </header>
         <main>
-          <Switch>
-            
-          </Switch>
-
+          <Box sx={{
+            paddingLeft: '1em',
+            paddingRight: '1em',
+          }}>
+              <Switch>
+                <Route exact path="/new-recipe" component={NewRecipe}></Route>
+              </Switch>
+          </Box>
         </main>
         <footer>
 
         </footer>
-        </Router>
       </ThemeProvider>
     </div>
   );
