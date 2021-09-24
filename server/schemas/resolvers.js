@@ -16,7 +16,9 @@ const resolvers = {
             if (context.user) {
                 const userData = await User.findOne({ _id: context.user._id })
                   .select('-__v -password')
-                  .populate('groceryList');
+                  .populate('groceryList')
+                  .populate('recipeKit')
+                  .populate('savedRecipes');
 
                 return userData;
             }
@@ -32,7 +34,8 @@ const resolvers = {
         user: async (parent, { username }) => {
             return User.findOne({ username })
               .select('-__v -password')
-              .populate('groceryList');
+              .populate('groceryList')
+              .populate('recipeKit');
         },
 
         recipes: async () => {
@@ -86,18 +89,41 @@ const resolvers = {
         addRecipe: async (parent, args, context) => {
             //Context if user is creating recipe
             if (context.user) {
-                const recipe = await Recipe.create(args);
+                console.log(args);
+                const { ingredients, ...editedArgs } = args;
+                const recipe = await Recipe.create({ ...editedArgs, creator: context.user.username });
                 await User.findByIdAndUpdate(
-                    { _id: context.user._id },
+                     context.user._id,
                     { $push: { recipeKit: recipe._id } },
                     { new: true }
                 );
+                await Promise.all(args.ingredients.map(async ing => {
+                    const ingredient = await Ingredient.create(ing);
+                    await Recipe.findByIdAndUpdate(
+                        recipe._id,
+                        { $push: { ingredients: ingredient._id} },
+                        { new: true }
+                    );
+                }));
 
                 return recipe;
             }
 
             throw new AuthenticationError('You need to be logged in!');
         },
+
+
+        //For saving a recipe to a user's savedRecipes list.
+        saveRecipe: async (parent, args, context) => {
+            console.log(context.user);
+            const user = await User.findByIdAndUpdate(
+                context.user._id,
+                { $push: { savedRecipes: args._id} },
+                { new: true }
+            );
+
+            return user;
+        }
     }
 };
 

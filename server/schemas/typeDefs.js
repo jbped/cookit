@@ -15,12 +15,13 @@ const typeDefs = gql`
         email: String
         groceryList: [Ingredient]
         recipeKit: [Recipe]
+        savedRecipes: [Recipe]
     }
 
     type Recipe {
         _id: ID
         public: Boolean
-        user: User
+        creator: String
         createdAt: String
         recipeTitle: String
         type: String
@@ -44,12 +45,21 @@ const typeDefs = gql`
         login(email: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
         addIngredient(ingredientName: String!, measurement: String, quantity: Int!, preparationNotes: String): Ingredient
-        addRecipe(public: Boolean!, recipeTitle: String!, type: String, season: String, difficulty: Int, servings: Int, CookTime: Int): Recipe
+        addRecipe(public: Boolean!, creator: String, recipeTitle: String!, type: String, season: String, difficulty: Int, servings: Int cookTime: Int, ingredients: [ingredientInput]): Recipe
+        saveRecipe(_id: ID): Recipe
     }
 
     type Auth {
         token: ID!
         user: User
+    }
+
+    input ingredientInput {
+        _id: ID
+        ingredientName: String
+        measurement: String
+        quantity: Int
+        preparationNotes: String
     }
 `;
 

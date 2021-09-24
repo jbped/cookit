@@ -13,18 +13,20 @@ function App() {
   return (
     <div className="App">
       <ThemeProvider>
+        <Router>
         <header>
           <Sidenav/>
         </header>
         <main>
           <Switch>
-            <Router></Router>
+            
           </Switch>
 
         </main>
         <footer>
 
         </footer>
+        </Router>
       </ThemeProvider>
     </div>
   );

@@ -5,8 +5,8 @@ const ingredientSchema = new Schema(
         ingredientName: {
             type: String,
             required: 'Ingredient must have a name.',
-            unique: true,
-            trim: true
+            trim: true,
+            unique: false
         },
         measurement: {
             type: String,
@@ -14,11 +14,10 @@ const ingredientSchema = new Schema(
         quantity: {
             type: Number,
             required: 'Ingredient must have a quantity.',
-            validate: /^([0-9/])+$/
+            // validate: /^([0-9/])+$/
         },
         preparationNotes: {
             type: String,
-            minLength: 5,
         }
     }
 );
