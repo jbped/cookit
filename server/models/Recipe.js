@@ -46,12 +46,12 @@ const recipeSchema = new Schema(
         cookTime: {
             type: Number
         },
-        // steps: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'Step'
-        //     }
-        // ],
+        steps: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Step'
+            }
+        ],
         ingredients: [
             {
                 type: Schema.Types.ObjectId,

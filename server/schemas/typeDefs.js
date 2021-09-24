@@ -29,7 +29,14 @@ const typeDefs = gql`
         difficulty: Int
         servings: Int
         cookTime: Int
+        steps: [Step]
         ingredients: [Ingredient]
+    }
+
+    type Step {
+        _id: ID
+        stepText: String
+        stepNumber: Int
     }
 
     type Query {
@@ -45,7 +52,7 @@ const typeDefs = gql`
         login(email: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
         addIngredient(ingredientName: String!, measurement: String, quantity: Int!, preparationNotes: String): Ingredient
-        addRecipe(public: Boolean!, creator: String, recipeTitle: String!, type: String, season: String, difficulty: Int, servings: Int cookTime: Int, ingredients: [ingredientInput]): Recipe
+        addRecipe(public: Boolean!, creator: String, recipeTitle: String!, type: String, season: String, difficulty: Int, servings: Int cookTime: Int, steps: [stepInput], ingredients: [ingredientInput]): Recipe
         saveRecipe(_id: ID): Recipe
     }
 
@@ -60,6 +67,12 @@ const typeDefs = gql`
         measurement: String
         quantity: Int
         preparationNotes: String
+    }
+
+    input stepInput {
+        _id: ID
+        stepText: String
+        stepNumber: Int
     }
 `;
 
