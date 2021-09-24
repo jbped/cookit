@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Ingredient, Recipe } = require('../models');
+const { User, Ingredient, Recipe, Step } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -15,10 +15,10 @@ const resolvers = {
         me: async (parent, args, context) => {
             if (context.user) {
                 const userData = await User.findOne({ _id: context.user._id })
-                  .select('-__v -password')
-                  .populate('groceryList')
-                  .populate('recipeKit')
-                  .populate('savedRecipes');
+                    .select('-__v -password')
+                    .populate('groceryList')
+                    .populate('recipeKit')
+                    .populate('savedRecipes');
 
                 return userData;
             }
@@ -28,24 +28,27 @@ const resolvers = {
 
         users: async () => {
             return User.find()
-              .select('-__v -password')
+                .select('-__v -password')
         },
 
         user: async (parent, { username }) => {
             return User.findOne({ username })
-              .select('-__v -password')
-              .populate('groceryList')
-              .populate('recipeKit');
+                .select('-__v -password')
+                .populate('groceryList')
+                .populate('recipeKit');
         },
 
         recipes: async () => {
             return Recipe.find()
-              .populate('ingredients');
+                .populate('steps')
+                .populate('ingredients');
         }
     },
-    Mutation: {
 
+    Mutation: {
         //Ingredient mutations
+
+        //For creating a new Ingredient and then adding it to a User's groceryList array.
         addIngredient: async (parent, args, context) => {
             // context if user is adding ingredient to grocerylist
             if (context.user) {
@@ -63,6 +66,8 @@ const resolvers = {
         },
 
         //User mutations
+
+        //For creating a new User and token for that User.
         addUser: async (parent, args) => {
             const user = await User.create(args);
             const token = signToken(user);
@@ -70,14 +75,15 @@ const resolvers = {
             return { token, user };
         },
 
+        //For allowing an existing User to login after their token has expired.
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
-            if(!user) {
+            if (!user) {
                 throw new AuthenticationError('Incorrect credentials');
             }
 
             const correctPw = await user.isCorrectPassword(password);
-            if(!correctPw) {
+            if (!correctPw) {
                 throw new AuthenticationError('Incorrect credentials');
             }
 
@@ -86,22 +92,35 @@ const resolvers = {
         },
 
         //Recipe mutations
+
+        //For creating a new Recipe that includes steps, ingredients, cookware, comments, and upvotes object id arrays.
         addRecipe: async (parent, args, context) => {
             //Context if user is creating recipe
             if (context.user) {
-                console.log(args);
-                const { ingredients, ...editedArgs } = args;
+                const { ingredients, steps, ...editedArgs } = args;
                 const recipe = await Recipe.create({ ...editedArgs, creator: context.user.username });
                 await User.findByIdAndUpdate(
-                     context.user._id,
+                    context.user._id,
                     { $push: { recipeKit: recipe._id } },
                     { new: true }
                 );
+
+                //For pushing the Step object ids up into the steps array on Recipe
+                await Promise.all(args.steps.map(async stp => {
+                    const step = await Step.create(stp);
+                    await Recipe.findByIdAndUpdate(
+                        recipe._id,
+                        { $push: { steps: step._id } },
+                        { new: true }
+                    );
+                }));
+
+                //For pushing the Ingredient object ids up into the ingredients array on Recipe
                 await Promise.all(args.ingredients.map(async ing => {
                     const ingredient = await Ingredient.create(ing);
                     await Recipe.findByIdAndUpdate(
                         recipe._id,
-                        { $push: { ingredients: ingredient._id} },
+                        { $push: { ingredients: ingredient._id } },
                         { new: true }
                     );
                 }));
@@ -112,13 +131,11 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in!');
         },
 
-
         //For saving a recipe to a user's savedRecipes list.
         saveRecipe: async (parent, args, context) => {
-            console.log(context.user);
             const user = await User.findByIdAndUpdate(
                 context.user._id,
-                { $push: { savedRecipes: args._id} },
+                { $push: { savedRecipes: args._id } },
                 { new: true }
             );
 
