@@ -30,7 +30,7 @@ import {
 import EditableIngredient from '../components/EditableIngredient';
 
 // Custom SCSS.... 
-import './newRecipe.scss'
+import '../scss/textfields.scss'
 
 import {
   BsPeople
@@ -165,11 +165,11 @@ export default function NewRecipe() {
 
       {/* Recipe Total Time Section */}
       <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-        <MdAccessAlarm 
-          size={25} 
-          style={{ marginRight: '1rem' }} 
-          {...bindTrigger(timePopState)} 
-          {...bindHover(timePopState)} 
+        <MdAccessAlarm
+          size={25}
+          style={{ marginRight: '1rem' }}
+          {...bindTrigger(timePopState)}
+          {...bindHover(timePopState)}
         />
         <HoverPopover
           {...bindPopover(timePopState)}
@@ -183,7 +183,7 @@ export default function NewRecipe() {
           }}
         >
           <div>
-            <p sx={{margin: "2px 5px"}}>Total time to prepare, cook, and serve</p>
+            <p sx={{ margin: "2px 5px" }}>Total time to prepare, cook, and serve</p>
           </div>
         </HoverPopover>
         <TextField
@@ -208,11 +208,11 @@ export default function NewRecipe() {
 
       {/* Recipe Serving Size */}
       <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-        <BsPeople 
-          size={25} 
-          style={{ marginRight: '1rem' }} 
-          {...bindTrigger(servingPopState)} 
-          {...bindHover(servingPopState)}/>
+        <BsPeople
+          size={25}
+          style={{ marginRight: '1rem' }}
+          {...bindTrigger(servingPopState)}
+          {...bindHover(servingPopState)} />
         <HoverPopover
           {...bindPopover(servingPopState)}
           anchorOrigin={{
@@ -225,7 +225,7 @@ export default function NewRecipe() {
           }}
         >
           <div>
-            <p sx={{margin: "2px 5px"}}>Servings</p>
+            <p sx={{ margin: "2px 5px" }}>Servings</p>
           </div>
         </HoverPopover>
 
@@ -239,27 +239,27 @@ export default function NewRecipe() {
             height: '40px',
             minWidth: '30px',
             maxWidth: '30px',
-            boxShadow:'2px 0px 2px 0px #00000040',
+            boxShadow: '2px 0px 2px 0px #00000040',
             fontSize: 22
           }}
         >-</Button>
         <div className="TextField-without-border-radius">
-        <TextField
-          id="outlined-size-small"
-          size="small"
-          name="partySize"
-          value={recipeForm.partySize}
-          sx={{
-            width: 60,
-          }}
-          inputProps={{
-            inputMode: 'numeric',
-            pattern: '[0-9]*',
-            min: 0, 
-            style: { textAlign: 'center' },
-          }}
-          onBlur={handleChange}
-        />
+          <TextField
+            id="outlined-size-small"
+            size="small"
+            name="partySize"
+            defaultValue={recipeForm.partySize}
+            sx={{
+              width: 60,
+            }}
+            inputProps={{
+              inputMode: 'numeric',
+              pattern: '[0-9]*',
+              min: 0,
+              style: { textAlign: 'center' },
+            }}
+            onBlur={handleChange}
+          />
         </div>
         <Button
           variant="contained"
@@ -271,17 +271,17 @@ export default function NewRecipe() {
             height: '40px',
             minWidth: '30px',
             maxWidth: '30px',
-            boxShadow:'-2px 0px 2px 0px #00000040',
+            boxShadow: '-2px 0px 2px 0px #00000040',
             fontSize: 22
           }}
         >+</Button>
       </Box>
       {/* Public Recipe Toggle */}
       <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-        <AiOutlineEye 
-          size={25} style={{ marginRight: '1rem' }} 
-          {...bindTrigger(publicPopState)} 
-          {...bindHover(publicPopState)} 
+        <AiOutlineEye
+          size={25} style={{ marginRight: '1rem' }}
+          {...bindTrigger(publicPopState)}
+          {...bindHover(publicPopState)}
         />
         <HoverPopover
           {...bindPopover(publicPopState)}
@@ -295,7 +295,7 @@ export default function NewRecipe() {
           }}
         >
           <div>
-            <p sx={{margin: "2px 5px"}}>Would you like to make this recipe visible to other CooKit users?</p>
+            <p sx={{ margin: "2px 5px" }}>Would you like to make this recipe visible to other CooKit users?</p>
           </div>
         </HoverPopover>
         <ToggleButtonGroup
@@ -314,7 +314,7 @@ export default function NewRecipe() {
           <ToggleButton value="public" name="public" sx={{ flexGrow: 1 }}>Public</ToggleButton>
         </ToggleButtonGroup>
       </Box>
-      
+
       {/* Ingredients Title */}
       <Box sx={{
         borderBottom: 1,
