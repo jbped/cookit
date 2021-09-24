@@ -1,3 +1,4 @@
+// React imports
 import React from 'react';
 import {
   BrowserRouter as Router,
@@ -5,11 +6,14 @@ import {
   Route
 } from "react-router-dom";
 
+// Custom icons
 import { GiKnifeFork, GiForkKnifeSpoon } from 'react-icons/gi';
 import { MdSearch, MdSettings, MdMenu } from 'react-icons/md';
 import { RiCompassDiscoverLine } from 'react-icons/ri';
 import { IoIosJournal, IoIosLogIn } from 'react-icons/io';
+import { VscChecklist } from 'react-icons/vsc';
 
+// Material UI components
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -18,9 +22,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import ListItemText from '@mui/material/ListItemText';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Grid';
+
 
 
 export default function Sidenav() {
@@ -53,33 +59,120 @@ export default function Sidenav() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List container rowSpacing={1}>
-          <ListItem>
-            <ListItemIcon>
-            <p><span><GiKnifeFork/></span>  CooKit</p>
-            </ListItemIcon>
+            <ListItem
+            sx={{
+              display: 'flex',
+              alignItems: 'center'
+              }}
+            >
+              <ListItemIcon
+              sx={{
+                marginRight:'.1rem'
+                }}
+              >
+                <GiKnifeFork />
+              </ListItemIcon>              
+              <ListItemText>
+                  CooKit
+              </ListItemText>
           </ListItem>
       </List>
             <Divider />
                 <MenuList container rowSpacing={1}>
-          <MenuItem button >
-          <ListItemIcon>
-            <Route to="/discover"><p><span><RiCompassDiscoverLine/></span>  Discover</p></Route>
+            <MenuItem button
+            sx={{
+              display: 'flex',
+              alignItems: 'center'
+              }}
+            >
+              <ListItemIcon
+              sx={{
+                marginRight:'.1rem'
+                }}
+              >
+              <RiCompassDiscoverLine />
             </ListItemIcon>
+                <Route to="/discover">
+                  <ListItemText>
+                    Discover
+                  </ListItemText>
+                </Route>
         </MenuItem>
-        <MenuItem button>
-          <ListItemIcon>
-            <Route to="/search"><p><span><MdSearch/></span>  Search</p></Route>
-            </ListItemIcon>
+            <MenuItem button
+            sx={{
+              display: 'flex',
+              alignItems: 'center'
+              }}
+            >
+              <ListItemIcon
+              sx={{
+                marginRight:'.1rem'
+                }}
+              >
+                  <MdSearch />
+           </ListItemIcon>
+                <Route to="/search">
+                  <ListItemText >
+                    Search
+                  </ListItemText>
+                </Route>
         </MenuItem>
-        <MenuItem button>
-          <ListItemIcon>
-            <Route to="/my-kit"><p><span><GiForkKnifeSpoon/></span>  My Kit</p></Route>
+            <MenuItem button
+            sx={{
+              display: 'flex',
+              alignItems: 'center'
+              }}
+            >
+              <ListItemIcon
+              sx={{
+                marginRight:'.1rem'
+                }}
+              >
+                  <GiForkKnifeSpoon />
             </ListItemIcon>
+                <Route to="/my-kit">
+                  <ListItemText>
+                      My Kit
+                  </ListItemText>
+                </Route>
         </MenuItem>
-        <MenuItem button>
-          <ListItemIcon>
-            <Route to="/meal-planner"><p><span><IoIosJournal/></span>  Meal Planner</p></Route>
+            <MenuItem button
+            sx={{
+              display: 'flex',
+              alignItems: 'center'
+              }}
+            >
+              <ListItemIcon
+              sx={{
+                marginRight:'.1rem'
+                }}
+              >
+                    <VscChecklist/>
             </ListItemIcon>
+                <Route to="/shopping-list">
+                  <ListItemText>
+                      Shopping List
+                  </ListItemText>
+                </Route>
+            </MenuItem>            
+            <MenuItem button
+            sx={{
+              display: 'flex',
+              alignItems: 'center'
+              }}
+            >
+              <ListItemIcon
+              sx={{
+                marginRight:'.1rem'
+                }}
+              >
+                  <IoIosJournal />
+              </ListItemIcon>           
+              <Route to="/meal-planner">
+                  <ListItemText>
+                      Meal Planner
+                  </ListItemText>
+                </Route> 
           </MenuItem>
       </MenuList>
       <ImageList variant="masonry" cols={1} gap={0} container>
@@ -90,17 +183,46 @@ export default function Sidenav() {
             loading="lazy"
           />
         </ImageListItem>
-      </ImageList>
+          </ImageList>
+          <Box></Box>
       <MenuList container rowSpacing={1}>
-        <MenuItem button>
-          <ListItemIcon>
-          <Route to="/settings"><p><span><MdSettings/></span>  Settings</p></Route>
-          </ListItemIcon>
+            <MenuItem button
+            sx={{
+              display: 'flex',
+              alignItems: 'center'
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                marginRight:'.1rem'
+                }}>
+                <MdSettings/>
+              </ListItemIcon>
+              
+              <Route to="/settings">
+                <ListItemText>
+                  Settings
+                </ListItemText>
+          </Route>
         </MenuItem>
-        <MenuItem button>
-          <ListItemIcon>
-          <Route to="/login-logout"><p><span><IoIosLogIn/></span>  Login/Logout</p></Route>
+            <MenuItem button
+            sx={{
+              display: 'flex',
+              alignItems: 'center'
+              }}
+            >
+              <ListItemIcon
+              sx={{
+                marginRight:'.1rem'
+                }}
+              >
+                <IoIosLogIn/>
           </ListItemIcon>
+              <Route to="/login-logout">
+                <ListItemText>
+                  Login/Logout
+                </ListItemText>
+          </Route>
         </MenuItem>
       </MenuList>
     </Box>
