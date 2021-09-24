@@ -12,6 +12,7 @@ import '../../scss/textfields.scss'
 
 export default function EditableIngredient(props) {
   const [ingredientState, setIngredientState] = useState({
+    id: '',
     quantity: '',
     measurementType: '',
     measurementTypeShort: '',

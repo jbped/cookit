@@ -1,7 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+export const initialState = {
   darkMode: false, 
+  newRecipe: {
+    recipeName: 'New Recipe',
+    type: [],
+    time: '',
+    partySize: 1,
+    public: 'private',
+    description: '',
+    ingredients: {},
+    directions: {},
+    columns: {
+      'ingredientsCol': {
+        id: 'ingredients-column',
+        title: 'Ingredients',
+        ingredientIds: []
+      },
+      'directionsCol': {
+        id: 'directions-column',
+        title: 'Directions',
+        directionIds: []
+      }
+    }
+  },
   currentRecipe: {}, // object that contains the currentRecipes information from db
   easyCookView: false, //show the fullscreen step by step view
   easyCookStep: 0, // last step visited by user. Needs to be cleared upon leaving the main recipe page
@@ -15,6 +37,13 @@ export const globalSlice = createSlice({
   reducers: {
     toggleDarkMode: (state) => {
       state.darkMode = !state.darkMode;
+    },
+    newRecipe: (state, action) => {
+      Object.keys(action.payload)
+        .forEach(function eachKey(key) {
+          state.newRecipe[key] = action.payload[key]
+        })
+      // state.newRecipe = action.payload
     },
     currentRecipe: (state, action) => {
       state.currentRecipe = action.payload;
@@ -32,6 +61,12 @@ export const globalSlice = createSlice({
 });
 
 const { actions, reducer } = globalSlice
-export const { toggleDarkMode, currentRecipe, easyCookView, easyCookStep, myKitView } = actions;
+export const { 
+  toggleDarkMode, 
+  newRecipe, 
+  currentRecipe, 
+  easyCookView, 
+  easyCookStep, 
+  myKitView } = actions;
 
 export default reducer;

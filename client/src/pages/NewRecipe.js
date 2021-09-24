@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { newRecipe } from '../utils/globalSlice';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 // MUI Components....
 import {
@@ -44,16 +47,68 @@ import { AiOutlineEye } from "react-icons/ai";
 
 export default function NewRecipe() {
   const [recipeName, setRecipeName] = useState(false)
-  const [recipeForm, setRecipeForm] = useState({
-    recipeName: 'New Recipe',
-    type: [],
-    time: '',
-    partySize: 1,
-    public: 'private',
-    description: '',
-    ingredients: [],
-    directions: []
-  });
+  const recipeForm = useSelector(state => state.NewRecipe)
+  const dispatch = useDispatch();
+  // const [recipeForm, setRecipeForm] = useState({
+  //   recipeName: 'New Recipe',
+  //   type: [],
+  //   time: '',
+  //   partySize: 1,
+  //   public: 'private',
+  //   description: '',
+  //   ingredients: {
+  //     'test-ing-1': {  
+  //       id: 'test-ing-1',
+  //       quantity: '7',
+  //       measurementType: 'cup(s)',
+  //       measurementTypeShort: 'c',
+  //       ingredient: 'Milk',
+  //       notes: ''
+  //     },
+  //     'test-ing-2': {  
+  //       id: 'test-ing-2',
+  //       quantity: '8',
+  //       measurementType: 'Not applicable',
+  //       measurementTypeShort: 'n/a',
+  //       ingredient: 'Eggs',
+  //       notes: 'Large'
+  //     },
+  //     'test-ing-3': {  
+  //       id: 'test-ing-3',
+  //       quantity: '6',
+  //       measurementType: 'cup(s)',
+  //       measurementTypeShort: 'c',
+  //       ingredient: 'Flour',
+  //       notes: ''
+  //     }
+  //   },
+  //   directions: {
+  //     'test-dir-1': {  
+  //       id: 'test-dir-1',
+  //       step: 'Beat all 8 eggs in large bowl'
+  //     },
+  //     'test-dir-2': {  
+  //       id: 'test-dir-2',
+  //       step: 'Add two cups of flour, beat flour is mixed into eggs. The batter gets too thick add a little milk to allow it to continue mixing'
+  //     },
+  //     'test-dir-3': {  
+  //       id: 'test-dir-3',
+  //       step: 'Repeat step 2 until all flour and milk has been added to batter.'
+  //     }
+  //   },
+  //   columns: {
+  //     'ingredientsCol': {
+  //       id: 'ingredients-column',
+  //       title: 'Ingredients',
+  //       ingredientIds: []
+  //     },
+  //     'directionsCol': {
+  //       id: 'directions-column',
+  //       title: 'Directions',
+  //       directionIds: []
+  //     }
+  //   }
+  // });
 
   const timeOptions = [
     '10 minutes',
@@ -111,11 +166,14 @@ export default function NewRecipe() {
     // console.log(e.target)
     if (e.target.innerText === '+') {
       let count = recipeForm.partySize + 1
-      setRecipeForm({ ...recipeForm, partySize: count })
+      dispatch(newRecipe({ partySize: count }))
+      // setRecipeForm({ ...recipeForm, partySize: count })
     } else if (recipeForm.partySize > 1) {
       let count = recipeForm.partySize - 1
-      setRecipeForm({ ...recipeForm, partySize: count })
+      // setRecipeForm({ ...recipeForm, partySize: count })
+      dispatch(newRecipe({ partySize: count }))
     }
+    console.log(recipeForm)
   }
 
   const handleChange = e => {
@@ -124,8 +182,9 @@ export default function NewRecipe() {
       return;
     }
     // console.log(e.target)
-    setRecipeForm({ ...recipeForm, [e.target.name]: e.target.value })
-    // console.log(recipeForm)
+    // setRecipeForm({ ...recipeForm, [e.target.name]: e.target.value })
+    dispatch({ [e.target.name]: e.target.value })
+    console.log(recipeForm)
   }
 
   const timePopState = usePopupState({
@@ -142,6 +201,10 @@ export default function NewRecipe() {
     variant: 'popover',
     popupId: 'publicPopover',
   })
+
+  // const AddNewIngredient = e => {
+  //   setRecipeForm({...recipeForm, })
+  // }
 
   return (
     <Box
