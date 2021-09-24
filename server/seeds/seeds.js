@@ -39,7 +39,7 @@ db.once('open', async () => {
 
                     let recipe = {
                         public: true,
-                        username: "CooKitChef",
+                        creator: "CooKitChef",
                         recipeTitle: data.meals[j].strMeal,
                         type: data.meals[j].strCategory,
                         season: "Any",
