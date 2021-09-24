@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+
+// Redux State.... 
+import { useSelector, useDispatch } from 'react-redux';
+import { newRecipe } from '../../../utils/globalSlice';
 
 // MUI Components....
 import {
@@ -8,9 +12,12 @@ import {
 } from '@mui/material'
 
 // Custom SCSS.... 
-import '../../scss/textfields.scss'
+import '../../../scss/textfields.scss'
 
 export default function EditableIngredient(props) {
+  const recipeForm = useSelector(state => state.global.newRecipe)
+  const dispatch = useDispatch();
+  
   const [ingredientState, setIngredientState] = useState({
     id: '',
     quantity: '',

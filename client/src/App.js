@@ -9,36 +9,20 @@ import theme from './theme.js'
 import NewRecipe from './pages/NewRecipe';
 
 // Components....
-import { Box, ThemeProvider, createTheme } from '@mui/system';
+import { Box, ThemeProvider } from '@mui/system';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
 
-// const theme = createTheme({
-//   typography: {
-//     fontFamily: 'Poppins',
-//     button: {
-//       textTransform: 'none'
-//     }
-//   },
-//   palette: {
-//     primary: {
-//       main: '#000000'
-//     },
-//     grey: {
-//       main: '#e0e0e0'
-//     }
-//   }
-// });
 
 function App() {
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        {/* <CssBaseline /> */}
+        <CssBaseline />
         <header>
           {/* <Sidenav/> */}
-          <Header></Header>
+          <Header />
         </header>
         <main>
           <Box sx={{
