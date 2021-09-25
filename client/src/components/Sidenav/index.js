@@ -1,10 +1,15 @@
 // React imports
-import React from 'react';
+import React /*{useEffect}*/ from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
+
+// Global state 
+import store from "../../app/store.js"
+import { sideNavVisible} from "../../utils/globalSlice.js"
+import { useDispatch, useSelector } from "react-redux";
 
 // Import Hover/Popovers
 import HoverPopover from 'material-ui-popup-state/HoverPopover'
@@ -33,16 +38,24 @@ import Grid from '@mui/material/Grid';
 
 
 export default function Sidenav() {
-  const [state, setState] = React.useState({
+  const state = useSelector(state.global.sideNavVisible);
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+    
+  // })
+
+  const anchor = {
     left: false,
-  });
+  };
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
 
-    setState({ ...state, [anchor]: open });
+
+    dispatch(sideNavVisible());
   };
 
   const imageData = [
@@ -83,8 +96,8 @@ export default function Sidenav() {
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      onClick={toggleDrawer()}
+      onKeyDown={toggleDrawer()}
     >
       <List container rowSpacing={1}>
             <ListItem
@@ -179,17 +192,17 @@ export default function Sidenav() {
       <React.Fragment key={anchor}>
         <Grid container spacing={2}>
           <Grid item lg={4}>
-            <MenuList>
+            {/* <MenuList>
               <MenuItem  onClick={toggleDrawer(anchor, true)}>
                 <ListItemIcon fontSize="large">                  
-                  {/* <MdMenu/> */}
+                  <MdMenu/>
                 </ListItemIcon>
               </MenuItem>
-            </MenuList>
+            </MenuList> */}
         <Drawer
           anchor={anchor}
           open={state[anchor]}
-          onClose={toggleDrawer(anchor, false)}
+          onClose={toggleDrawer()}
         >
           {list(anchor)}
         </Drawer>
