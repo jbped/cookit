@@ -1,9 +1,10 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Ingredient, Recipe, Step, Cookware } = require('../models');
+const { User, Ingredient, Recipe, Step, Cookware, Comment } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
     Query: {
+        //Ingredient queries
         ingredients: async () => {
             return Ingredient.find()
         },
@@ -12,6 +13,7 @@ const resolvers = {
             return Ingredient.findOne({ ingredientName })
         },
 
+        //User queries
         me: async (parent, args, context) => {
             if (context.user) {
                 const userData = await User.findOne({ _id: context.user._id })
@@ -38,40 +40,21 @@ const resolvers = {
                 .populate('recipeKit');
         },
 
+        //Recipe queries
         recipes: async () => {
-            return Recipe.find()
-                .populate('steps')
-                .populate('ingredients');
+            return Recipe.find();
         },
 
         recipe: async (parent, { _id }) => {
             return Recipe.findOne(_id)
             .populate('steps')
             .populate('ingredients')
-            .populate('cookware');
+            .populate('cookware')
+            .populate('comments');
         }
     },
 
     Mutation: {
-        //Ingredient mutations
-
-        //For creating a new Ingredient and then adding it to a User's groceryList array.
-        addIngredient: async (parent, args, context) => {
-            // context if user is adding ingredient to grocerylist
-            if (context.user) {
-                const ingredient = await Ingredient.create(args);
-                await User.findByIdAndUpdate(
-                    { _id: context.user._id },
-                    { $push: { groceryList: ingredient._id } },
-                    { new: true }
-                );
-
-                return ingredient;
-            }
-
-            throw new AuthenticationError('You need to be logged in!');
-        },
-
         //User mutations
 
         //For creating a new User and token for that User.
@@ -96,6 +79,43 @@ const resolvers = {
 
             const token = signToken(user);
             return { token, user };
+        },
+
+        //Ingredient mutations
+
+        //For creating a new Ingredient and then adding it to a User's groceryList array.
+        addIngredient: async (parent, args, context) => {
+            // context if user is adding ingredient to grocerylist
+            if (context.user) {
+                const ingredient = await Ingredient.create(args);
+                await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $push: { groceryList: ingredient._id } },
+                    { new: true }
+                );
+
+                return ingredient;
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
+        },
+
+        //Comment mutations
+
+        addComment: async(parent, args, context) => {
+            if (context.user) {
+                const { recipeId, ...editedArgs } = args;
+                const comment = await Comment.create({ ...editedArgs, username: context.user.username });
+                await Recipe.findByIdAndUpdate(
+                    args.recipeId,
+                    { $push: { comments: comment._id } },
+                    { new: true }
+                );
+                
+                return comment;
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
         },
 
         //Recipe mutations
@@ -168,7 +188,7 @@ const resolvers = {
                     { _id: _id },
                     { new: true }
                 //Then delete all documents that are associated in Recipe's referencing object arrays.
-                ).then(async ({ steps, ingredients, cookware }) => {
+                ).then(async ({ steps, ingredients, cookware, comments }) => {
                     await Promise.all(steps.map(async step => {
                         await Step.findOneAndDelete(
                             { _id: step },
@@ -186,6 +206,13 @@ const resolvers = {
                     await Promise.all(cookware.map(async ware => {
                         await Cookware.findOneAndDelete(
                             { _id: ware },
+                            { new: true }
+                        )
+                    }));
+
+                    await Promise.all(comments.map(async comment => {
+                        await Comment.findOneAndDelete(
+                            { _id: comment },
                             { new: true }
                         )
                     }));

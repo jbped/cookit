@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const dateFormat = require('../utils/format_date');
+const dateFormat = require('../utils/dateFormat');
 
 const recipeSchema = new Schema(
     {
@@ -66,12 +66,12 @@ const recipeSchema = new Schema(
                 ref: 'Cookware'
             }
         ],
-        // comments: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'Comment'
-        //     }
-        // ],
+        comments: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Comment'
+            }
+        ],
         // upvotes: [
         //     {
         //         type: Schema.Types.ObjectId,
