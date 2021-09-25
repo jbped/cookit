@@ -44,7 +44,6 @@ export default function DirectionsSection() {
         sx={{
           textTransform: 'none',
           fontSize: 16,
-          fontWeight: 'lighter',
           fontStyle: 'italic'
         }}>
         <MdLibraryAdd />&nbsp;Add a new step to directions

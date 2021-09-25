@@ -26,12 +26,12 @@ export default function EditableIngredient({ ing, index }) {
   const recipeForm = useSelector(state => state.global.newRecipe)
   const dispatch = useDispatch();
   const [ingredientState, setIngredientState] = useState({
-    id: '',
-    quantity: '',
-    measurementType: '',
-    measurementTypeShort: '',
-    ingredient: '',
-    notes: ''
+    id: ing.id,
+    quantity: ing.quantity,
+    measurementType: ing.measurementType,
+    measurementTypeShort: ing.measurementTypeShort,
+    ingredient: ing.ingredient,
+    notes: ing.notes
   })
 
   const { quantity, measurementType, measurementTypeShort, ingredient, notes } = ingredientState
@@ -154,7 +154,7 @@ export default function EditableIngredient({ ing, index }) {
                   label="Quantity"
                   name="quantity"
                   type="text"
-                  defaultValue={ing.quantity}
+                  defaultValue={quantity}
                   sx={{
                     width: 100,
                     borderTopRightRadius: 0,
@@ -205,7 +205,7 @@ export default function EditableIngredient({ ing, index }) {
                 label="Ingredient"
                 name="ingredient"
                 type="text"
-                defaultValue={ing.ingredient}
+                defaultValue={ingredient}
                 sx={{
                   width: '100%',
                   borderTopRightRadius: 0,
@@ -229,7 +229,7 @@ export default function EditableIngredient({ ing, index }) {
                 name="notes"
                 type="text"
                 multiline
-                defaultValue={ing.notes}
+                defaultValue={notes}
                 sx={{
                   width: '100%',
                   borderTopRightRadius: 0,

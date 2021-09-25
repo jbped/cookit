@@ -26,10 +26,11 @@ import '../../../scss/textfields.scss'
 export default function IngredientsSection() {
   const recipeForm = useSelector(state => state.global.newRecipe)
   const dispatch = useDispatch();
-  const [deleteDroppable, setDeleteDroppable] = useState(false)
-
+  const [ deleteDroppable, setDeleteDroppable ] = useState(false);
+  const [ newIngredient, setNewIngredient ] = useState(1)
 
   const { columns, columnOrder, ingredients } = recipeForm;
+  const { ingredientsCol, ingredientsCol: { ingredientIds } } = columns;
 
   console.log(columns)
 
@@ -38,6 +39,7 @@ export default function IngredientsSection() {
     console.log(recipeForm)
   }
 
+  // Logic for when an ingredient was moved
   const ingredientDragEnd = result => {
     console.log(result)
     const { destination, source, draggableId } = result;
@@ -73,15 +75,49 @@ export default function IngredientsSection() {
     console.log(recipeForm.columns)
   }
 
+  // show hidden delete droppable
   const beforeDragStart = start => {
     console.log(start)
     setDeleteDroppable(!deleteDroppable)
   }
 
+  // hide delete droppable
   const afterDragEnd = result => {
     setDeleteDroppable(!deleteDroppable)
 
   }
+
+  const addNewIngredient = (e) => {
+    // e.preventDefault()
+    // create ingredient id and increment newIngredient INT
+    const ingredientId = `ingredient-${newIngredient}`;
+    setNewIngredient(newIngredient + 1);
+
+    // update newRecipe in global state with the ingredient in the ingredients obj and 
+    const newIngIdArr = [...ingredientIds, ingredientId]
+    dispatch(newRecipe({
+      ingredients: {
+        ...ingredients,
+        [ingredientId]: {
+          id: ingredientId,
+          quantity: '',
+          measurementType: '',
+          measurementTypeShort: '',
+          ingredient: '',
+          notes: ''
+        }
+      },
+      columns: {
+        ...columns,
+        ingredientsCol: {
+          ...ingredientsCol,
+          ingredientIds: newIngIdArr
+        }
+      }
+    }))
+    console.log(recipeForm)
+  };
+
   return (
     <>
       <Box sx={{
@@ -107,7 +143,7 @@ export default function IngredientsSection() {
             </div>
           )}
         </Droppable>
-        <Droppable droppableId={columns.deleteCol.id}>
+        {/* <Droppable droppableId={columns.deleteCol.id}>
           {(provided) => {
             deleteDroppable && (
               <div
@@ -132,7 +168,7 @@ export default function IngredientsSection() {
               </div>
             )
           }}
-        </Droppable>
+        </Droppable> */}
 
 
       </DragDropContext>
@@ -140,10 +176,10 @@ export default function IngredientsSection() {
         sx={{
           textTransform: 'none',
           fontSize: 16,
-          fontWeight: 'lighter',
           fontStyle: 'italic',
           color: 'primary'
-        }}>
+        }}
+        onClick={addNewIngredient}>
         <MdLibraryAdd />&nbsp;Add a new ingredient
       </Button>
     </>
