@@ -24,6 +24,7 @@ const typeDefs = gql`
         creator: String
         createdAt: String
         recipeTitle: String
+        recipeDescription: String
         type: String
         season: String
         difficulty: Int
@@ -31,12 +32,18 @@ const typeDefs = gql`
         cookTime: Int
         steps: [Step]
         ingredients: [Ingredient]
+        cookware: [Cookware]
     }
 
     type Step {
         _id: ID
         stepText: String
         stepNumber: Int
+    }
+
+    type Cookware {
+        _id: ID
+        cookwareName: String
     }
 
     type Query {
@@ -52,8 +59,9 @@ const typeDefs = gql`
         login(email: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
         addIngredient(ingredientName: String!, measurement: String, quantity: Int!, preparationNotes: String): Ingredient
-        addRecipe(public: Boolean!, creator: String, recipeTitle: String!, type: String, season: String, difficulty: Int, servings: Int cookTime: Int, steps: [stepInput], ingredients: [ingredientInput]): Recipe
+        addRecipe(public: Boolean!, creator: String, recipeTitle: String!, recipeDescription: String, type: String, season: String, difficulty: Int, servings: Int cookTime: Int, steps: [stepInput], ingredients: [ingredientInput], cookware: [cookwareInput]): Recipe
         saveRecipe(_id: ID): Recipe
+        deleteRecipe(_id: ID): Recipe
     }
 
     type Auth {
@@ -73,6 +81,11 @@ const typeDefs = gql`
         _id: ID
         stepText: String
         stepNumber: Int
+    }
+
+    input cookwareInput {
+        _id: ID
+        cookwareName: String
     }
 `;
 

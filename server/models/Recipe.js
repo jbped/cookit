@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const { Ingredient } = require('../models');
 
 const recipeSchema = new Schema(
     {
@@ -23,6 +22,9 @@ const recipeSchema = new Schema(
             minLength: 5,
             maxlength: 30,
             unique: false
+        },
+        recipeDescription: {
+            type: String
         },
         // type as in breakfast, lunch, dinner etc.
         type: {
@@ -75,8 +77,15 @@ const recipeSchema = new Schema(
         //         ref: 'User'
         //     }
         // ],
+    },
+    {
+        toJSON: {
+            virtuals: true
+        }
     }
 );
+
+
 
 const Recipe = model('Recipe', recipeSchema);
 

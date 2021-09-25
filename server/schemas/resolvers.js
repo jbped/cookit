@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Ingredient, Recipe, Step } = require('../models');
+const { User, Ingredient, Recipe, Step, Cookware } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -97,7 +97,7 @@ const resolvers = {
         addRecipe: async (parent, args, context) => {
             //Context if user is creating recipe
             if (context.user) {
-                const { ingredients, steps, ...editedArgs } = args;
+                const { ingredients, steps, cookware, ...editedArgs } = args;
                 const recipe = await Recipe.create({ ...editedArgs, creator: context.user.username });
                 await User.findByIdAndUpdate(
                     context.user._id,
@@ -125,6 +125,16 @@ const resolvers = {
                     );
                 }));
 
+                //For pushing the Cookware object ids up into the cookware array on Recipe
+                // await Promise.all(args.cookware.map(async ware => {
+                //     const cookware = await Cookware.create(ware);
+                //     await Recipe.findByIdAndUpdate(
+                //         recipe._id,
+                //         { $push: { cookware: cookware._id } },
+                //         { new: true }
+                //     );
+                // }));
+
                 return recipe;
             }
 
@@ -140,6 +150,31 @@ const resolvers = {
             );
 
             return user;
+        },
+
+        //For deleting a recipe and all of it's child objects.
+        deleteRecipe: async(parent, { _id }, context) => {
+            if(context.user) {
+                await Recipe.findOneAndDelete(
+                    { _id: _id },
+                    { new: true }
+                ).then(async ({ steps, ingredients }) => {
+                    await Promise.all(steps.map(async step => {
+                        await Step.findOneAndDelete(
+                            { _id: step },
+                            { new: true }
+                        )
+                    }));
+                    await Promise.all(ingredients.map(async ingredient => {
+                        await Ingredient.findOneAndDelete(
+                            { _id: ingredient },
+                            { new: true }
+                        )
+                    }));
+                });
+            } else {
+                throw new AuthenticationError('You need to be logged in!');
+            }
         }
     }
 };
