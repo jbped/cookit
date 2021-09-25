@@ -81,7 +81,7 @@ export default function IngredientsSection() {
     setDeleteDroppable(!deleteDroppable)
   }
 
-  // hide delete droppable
+  // hide visible delete droppable
   const afterDragEnd = result => {
     setDeleteDroppable(!deleteDroppable)
 
