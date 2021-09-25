@@ -42,6 +42,13 @@ const resolvers = {
             return Recipe.find()
                 .populate('steps')
                 .populate('ingredients');
+        },
+
+        recipe: async (parent, { _id }) => {
+            return Recipe.findOne(_id)
+            .populate('steps')
+            .populate('ingredients')
+            .populate('cookware');
         }
     },
 
@@ -126,14 +133,14 @@ const resolvers = {
                 }));
 
                 //For pushing the Cookware object ids up into the cookware array on Recipe
-                // await Promise.all(args.cookware.map(async ware => {
-                //     const cookware = await Cookware.create(ware);
-                //     await Recipe.findByIdAndUpdate(
-                //         recipe._id,
-                //         { $push: { cookware: cookware._id } },
-                //         { new: true }
-                //     );
-                // }));
+                await Promise.all(args.cookware.map(async ware => {
+                    const cookware = await Cookware.create(ware);
+                    await Recipe.findByIdAndUpdate(
+                        recipe._id,
+                        { $push: { cookware: cookware._id } },
+                        { new: true }
+                    );
+                }));
 
                 return recipe;
             }
@@ -154,20 +161,31 @@ const resolvers = {
 
         //For deleting a recipe and all of it's child objects.
         deleteRecipe: async(parent, { _id }, context) => {
+            //For ensuring that only logged in users can delete recipes
             if(context.user) {
+                //First find the recipe with the given id and delete it
                 await Recipe.findOneAndDelete(
                     { _id: _id },
                     { new: true }
-                ).then(async ({ steps, ingredients }) => {
+                //Then delete all documents that are associated in Recipe's referencing object arrays.
+                ).then(async ({ steps, ingredients, cookware }) => {
                     await Promise.all(steps.map(async step => {
                         await Step.findOneAndDelete(
                             { _id: step },
                             { new: true }
                         )
                     }));
+
                     await Promise.all(ingredients.map(async ingredient => {
                         await Ingredient.findOneAndDelete(
                             { _id: ingredient },
+                            { new: true }
+                        )
+                    }));
+
+                    await Promise.all(cookware.map(async ware => {
+                        await Cookware.findOneAndDelete(
+                            { _id: ware },
                             { new: true }
                         )
                     }));

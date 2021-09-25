@@ -53,6 +53,7 @@ const typeDefs = gql`
         ingredients: [Ingredient]
         ingredient(ingredientName: String!): Ingredient
         recipes: [Recipe]
+        recipe: Recipe
     }
 
     type Mutation {

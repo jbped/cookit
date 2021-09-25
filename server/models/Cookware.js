@@ -4,9 +4,7 @@ const cookwareSchema = new Schema(
     {
         cookwareName: {
             type: String,
-            required: 'cookware must have a name.',
-            trim: true,
-            unique: false
+            required: 'cookware must have a name.'
         }
     }
 );
