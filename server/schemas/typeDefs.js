@@ -34,6 +34,7 @@ const typeDefs = gql`
         ingredients: [Ingredient]
         cookware: [Cookware]
         comments: [Comment]
+        upvotes: [Upvote]
     }
 
     type Step {
@@ -54,6 +55,11 @@ const typeDefs = gql`
         username: String
     }
 
+    type Upvote {
+        _id: ID
+        username: String
+    }
+
     type Query {
         me: User
         users: [User]
@@ -70,6 +76,7 @@ const typeDefs = gql`
         addUser(username: String!, email: String!, password: String!): Auth
         addIngredient(ingredientName: String!, measurement: String, quantity: Int, preparationNotes: String): Ingredient
         addComment(recipeId: ID!, commentText: String!, username: String): Comment
+        upvoteRecipe(recipeId: ID!, username: String): Upvote
         addRecipe(public: Boolean!, creator: String, recipeTitle: String!, recipeDescription: String, type: String, season: String, difficulty: Int, servings: Int cookTime: Int, steps: [stepInput], ingredients: [ingredientInput], cookware: [cookwareInput]): Recipe
         saveRecipe(_id: ID): Recipe
         deleteRecipe(_id: ID): Recipe

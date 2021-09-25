@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Ingredient, Recipe, Step, Cookware, Comment } = require('../models');
+const { User, Ingredient, Recipe, Step, Cookware, Comment, Upvote } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -47,10 +47,11 @@ const resolvers = {
 
         recipe: async (parent, { _id }) => {
             return Recipe.findOne(_id)
-            .populate('steps')
-            .populate('ingredients')
-            .populate('cookware')
-            .populate('comments');
+                .populate('steps')
+                .populate('ingredients')
+                .populate('cookware')
+                .populate('comments')
+                .populate('upvotes');
         }
     },
 
@@ -102,7 +103,7 @@ const resolvers = {
 
         //Comment mutations
 
-        addComment: async(parent, args, context) => {
+        addComment: async (parent, args, context) => {
             if (context.user) {
                 const { recipeId, ...editedArgs } = args;
                 const comment = await Comment.create({ ...editedArgs, username: context.user.username });
@@ -111,8 +112,26 @@ const resolvers = {
                     { $push: { comments: comment._id } },
                     { new: true }
                 );
-                
+
                 return comment;
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
+        },
+
+        //Upvote mutations
+
+        upvoteRecipe: async (parent, args, context) => {
+            if (context.user) {
+                const { recipeId, ...editedArgs } = args;
+                const upvote = await Upvote.create({ ...editedArgs, username: context.user.username });
+                await Recipe.findByIdAndUpdate(
+                    args.recipeId,
+                    { $push: { upvotes: upvote._id } },
+                    { new: true }
+                );
+
+                return upvote;
             }
 
             throw new AuthenticationError('You need to be logged in!');
@@ -180,15 +199,15 @@ const resolvers = {
         },
 
         //For deleting a recipe and all of it's child objects.
-        deleteRecipe: async(parent, { _id }, context) => {
+        deleteRecipe: async (parent, { _id }, context) => {
             //For ensuring that only logged in users can delete recipes
-            if(context.user) {
+            if (context.user) {
                 //First find the recipe with the given id and delete it
                 await Recipe.findOneAndDelete(
                     { _id: _id },
                     { new: true }
-                //Then delete all documents that are associated in Recipe's referencing object arrays.
-                ).then(async ({ steps, ingredients, cookware, comments }) => {
+                    //Then delete all documents that are associated in Recipe's referencing object arrays.
+                ).then(async ({ steps, ingredients, cookware, comments, upvotes }) => {
                     await Promise.all(steps.map(async step => {
                         await Step.findOneAndDelete(
                             { _id: step },
@@ -213,6 +232,13 @@ const resolvers = {
                     await Promise.all(comments.map(async comment => {
                         await Comment.findOneAndDelete(
                             { _id: comment },
+                            { new: true }
+                        )
+                    }));
+
+                    await Promise.all(upvotes.map(async upvote => {
+                        await Upvote.findOneAndDelete(
+                            { _id: upvote },
                             { new: true }
                         )
                     }));

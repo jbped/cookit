@@ -72,12 +72,12 @@ const recipeSchema = new Schema(
                 ref: 'Comment'
             }
         ],
-        // upvotes: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'User'
-        //     }
-        // ],
+        upvotes: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Upvote'
+            }
+        ],
     },
     {
         toJSON: {
