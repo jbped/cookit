@@ -53,17 +53,17 @@ export const initialState = {
       ingredientsCol: {
         id: 'ingredientsCol',
         title: 'Ingredients',
-        ingredientIds: ['test-ing-1', 'test-ing-2', 'test-ing-3']
+        itemIds: ['test-ing-1', 'test-ing-2', 'test-ing-3']
       },
       directionsCol: {
         id: 'directionsCol',
         title: 'Directions',
-        directionIds: []
+        itemIds: []
       },
       deleteCol: {
         id: 'deleteCol',
         title: 'Delete',
-        deleteIds: []
+        itemIds: []
       }
     },
     columnOrder: ['ingredientsCol']

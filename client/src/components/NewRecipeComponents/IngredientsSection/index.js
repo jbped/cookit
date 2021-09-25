@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import styled from 'styled-components';
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,11 +12,11 @@ import {
   Button,
 } from '@mui/material'
 
-
 // Icons....
 import {
   MdLibraryAdd
 } from "react-icons/md";
+import { FaRegTrashAlt } from "react-icons/fa"
 
 // Custom Components.... 
 import EditableIngredient from '../EditableIngredient';
@@ -23,14 +24,22 @@ import EditableIngredient from '../EditableIngredient';
 // Custom SCSS.... 
 import '../../../scss/textfields.scss'
 
+const DeleteDiv = styled.div`
+  margin: 16px 0 0 0;
+  min-height: 5vh;
+  border-radius: 4px;
+  text-align: center;
+  background-color: ${props => props.isDraggingOver ? 'red' : 'inherit'};
+
+`;
+
 export default function IngredientsSection() {
   const recipeForm = useSelector(state => state.global.newRecipe)
   const dispatch = useDispatch();
-  const [ deleteDroppable, setDeleteDroppable ] = useState(false);
-  const [ newIngredient, setNewIngredient ] = useState(1)
+  const [newIngredient, setNewIngredient] = useState(1)
 
   const { columns, columnOrder, ingredients } = recipeForm;
-  const { ingredientsCol, ingredientsCol: { ingredientIds } } = columns;
+  const { ingredientsCol, ingredientsCol: { itemIds } } = columns;
 
   console.log(columns)
 
@@ -39,62 +48,93 @@ export default function IngredientsSection() {
     console.log(recipeForm)
   }
 
+  const onDragUpdate = update => {
+    console.log(update)
+  }
+
   // Logic for when an ingredient was moved
-  const ingredientDragEnd = result => {
+  const onDragEnd = result => {
+    // Toggle off delete droppable location
     console.log(result)
     const { destination, source, draggableId } = result;
 
+    // If no destination was found return out of function
     if (!destination) {
       return;
     }
 
+    // If no order change was made return out of function
     if (destination.droppableId === source.droppableId && destination.index === source.index) {
       return
     }
 
-    const column = columns[source.droppableId];
-    const newIngredientIds = Array.from(column.ingredientIds);
-    console.log('newIngredientIds', newIngredientIds)
+    const start = columns[source.droppableId]; // draggables starting droppable column
+    const finish = columns[destination.droppableId] // draggables ending droppable column 
 
-    newIngredientIds.splice(source.index, 1);
-    newIngredientIds.splice(destination.index, 0, draggableId);
+    // If draggable droppable column remained the same, save the column order.
+    if (start === finish) {
+      const newItemIds = Array.from(start.itemIds);
+      console.log('newItemIds', newItemIds)
 
-    const newColumn = {
-      ...column,
-      ingredientIds: newIngredientIds
+      newItemIds.splice(source.index, 1);
+      newItemIds.splice(destination.index, 0, draggableId);
+
+      const newColumn = {
+        ...start,
+        itemIds: newItemIds
+      }
+
+      const newState = {
+        columns: {
+          ...columns,
+          [newColumn.id]: newColumn
+        }
+      }
+
+      dispatch(newRecipe(newState))
+      console.log(recipeForm.columns)
+      return;
+    }
+
+    // Move Items to Delete Droppable
+    const startItemIds = Array.from(start.itemIds);
+    startItemIds.splice(source.index, 1);
+
+    const newStart = {
+      ...start,
+      itemIds: startItemIds,
+    }
+
+    const finishItemId = Array.from(finish.itemIds)
+    finishItemId.splice(destination.index, 0, draggableId);
+
+    const newFinish = {
+      ...finish,
+      itemIds: finishItemId
     }
 
     const newState = {
       columns: {
         ...columns,
-        [newColumn.id]: newColumn
+        [newStart.id]: newStart,
+        [newFinish.id]: newFinish
       }
     }
-
     dispatch(newRecipe(newState))
-    console.log(recipeForm.columns)
-  }
 
-  // show hidden delete droppable
-  const beforeDragStart = start => {
-    console.log(start)
-    setDeleteDroppable(!deleteDroppable)
-  }
+    if (finish.id === 'deleteCol') {
+      console.log(true)
+      console.log(finishItemId.toString())
+    }
+  };
 
-  // hide visible delete droppable
-  const afterDragEnd = result => {
-    setDeleteDroppable(!deleteDroppable)
-
-  }
-
-  const addNewIngredient = (e) => {
-    // e.preventDefault()
+  const addNewIngredient = () => {
     // create ingredient id and increment newIngredient INT
     const ingredientId = `ingredient-${newIngredient}`;
     setNewIngredient(newIngredient + 1);
 
     // update newRecipe in global state with the ingredient in the ingredients obj and 
-    const newIngIdArr = [...ingredientIds, ingredientId]
+    const newIngIdArr = [...itemIds, ingredientId]
     dispatch(newRecipe({
       ingredients: {
         ...ingredients,
@@ -111,7 +151,7 @@ export default function IngredientsSection() {
         ...columns,
         ingredientsCol: {
           ...ingredientsCol,
-          ingredientIds: newIngIdArr
+          itemIds: newIngIdArr
         }
       }
     }))
@@ -127,10 +167,8 @@ export default function IngredientsSection() {
         <h2>Ingredients</h2>
       </Box>
       <DragDropContext
-        onBeforeDragStart={beforeDragStart}
-        // onDragUpdate
-        onDragEnd={ingredientDragEnd}
-        onAfterDragEnd={afterDragEnd}
+        // onDragUpdate={onDragUpdate}
+        onDragEnd={onDragEnd}
       >
         <Droppable droppableId={columns.ingredientsCol.id}>
           {(provided) => (
@@ -138,39 +176,51 @@ export default function IngredientsSection() {
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {columns.ingredientsCol.ingredientIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
+              {columns.ingredientsCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
               {provided.placeholder}
             </div>
           )}
         </Droppable>
-        {/* <Droppable droppableId={columns.deleteCol.id}>
-          {(provided) => {
-            deleteDroppable && (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                style={{
-                  position: 'fixed',
-                  bottom: '1em',
-                  left: '25%',
-                  right: '25%',
-                  width: '50%',
-                  zIndex: 100,
-                  borderRadius: '4px',
-                  textAlign: 'center',
-                  backgroundColor: 'red',
-                  padding: 'auto'
-                }}
-              >
-                <h4 style={{ margin: '2vh' }}>Delete Ingredient</h4>
-                {columns.deleteCol.deleteIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
-                {provided.placeholder}
-              </div>
-            )
-          }}
-        </Droppable> */}
-
-
+        <Droppable droppableId={columns.deleteCol.id}>
+          {(provided, snapshot) => (
+            <>
+              {ingredientsCol.itemIds.length > 0 ? (
+                <DeleteDiv
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  isDraggingOver={snapshot.isDraggingOver}
+                >
+                  <Box sx={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'center', justifyContent: 'center', }}>
+                    <FaRegTrashAlt />
+                    <p style={{ fontStyle: 'italic', fontSize: '16px', margin: 0, padding: 0 }}>&nbsp;- Drop an ingredient here</p>
+                  </Box>
+                  {columns.deleteCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
+                  {provided.placeholder}
+                </DeleteDiv>
+              ) : (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  style={{
+                    display: 'none',
+                    margin: '16px 0 0 0',
+                    minHeight: '5vh',
+                    borderRadius: '4px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <Box sx={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'center', justifyContent: 'center', }}>
+                    <FaRegTrashAlt />
+                    <p style={{ fontStyle: 'italic', fontSize: '16px', margin: 0, padding: 0 }}>&nbsp;- Drop an ingredient here</p>
+                  </Box>
+                  {columns.deleteCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
+                  {provided.placeholder}
+                </div>
+              )}
+            </>
+          )
+          }
+        </Droppable>
       </DragDropContext>
       <Button variant="text"
         sx={{
