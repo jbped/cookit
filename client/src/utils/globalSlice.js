@@ -38,15 +38,15 @@ export const initialState = {
     directions: {
       'test-dir-1': {
         id: 'test-dir-1',
-        step: 'Beat all eight eggs in large bowl'
+        stepText: 'Beat all eight eggs in large bowl'
       },
       'test-dir-2': {
         id: 'test-dir-2',
-        step: 'Add 2 cups of flour to egg mixture. As the batter gets thicker add 1-2 cups Milk to allow you to continue blending until smooth'
+        stepText: 'Add 2 cups of flour to egg mixture. As the batter gets thicker add 1-2 cups Milk to allow you to continue blending until smooth'
       },
       'test-dir-3': {
         id: 'test-dir-3',
-        step: 'Repeat step 2 until all flour and milk has been added to the batter'
+        stepText: 'Repeat step 2 until all flour and milk has been added to the batter'
       },
     },
     columns: {
@@ -58,15 +58,21 @@ export const initialState = {
       directionsCol: {
         id: 'directionsCol',
         title: 'Directions',
-        itemIds: []
+        itemIds: ['test-dir-1', 'test-dir-2', 'test-dir-3']
       },
-      deleteCol: {
-        id: 'deleteCol',
+      deleteIngCol: {
+        id: 'deleteIngCol',
         title: 'Delete',
-        itemIds: []
+        itemIds: [],
+        deletedIds: []
+      },
+      deleteDirCol: {
+        id: 'deleteDirCol',
+        title: 'Delete',
+        itemIds: [],
+        deletedIds: []
       }
-    },
-    columnOrder: ['ingredientsCol']
+    }
   },
   currentRecipe: {}, // object that contains the currentRecipes information from db
   easyCookView: false, //show the fullscreen step by step view

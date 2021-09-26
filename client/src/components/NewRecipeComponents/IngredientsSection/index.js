@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+// import { newRecipeDragEnd } from '../../../utils/dndHelpers'
 import styled from 'styled-components';
 
 // Redux State.... 
@@ -10,7 +11,7 @@ import { newRecipe } from '../../../utils/globalSlice';
 import {
   Box,
   Button,
-} from '@mui/material'
+} from '@mui/material';
 
 // Icons....
 import {
@@ -26,36 +27,37 @@ import '../../../scss/textfields.scss'
 
 const DeleteDiv = styled.div`
   margin: 16px 0 0 0;
+  padding-top: ${props => (props.isDraggingOver || props.hasItem.length > 0) && '16px'};
   min-height: 5vh;
   border-radius: 4px;
   text-align: center;
-  background-color: ${props => props.isDraggingOver ? 'red' : 'inherit'};
-
+  background-color: ${props => (props.isDraggingOver || props.hasItem.length > 0) ? '#ef5350' : 'inherit'};
 `;
+
 
 export default function IngredientsSection() {
   const recipeForm = useSelector(state => state.global.newRecipe)
   const dispatch = useDispatch();
-  const [newIngredient, setNewIngredient] = useState(1)
+  const [newIngredient, setNewIngredient] = useState(1);
 
-  const { columns, columnOrder, ingredients } = recipeForm;
-  const { ingredientsCol, ingredientsCol: { itemIds } } = columns;
+  const { columns, ingredients } = recipeForm;
+  const { ingredientsCol, deleteIngCol, deleteIngCol: { deletedIds }, ingredientsCol: { itemIds } } = columns;
 
-  console.log(columns)
+  // console.log(columns)
 
-  const handleChange = e => {
-    dispatch(newRecipe({ [e.target.name]: e.target.value }))
-    console.log(recipeForm)
-  }
+  // Used for troubleshooting drag behavior
+  // const onDragUpdate = update => {
+  //   console.log(update)
+  // }
 
-  const onDragUpdate = update => {
-    console.log(update)
-  }
+  // Need to turn this into a hook to function going non-DRY for now
+  // const onDragEnd = result => {
+  //   newRecipeDragEnd(result) 
+  // }
 
   // Logic for when an ingredient was moved
   const onDragEnd = result => {
-    // Toggle off delete droppable location
-    console.log(result)
+    // console.log(result)
     const { destination, source, draggableId } = result;
 
     // If no destination was found return out of function
@@ -74,7 +76,7 @@ export default function IngredientsSection() {
     // If draggable droppable column remained the same, save the column order.
     if (start === finish) {
       const newItemIds = Array.from(start.itemIds);
-      console.log('newItemIds', newItemIds)
+      // console.log('newItemIds', newItemIds)
 
       newItemIds.splice(source.index, 1);
       newItemIds.splice(destination.index, 0, draggableId);
@@ -92,14 +94,13 @@ export default function IngredientsSection() {
       }
 
       dispatch(newRecipe(newState))
-      console.log(recipeForm.columns)
+      // console.log(recipeForm.columns)
       return;
     }
 
     // Move Items to Delete Droppable
     const startItemIds = Array.from(start.itemIds);
     startItemIds.splice(source.index, 1);
-
     const newStart = {
       ...start,
       itemIds: startItemIds,
@@ -107,7 +108,6 @@ export default function IngredientsSection() {
 
     const finishItemId = Array.from(finish.itemIds)
     finishItemId.splice(destination.index, 0, draggableId);
-
     const newFinish = {
       ...finish,
       itemIds: finishItemId
@@ -121,12 +121,76 @@ export default function IngredientsSection() {
       }
     }
     dispatch(newRecipe(newState))
-
-    if (finish.id === 'deleteCol') {
-      console.log(true)
-      console.log(finishItemId.toString())
-    }
   };
+
+  // Handler for cancelling delete for selected items (returns them to the ingredients column)
+  const cancelDelete = () => {
+    const deleteIds = Array.from(deleteIngCol.itemIds);
+    const ingredientIds = Array.from(ingredientsCol.itemIds);
+
+    // merge delete ids with ingredient ids
+    const newIngredientIds = ingredientIds.concat(deleteIds);
+    console.log(newIngredientIds);
+
+    // new state for returning to-be-deleted items to ingredients column, and clearing deleteIngCol itemIds
+    const newState = {
+      columns: {
+        ...columns,
+        ingredientsCol: {
+          ...ingredientsCol, 
+          itemIds: newIngredientIds
+        },
+        deleteIngCol: {
+          ...deleteIngCol,
+          itemIds: []
+        }
+      }
+    }
+
+    // update global state
+    dispatch(newRecipe(newState))
+  };
+
+  // Delete ingredients in the Delete Column
+  const handleDelete = async () => {
+    const deleteIds = Array.from(deleteIngCol.itemIds);
+    let editedIngredients = {...ingredients};
+
+    // merge delete itemIds with deletedIds
+    const newDeletedIds = deletedIds.concat(deleteIds);
+    console.log(newDeletedIds);
+
+    // Remove selected ingredients from the ingredients object
+    await deleteIds.forEach(item => {
+      delete editedIngredients[item]
+    });
+
+    // State to be passed to clear deleteIngCol itemsIds array
+    const newColState = {
+      columns: {
+        ...columns,
+        deleteIngCol: {
+          ...deleteIngCol, 
+          itemIds:[],
+          deletedIds: newDeletedIds,
+        }
+      }
+    }
+
+    // State to be passed to remove selected ingredients from ingredients object
+    // const newIngState = {
+    //   ingredients: {
+    //     editedIngredients
+    //   }
+    // }
+    
+    // Push to globalState
+    await dispatch(newRecipe(newColState));
+    console.log('newColState', columns);
+
+    // await dispatch(newRecipe(newIngState)); FOR SOME REASON ENABLING THIS BREAKS SORTING?!?!?!?!
+    // console.log('newIngState', ingredients);
+  }
 
   const addNewIngredient = () => {
     // create ingredient id and increment newIngredient INT
@@ -155,7 +219,7 @@ export default function IngredientsSection() {
         }
       }
     }))
-    console.log(recipeForm)
+    // console.log(recipeForm)
   };
 
   return (
@@ -170,32 +234,48 @@ export default function IngredientsSection() {
         // onDragUpdate={onDragUpdate}
         onDragEnd={onDragEnd}
       >
-        <Droppable droppableId={columns.ingredientsCol.id}>
+        <Droppable droppableId={ingredientsCol.id}>
           {(provided) => (
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {columns.ingredientsCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
+              {itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
               {provided.placeholder}
             </div>
           )}
         </Droppable>
-        <Droppable droppableId={columns.deleteCol.id}>
+        <Droppable droppableId={deleteIngCol.id}>
           {(provided, snapshot) => (
             <>
-              {ingredientsCol.itemIds.length > 0 ? (
+              {(ingredientsCol.itemIds.length > 0 || deleteIngCol.itemIds.length > 0) ? (
                 <DeleteDiv
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   isDraggingOver={snapshot.isDraggingOver}
+                  hasItem={deleteIngCol.itemIds}
                 >
                   <Box sx={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'center', justifyContent: 'center', }}>
                     <FaRegTrashAlt />
-                    <p style={{ fontStyle: 'italic', fontSize: '16px', margin: 0, padding: 0 }}>&nbsp;- Drop an ingredient here</p>
+                    <p style={{ fontStyle: 'italic', fontSize: '16px', margin: 0, padding: 0 }}>{deleteIngCol.itemIds.length === 0 ? ' - Drop an ingredient here' : ' - Items selected to delete'}</p>
                   </Box>
-                  {columns.deleteCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
+
+                  {columns.deleteIngCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
                   {provided.placeholder}
+
+                  {deleteIngCol.itemIds.length > 0 && (
+                    <Box sx={{
+                      display: 'flex', 
+                      flexWrap: 'nowrap', 
+                      alignItems: 'center', 
+                      p: 2, 
+                      borderRadius: '0 0 4', 
+                      justifyContent: 'end'
+                    }}>
+                      <Button variant="outlined" size="small" sx={{marginRight: 2}} onClick={cancelDelete}>Cancel</Button>
+                      <Button size="small" variant="contained" onClick={handleDelete}>Delete</Button>
+                    </Box>
+                  )}
                 </DeleteDiv>
               ) : (
                 <div
@@ -203,17 +283,13 @@ export default function IngredientsSection() {
                   {...provided.droppableProps}
                   style={{
                     display: 'none',
-                    margin: '16px 0 0 0',
-                    minHeight: '5vh',
-                    borderRadius: '4px',
-                    textAlign: 'center',
+                    // margin: '16px 0 0 0',
+                    // minHeight: '5vh',
+                    // borderRadius: '4px',
+                    // textAlign: 'center',
                   }}
                 >
-                  <Box sx={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'center', justifyContent: 'center', }}>
-                    <FaRegTrashAlt />
-                    <p style={{ fontStyle: 'italic', fontSize: '16px', margin: 0, padding: 0 }}>&nbsp;- Drop an ingredient here</p>
-                  </Box>
-                  {columns.deleteCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
+                  {/* {columns.deleteIngCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)} */}
                   {provided.placeholder}
                 </div>
               )}

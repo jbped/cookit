@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { styled } from '@mui/system'
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,23 +17,17 @@ import {
   GrDrag
 } from "react-icons/gr";
 
-
 // Custom SCSS.... 
 import '../../../scss/textfields.scss'
 
 export default function EditableIngredient({ ing, index }) {
-  const recipeForm = useSelector(state => state.global.newRecipe)
+  const state = useSelector(state => state.global.newRecipe)
   const dispatch = useDispatch();
-  const [ingredientState, setIngredientState] = useState({
-    id: ing.id,
-    quantity: ing.quantity,
-    measurementType: ing.measurementType,
-    measurementTypeShort: ing.measurementTypeShort,
-    ingredient: ing.ingredient,
-    notes: ing.notes
-  })
 
-  const { quantity, measurementType, measurementTypeShort, ingredient, notes } = ingredientState
+  const { ingredients } = state;
+  const ingObj = {...ingredients[ing.id]}
+
+  const { id, quantity, measurementTypeShort, ingredient, notes } = ingObj;
 
   const measurementTypes = [
     {
@@ -97,36 +90,30 @@ export default function EditableIngredient({ ing, index }) {
   ]
 
   const handleChange = e => {
+    let editedIngObj = {...ingObj}
     if (e.target.name === 'measurementType') {
-      let { type, short } = measurementTypes.find(measurement => measurement.short === e.target.value)
-      setIngredientState({ ...ingredientState, measurementType: type, measurementTypeShort: short });
-      console.log(type, short)
+      let { type, short } = measurementTypes.find(measurement => measurement.short === e.target.value);
+      editedIngObj =  { ...editedIngObj, measurementType: type, measurementTypeShort: short };
+      console.log(type, short);
     } else {
-      setIngredientState({ ...ingredientState, [e.target.name]: e.target.value })
+      editedIngObj = {...editedIngObj, [e.target.name]: e.target.value}
     }
-    console.log(ingredientState)
-  }
-  let dragId = ing.id
-
-  const getStyle = isDragging => {
-    if (isDragging) {
-      return {
-        borderRadius: '4px',
-        backgroundColor: '#000000',
+    dispatch(newRecipe({
+      ingredients: {
+        ...ingredients,
+        [id]: editedIngObj
       }
-    } 
-    return {
-      borderRadius: '4px',
-      backgroundColor: '#FFFFFFD9'
-    }
+    }));
+    // console.log('ingredients', ingredients);
+    // console.log('ingredients[id]', ingredients[id]);
   }
 
   return (
 
-    <Draggable draggableId={dragId} index={index}>
+    <Draggable draggableId={id} index={index}>
       {(provided) => (
         <div
-          id={ing.id}
+          id={id}
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
