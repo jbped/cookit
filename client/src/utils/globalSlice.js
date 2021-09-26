@@ -9,56 +9,18 @@ export const initialState = {
     partySize: 1,
     public: 'private',
     description: '',
-    ingredients: {
-      'test-ing-1': {
-        id: 'test-ing-1',
-        quantity: '8',
-        measurementType: 'Not applicable',
-        measurementTypeShort: 'n/a',
-        ingredient: 'Eggs',
-        notes: 'Large'
-      },
-      'test-ing-2': {
-        id: 'test-ing-2',
-        quantity: '7',
-        measurementType: 'cup(s)',
-        measurementTypeShort: 'c',
-        ingredient: 'Milk',
-        notes: ''
-      },
-      'test-ing-3': {
-        id: 'test-ing-3',
-        quantity: '6',
-        measurementType: 'cup(s)',
-        measurementTypeShort: 'c',
-        ingredient: 'Flour',
-        notes: ''
-      },
-    },
-    directions: {
-      'test-dir-1': {
-        id: 'test-dir-1',
-        stepText: 'Beat all eight eggs in large bowl'
-      },
-      'test-dir-2': {
-        id: 'test-dir-2',
-        stepText: 'Add 2 cups of flour to egg mixture. As the batter gets thicker add 1-2 cups Milk to allow you to continue blending until smooth'
-      },
-      'test-dir-3': {
-        id: 'test-dir-3',
-        stepText: 'Repeat step 2 until all flour and milk has been added to the batter'
-      },
-    },
+    ingredients: {},
+    directions: {},
     columns: {
       ingredientsCol: {
         id: 'ingredientsCol',
         title: 'Ingredients',
-        itemIds: ['test-ing-1', 'test-ing-2', 'test-ing-3']
+        itemIds: []
       },
       directionsCol: {
         id: 'directionsCol',
         title: 'Directions',
-        itemIds: ['test-dir-1', 'test-dir-2', 'test-dir-3']
+        itemIds: []
       },
       deleteIngCol: {
         id: 'deleteIngCol',
