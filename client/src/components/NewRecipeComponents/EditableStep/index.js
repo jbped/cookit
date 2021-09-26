@@ -22,11 +22,13 @@ export default function EditableStep({ step, index }) {
 
   const { directions } = state;
   const dirObj = { ...directions[step.id] }
+  console.log('dirObj', dirObj)
 
   const { id, stepText } = dirObj
 
   const handleChange = e => {
     let editedDirObj = { ...dirObj }
+    console.log('editedDirObj', editedDirObj)
     editedDirObj = { ...editedDirObj, [e.target.name]: e.target.value }
     dispatch(newRecipe({
       directions: {
@@ -65,7 +67,7 @@ export default function EditableStep({ step, index }) {
                 id="outlined-size-small"
                 size="small"
                 label="Step"
-                name="step"
+                name="stepText"
                 type="text"
                 multiline
                 defaultValue={stepText}
