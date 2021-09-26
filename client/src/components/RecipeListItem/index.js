@@ -21,7 +21,7 @@ import { styled } from '@mui/material/styles';
 
 // react-icons
 import { RiStarSFill, RiStarSLine } from "react-icons/ri";
-import { IoMdTimer } from "react-icons/io";
+import { IoMdTimer, IoIosPeople } from "react-icons/io";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -35,7 +35,7 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function Elevation() {
   return (
     <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid item xs={6} lg={4}>
             <Box
               sx={{
                 p: 2,
@@ -59,19 +59,17 @@ export default function Elevation() {
                             display: "flex",
                             alignItems: "center",
                             marginLeft: ".1rem",
-                            marginRight: ".1rem"
+                            marginRight: ".2rem"
                           }}
                       >
-                          Recipe Name
+                          <p>Recipe Name</p>
                       </ListItemText>
                       <ListItemIcon
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "start",
                         marginLeft: ".1rem",
-                        marginRight: ".1rem",
-                        height: "5px"
+                        marginRight: "5rem",
                           }}
                       >
                           <RiStarSFill/>
@@ -80,18 +78,39 @@ export default function Elevation() {
                           <RiStarSLine />
                           <RiStarSLine />
                       </ListItemIcon>
-                      <ListItemIcon>
-                          <IoMdTimer/>
-                      </ListItemIcon>
-                      <ListItemText
-                      sx={{
+                      <ListItemIcon
+                       sx={{
                         display: "flex",
                         alignItems: "center",
                         marginLeft: ".1rem",
-                        marginRight: ".1rem"
+                        marginRight: ".2rem",
                           }}
                       >
-
+                          <IoMdTimer/>
+                      </ListItemIcon>
+                      <ListItemText
+                          sx={{
+                        color: "secondary",
+                        display: "flex",
+                        alignItems: "center",
+                        marginLeft: ".1rem",
+                        marginRight: ".5rem"
+                          }}
+                      >
+                          <p>25 minutes</p>
+                      </ListItemText>
+                      <ListItemIcon
+                       sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginLeft: ".1rem",
+                        marginRight: ".2rem",
+                          }}
+                      >
+                          <IoIosPeople/>
+                      </ListItemIcon>
+                      <ListItemText>
+                          <p>14</p>
                       </ListItemText>
                 </ListItem>
             </Box>
