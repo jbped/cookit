@@ -8,6 +8,9 @@ import {
     QUERY_RECIPES
 } from '../../utils/queries';
 
+// Auth
+import Auth from "../../utils/auth";
+
 // Material UI components
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -20,7 +23,8 @@ import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
 
 // react-icons
-import { RiStarSFill, RiStarSLine } from "react-icons/ri";
+// import { RiStarSFill, RiStarSLine } from "react-icons/ri";
+import { BiUpvote } from "react-icons/bi";
 import { IoMdTimer, IoIosPeople } from "react-icons/io";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -32,7 +36,19 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-export default function Elevation() {
+export default function RecipeListItem() {
+  // Get QUERY_ME data
+  // const {loading, data} = useQuery(QUERY_ME);
+  // console.log("query_me data", loading, data);
+  // const userData = data?.me || {;}
+
+  const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+  // Get QUERY_RECIPE data
+  // const { loading, data } = useQuery(QUERY_RECIPE);
+  // console.log("Recipe data", loading, data);
+  // const recipeData = data?.recipe || {};
+
   return (
     <Grid container spacing={2}>
         <Grid item xs={6} lg={4}>
@@ -41,11 +57,11 @@ export default function Elevation() {
                 p: 2,
                 bgcolor: 'background.default',
                 display: 'grid',
-                gridTemplateColumns: { md: '1fr 1fr' },
                 gap: 2,
               }}
             >
-                  <ListItem
+          <Item>
+          <ListItem
                       elevation="4"
                       sx={{
                           display: "flex",
@@ -61,58 +77,69 @@ export default function Elevation() {
                             marginLeft: ".1rem",
                             marginRight: ".2rem"
                           }}
-                      >
-                          <p>Recipe Name</p>
-                      </ListItemText>
-                      <ListItemIcon
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginLeft: ".1rem",
-                        marginRight: "5rem",
-                          }}
-                      >
-                          <RiStarSFill/>
-                          <RiStarSFill/>
-                          <RiStarSFill/>
-                          <RiStarSLine />
-                          <RiStarSLine />
-                      </ListItemIcon>
-                      <ListItemIcon
+              >
+                {/* uncomment when recipe query is implemented */}
+                {/* <p>{ recipeData.recipeTitle }</p> */}
+                <p>Recipe Name</p>
+              </ListItemText>
+              {/* Use MUI rating precision component */}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+            <ListItemIcon
                        sx={{
                         display: "flex",
                         alignItems: "center",
                         marginLeft: ".1rem",
-                        marginRight: ".2rem",
                           }}
                       >
-                          <IoMdTimer/>
-                      </ListItemIcon>
-                      <ListItemText
+                <IoMdTimer />
+                <ListItemText
                           sx={{
                         color: "secondary",
                         display: "flex",
                         alignItems: "center",
-                        marginLeft: ".1rem",
-                        marginRight: ".5rem"
+                        marginLeft: ".3rem"
                           }}
                       >
-                          <p>25 minutes</p>
+                    {/* <p>{recipeData.cookTime}</p> */}
+                    <p>25 minutes</p>
                       </ListItemText>
-                      <ListItemIcon
+                      </ListItemIcon>                      
+            </Box>
+            <Box
+             sx={{
+              display: "flex",
+              alignItems: "center",
+              marginLeft: ".8rem"
+              }}
+            >
+            <ListItemIcon
                        sx={{
                         display: "flex",
                         alignItems: "center",
-                        marginLeft: ".1rem",
                         marginRight: ".2rem",
                           }}
                       >
-                          <IoIosPeople/>
+                      <BiUpvote />              
+                  <ListItemText
+                  sx={{
+                    color: "secondary",
+                    display: "flex",
+                    alignItems: "center",
+                    marginLeft: ".3rem"
+                    }}
+                  >
+                    {/* <p>{ recipeData.upvotes.length}</p> */}
+                    <p>14</p>
+                        </ListItemText>
                       </ListItemIcon>
-                      <ListItemText>
-                          <p>14</p>
-                      </ListItemText>
+            </Box>
                 </ListItem>
+                  </Item>
             </Box>
         </Grid>
     </Grid>
