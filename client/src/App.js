@@ -7,19 +7,13 @@ import theme from './theme.js'
 
 // React Router Pages....
 import NewRecipe from './pages/NewRecipe';
+import MyKit from './pages/MyKit';
 
 // Components....
 import { Box, ThemeProvider } from '@mui/system';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
-<<<<<<< HEAD
-import RecipeCard from "./components/RecipeCard";
-import RecipeListItem from "./components/RecipeListItem";
-import { Box, ThemeProvider } from '@mui/system';
-=======
-
->>>>>>> 3bcd73ab5d453bfa7f182f65abe60a028ef6ecea
 
 function App() {
   return (
@@ -38,9 +32,8 @@ function App() {
           }}>
               <Switch>
                 <Route exact path="/new-recipe" component={NewRecipe}></Route>
+                <Route exact path="/my-kit" component={MyKit}></Route>
             </Switch>
-            <RecipeCard />
-            <RecipeListItem />
           </Box>
         </main>
         <footer>

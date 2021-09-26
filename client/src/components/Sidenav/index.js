@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 // Global state 
-import { sideNavVisible} from "../../utils/globalSlice.js"
+import { sideNavVisible } from "../../utils/globalSlice.js"
 import { useDispatch, useSelector } from "react-redux";
 
 // Queries/Mutations
@@ -57,11 +57,11 @@ export default function Sidenav() {
     dispatch(sideNavVisible());
   };
 
-  
+
   // const { loading, data } = useQuery(QUERY_ME);
   // console.log("userData", loading, data);
   // const userData = data?.me || {};
-  
+
   const token = Auth.loggedIn() ? Auth.getToken() : null;
 
   // const userWelcome = (token) => {
@@ -85,23 +85,34 @@ export default function Sidenav() {
     }
   ]
 
-  const menuItems = [{
-    name: "Discover",
-    icon: <RiCompassDiscoverLine />
-  }, {
-    name: "Search",
-    icon: <MdSearch />
-    }, {
-    name: "My Kit",
-    icon: <GiForkKnifeSpoon />
-    }, {
-    name: "Shopping List",
-    icon: <VscChecklist/>
-    }, {
-    name: "Meal Planner",
-    icon: <IoIosJournal />
-    }]
-  
+  const menuItems = [
+    {
+      name: "Discover",
+      icon: <RiCompassDiscoverLine />,
+      link: 'discover'
+    },
+    {
+      name: "Search",
+      icon: <MdSearch />,
+      link: 'search'
+    },
+    {
+      name: "My Kit",
+      icon: <GiForkKnifeSpoon />,
+      link: 'my-kit'
+    },
+    {
+      name: "Shopping List",
+      icon: <VscChecklist />,
+      link: 'shopping-list'
+    },
+    {
+      name: "Meal Planner",
+      icon: <IoIosJournal />,
+      link: 'meal-planner'
+    }
+  ]
+
   const loginOption = () => {
     if (!token) {
       return "Login"
@@ -111,43 +122,43 @@ export default function Sidenav() {
   }
   const settingsMenuItems = [{
     name: "Settings",
-    icon: <MdSettings/>
+    icon: <MdSettings />
   }, {
-      name: loginOption(),
-    icon: <IoIosLogIn/>
-    }]
+    name: loginOption(),
+    icon: <IoIosLogIn />
+  }]
   console.log(settingsMenuItems);
 
   const list = (anchor) => (
     <Router>
       <Switch>
-    <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
-      role="presentation"
-      onClick={toggleDrawer()}
-      onKeyDown={toggleDrawer()}
-    >
-      <List container rowSpacing={1}>
+        <Box
+          sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+          role="presentation"
+          onClick={toggleDrawer()}
+          onKeyDown={toggleDrawer()}
+        >
+          <List container rowSpacing={1}>
             <ListItem
-            sx={{
-              display: 'flex',
-              alignItems: 'center'
+              sx={{
+                display: 'flex',
+                alignItems: 'center'
               }}
             >
               <ListItemIcon
-              sx={{
-                marginRight:'.1rem'
+                sx={{
+                  marginRight: '.1rem'
                 }}
               >
                 <h1><GiKnifeFork /></h1>
-              </ListItemIcon>              
+              </ListItemIcon>
               <ListItemText>
-                  <h1>CooKit</h1>
+                <h1>CooKit</h1>
               </ListItemText>
             </ListItem>
             {/* {userWelcome} */}
-      </List>
-            <Divider />
+          </List>
+          <Divider />
           <MenuList container rowSpacing={1}>
             {menuItems.map((menuItem) => (
 
@@ -160,29 +171,29 @@ export default function Sidenav() {
                   alignItems: 'center'
                 }}
               >
-  <ListItemIcon
-  sx={{
-    marginRight:'.1rem'
-    }}
-  >
-  {menuItem.icon}
-</ListItemIcon>
-    <Route to={`/${menuItem.name}`}>
-      <ListItemText>
-        {menuItem.name}
-      </ListItemText>
-    </Route>
-</MenuItem>
+                <ListItemIcon
+                  sx={{
+                    marginRight: '.1rem'
+                  }}
+                >
+                  {menuItem.icon}
+                </ListItemIcon>
+                <Route to={`/${menuItem.link}`}>
+                  <ListItemText>
+                    {menuItem.name}
+                  </ListItemText>
+                </Route>
+              </MenuItem>
             ))}
-      </MenuList>
-      <ImageList variant="masonry" cols={1} gap={0} container>
-        <ImageListItem>
-          <img
-            src={`${imageData[0].img}?w=248&fit=crop&auto=format`}
-            alt={imageData[0].title}
-            loading="lazy"
-          />
-        </ImageListItem>
+          </MenuList>
+          <ImageList variant="masonry" cols={1} gap={0} container>
+            <ImageListItem>
+              <img
+                src={`${imageData[0].img}?w=248&fit=crop&auto=format`}
+                alt={imageData[0].title}
+                loading="lazy"
+              />
+            </ImageListItem>
           </ImageList>
           <Box></Box>
           <MenuList container rowSpacing={1}>
@@ -191,47 +202,47 @@ export default function Sidenav() {
                 key={menuItem.name}
                 value={menuItem.name}
                 button
-            sx={{
-              display: 'flex',
-              alignItems: 'center'
-              }}
-            >
-              <ListItemIcon
                 sx={{
-                marginRight:'.1rem'
-                }}>
-                {menuItem.icon}
-              </ListItemIcon>
-              
-              <Route to={`/${menuItem.name}`}>
+                  display: 'flex',
+                  alignItems: 'center'
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    marginRight: '.1rem'
+                  }}>
+                  {menuItem.icon}
+                </ListItemIcon>
+
+                <Route to={`/${menuItem.name}`}>
                   <ListItemText>
                     {menuItem.name}
-                </ListItemText>
-          </Route>
-        </MenuItem>
+                  </ListItemText>
+                </Route>
+              </MenuItem>
             ))}
-      </MenuList>
-    </Box>
+          </MenuList>
+        </Box>
       </Switch>
-      </Router>
+    </Router>
   )
   return (
     <div>
-    {['left'].map((anchor) => (
-      <React.Fragment key={anchor}>
-        <Grid container spacing={2}>
-          <Grid item lg={4}>
-        <Drawer
-          anchor={anchor}
-          open={state}
-          onClose={toggleDrawer()}
-        >
-          {list(anchor)}
-        </Drawer>
-      </Grid>
-    </Grid>
-  </React.Fragment>
-    ))}
-  </div>
-    )
+      {['left'].map((anchor) => (
+        <React.Fragment key={anchor}>
+          <Grid container spacing={2}>
+            <Grid item lg={4}>
+              <Drawer
+                anchor={anchor}
+                open={state}
+                onClose={toggleDrawer()}
+              >
+                {list(anchor)}
+              </Drawer>
+            </Grid>
+          </Grid>
+        </React.Fragment>
+      ))}
+    </div>
+  )
 };
