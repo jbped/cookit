@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import store from "../../app/store.js"
 import { useDispatch, useSelector } from "react-redux";
 import { sideNavVisible} from "../../utils/globalSlice.js"
 import {
@@ -8,10 +9,10 @@ import {
 import { MdMenu, MdAdd } from "react-icons/md";
 
 export default function Header() {
-  const state = useSelector(state.global.sideNavVisible);
+  const state = useSelector(state => state.global.sideNavVisible);
   const dispatch = useDispatch();
   
-  const toggleDrawer = (anchor, open) => (event) => {
+  const toggleDrawer = () => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }

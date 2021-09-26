@@ -38,7 +38,7 @@ import Grid from '@mui/material/Grid';
 
 
 export default function Sidenav() {
-  const state = useSelector(state.global.sideNavVisible);
+  const state = useSelector(state => state.global.sideNavVisible);
   const dispatch = useDispatch();
 
   // useEffect(() => {
@@ -49,7 +49,7 @@ export default function Sidenav() {
     left: false,
   };
 
-  const toggleDrawer = (anchor, open) => (event) => {
+  const toggleDrawer = () => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
@@ -201,7 +201,7 @@ export default function Sidenav() {
             </MenuList> */}
         <Drawer
           anchor={anchor}
-          open={state[anchor]}
+          open={state}
           onClose={toggleDrawer()}
         >
           {list(anchor)}
