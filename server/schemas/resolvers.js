@@ -52,6 +52,33 @@ const resolvers = {
                 .populate('cookware')
                 .populate('comments')
                 .populate('upvotes');
+        },
+
+        userUpvotedRecipes: async (parent, args, context) => {
+            const recipes = await Recipe.aggregate([
+                {
+                    $lookup: {
+                        from: 'upvotes',
+                        localField: 'Upvote',
+                        foreignField: 'username',
+                        as: 'upvote'
+                    }
+                },
+                {
+                    $addFields: {
+                        child: {
+                            $arrayElemAt: ['$upvote', 0]
+                        }
+                    }
+                },
+                {
+                    $match: {
+                        'upvote.active': true
+                    }
+                }
+            ])
+
+            return recipes;
         }
     },
 
@@ -119,15 +146,98 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in!');
         },
 
+        deleteComment: async (parent, { _id, recipeId }, context) => {
+            if (context.user) {
+                const comment = await Comment.findOneAndDelete(_id);
+                await Recipe.findByIdAndUpdate(
+                    recipeId,
+                    { $pull: { comments: _id } },
+                    { new: true }
+                );
+
+                return comment;
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
+        },
+
         //Upvote mutations
 
         upvoteRecipe: async (parent, args, context) => {
             if (context.user) {
                 const { recipeId, ...editedArgs } = args;
+                const recipe = await Recipe.findById(args.recipeId);
+
+                await Promise.all(recipe.upvotes.map(async item => {
+                    const upvote = await Upvote.findById(item);
+                    const duplicate = (upvote.username === context.user.username) ? true : false;
+                    if (duplicate) {
+                        throw new AuthenticationError('User has already upvoted this recipe.');
+                    }
+                }));
+
                 const upvote = await Upvote.create({ ...editedArgs, username: context.user.username });
                 await Recipe.findByIdAndUpdate(
                     args.recipeId,
+                    { $addToSet: { upvotes: upvote._id } },
+                    { new: true }
+                );
+
+                return upvote;
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
+        },
+
+        deleteUpvoteRecipe: async (parent, { _id, recipeId }, context) => {
+            if (context.user) {
+                const upvote = await Upvote.findOneAndDelete(_id);
+                await Recipe.findByIdAndUpdate(
+                    recipeId,
+                    { $pull: { upvotes: _id } },
+                    { new: true }
+                );
+
+                return upvote;
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
+        },
+
+        upvoteComment: async (parent, { commentId }, context) => {
+            if (context.user) {
+                const comment = await Comment.findById(commentId);
+
+                if(comment.upvotes) {
+                    await Promise.all(comment.upvotes.map(async item => {
+                        await Upvote.findById(item)
+                        .then(({ username }) => {
+                            if (username === context.user.username) {
+                                throw new AuthenticationError('User has already upvoted this comment');
+                            }
+                        });
+                    }));
+                }
+                console.log(context.user.username);
+                const upvote = await Upvote.create({ username: context.user.username });
+                await Comment.findByIdAndUpdate(
+                    commentId,
                     { $push: { upvotes: upvote._id } },
+                    { new: true }
+                );
+
+                return upvote;
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
+        },
+
+        deleteUpvoteComment: async (parent, { _id, commentId }, context) => {
+            if (context.user) {
+                const upvote = await Upvote.findOneAndDelete(_id);
+                await Comment.findByIdAndUpdate(
+                    commentId,
+                    { $pull: { upvotes: _id } },
                     { new: true }
                 );
 
@@ -203,49 +313,47 @@ const resolvers = {
             //For ensuring that only logged in users can delete recipes
             if (context.user) {
                 //First find the recipe with the given id and delete it
-                await Recipe.findOneAndDelete(
-                    { _id: _id },
-                    { new: true }
-                    //Then delete all documents that are associated in Recipe's referencing object arrays.
-                ).then(async ({ steps, ingredients, cookware, comments, upvotes }) => {
-                    await Promise.all(steps.map(async step => {
-                        await Step.findOneAndDelete(
-                            { _id: step },
-                            { new: true }
-                        )
-                    }));
+                const recipe = await Recipe.findOneAndDelete(_id)
+                const { steps, ingredients, cookware, comments, upvotes } = recipe;
 
-                    await Promise.all(ingredients.map(async ingredient => {
-                        await Ingredient.findOneAndDelete(
-                            { _id: ingredient },
-                            { new: true }
-                        )
-                    }));
+                await Promise.all(steps.map(async step => {
+                    await Step.findOneAndDelete(
+                        { _id: step },
+                        { new: true }
+                    )
+                }));
 
-                    await Promise.all(cookware.map(async ware => {
-                        await Cookware.findOneAndDelete(
-                            { _id: ware },
-                            { new: true }
-                        )
-                    }));
+                await Promise.all(ingredients.map(async ingredient => {
+                    await Ingredient.findOneAndDelete(
+                        { _id: ingredient },
+                        { new: true }
+                    )
+                }));
 
-                    await Promise.all(comments.map(async comment => {
-                        await Comment.findOneAndDelete(
-                            { _id: comment },
-                            { new: true }
-                        )
-                    }));
+                await Promise.all(cookware.map(async ware => {
+                    await Cookware.findOneAndDelete(
+                        { _id: ware },
+                        { new: true }
+                    )
+                }));
 
-                    await Promise.all(upvotes.map(async upvote => {
-                        await Upvote.findOneAndDelete(
-                            { _id: upvote },
-                            { new: true }
-                        )
-                    }));
-                });
-            } else {
-                throw new AuthenticationError('You need to be logged in!');
+                await Promise.all(comments.map(async comment => {
+                    await Comment.findOneAndDelete(
+                        { _id: comment },
+                        { new: true }
+                    )
+                }));
+
+                await Promise.all(upvotes.map(async upvote => {
+                    await Upvote.findOneAndDelete(
+                        { _id: upvote },
+                        { new: true }
+                    )
+                }));
+
+                return recipe;
             }
+            throw new AuthenticationError('You need to be logged in!');
         }
     }
 };

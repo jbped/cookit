@@ -4,8 +4,7 @@ const upvoteSchema = new Schema(
     {
         username: {
             type: String,
-            required: 'upvote must have an originating user.',
-            unique: true
+            required: 'upvote must have an originating user.'
         }
     }
 );
