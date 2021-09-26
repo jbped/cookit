@@ -11,6 +11,8 @@ import NewRecipe from './pages/NewRecipe';
 // Components....
 import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
+import RecipeCard from "./components/RecipeCard";
+import RecipeListItem from "./components/RecipeListItem";
 import { Box, ThemeProvider } from '@mui/system';
 
 function App() {
@@ -28,7 +30,9 @@ function App() {
           }}>
               <Switch>
                 <Route exact path="/new-recipe" component={NewRecipe}></Route>
-              </Switch>
+            </Switch>
+            <RecipeCard />
+            <RecipeListItem />
           </Box>
         </main>
         <footer>

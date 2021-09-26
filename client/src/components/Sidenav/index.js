@@ -11,13 +11,11 @@ import { sideNavVisible} from "../../utils/globalSlice.js"
 import { useDispatch, useSelector } from "react-redux";
 
 // Queries/Mutations
-// import { GET_ME } from '../utils/queries';
+import { useQuery, useMutation } from '@apollo/client';
+import { QUERY_ME } from '../../utils/queries';
 
 // Auth
 import Auth from "../../utils/auth";
-
-// Import Hover/Popovers
-import HoverPopover from 'material-ui-popup-state/HoverPopover'
 
 // Custom icons
 import { GiKnifeFork, GiForkKnifeSpoon } from 'react-icons/gi';
@@ -60,7 +58,7 @@ export default function Sidenav() {
   };
 
   
-  // const { loading, data } = useQuery(GET_ME);
+  // const { loading, data } = useQuery(QUERY_ME);
   // console.log("userData", loading, data);
   // const userData = data?.me || {};
   
@@ -148,12 +146,6 @@ export default function Sidenav() {
               </ListItemText>
             </ListItem>
             {/* {userWelcome} */}
-            {/* Remove the ListItem below when login is working */}
-            <ListItem>
-        <ListItemText>
-            <h7>Hello, Jamie</h7>
-        </ListItemText>
-      </ListItem>
       </List>
             <Divider />
           <MenuList container rowSpacing={1}>
