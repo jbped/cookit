@@ -1,6 +1,10 @@
 const { Schema, model } = require('mongoose');
+<<<<<<< HEAD
 const { Ingredient } = require('../models');
 const dateFormat = require('../utils/dateFormat')
+=======
+const dateFormat = require('../utils/dateFormat');
+>>>>>>> d682678581e57890ecfec432ec93d47572bbebc9
 
 const recipeSchema = new Schema(
     {
@@ -24,6 +28,9 @@ const recipeSchema = new Schema(
             minLength: 5,
             maxlength: 30,
             unique: false
+        },
+        recipeDescription: {
+            type: String
         },
         // type as in breakfast, lunch, dinner etc.
         type: {
@@ -58,26 +65,33 @@ const recipeSchema = new Schema(
                 ref: 'Ingredient'
             }
         ],
-        // cookware: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'Cookware'
-        //     }
-        // ],
-        // comments: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'Comment'
-        //     }
-        // ],
-        // upvotes: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'User'
-        //     }
-        // ],
+        cookware: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Cookware'
+            }
+        ],
+        comments: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Comment'
+            }
+        ],
+        upvotes: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Upvote'
+            }
+        ],
+    },
+    {
+        toJSON: {
+            virtuals: true
+        }
     }
 );
+
+
 
 const Recipe = model('Recipe', recipeSchema);
 

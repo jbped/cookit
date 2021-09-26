@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const addDateSuffix = date => {
     let dateStr = date.toString();
   
@@ -97,3 +98,11 @@ const addDateSuffix = date => {
     return formattedTimeStamp;
   };
   
+=======
+   
+const dayjs = require('dayjs');
+
+module.exports = (timestamp) => {
+    return dayjs(timestamp).format('MM/DD/YYYY [at] h[:]m A');
+};
+>>>>>>> d682678581e57890ecfec432ec93d47572bbebc9

@@ -6,7 +6,6 @@ const ingredientSchema = new Schema(
             type: String,
             required: 'Ingredient must have a name.',
             trim: true,
-            unique: false
         },
         measurement: {
             type: String,

@@ -1,11 +1,26 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import store from "../../app/store.js"
+import { useDispatch, useSelector } from "react-redux";
+import { sideNavVisible} from "../../utils/globalSlice.js"
 import {
   Box, IconButton
 } from '@mui/material'
 import { MdMenu, MdAdd } from "react-icons/md";
 
 export default function Header() {
+  const state = useSelector(state => state.global.sideNavVisible);
+  const dispatch = useDispatch();
+  
+  const toggleDrawer = () => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    dispatch(sideNavVisible());
+  };
+
+
   let location = useLocation();
   const onNewRecipe = location.pathname.includes('new-recipe')
   // console.log("url", window.location.pathname)
@@ -19,8 +34,12 @@ export default function Header() {
       paddingRight: '1em',
       boxShadow: 3
     }}>
-      <IconButton aria-label="menu" color="primary">
-        <MdMenu size={25} />
+      <IconButton
+        aria-label="menu"
+        color="primary"
+        onClick={toggleDrawer()}
+      >
+        <MdMenu size={25}/>
       </IconButton>
 
       <h1 style={{ margin: '.4rem 0 .4rem 0' }}>CooKit</h1>
