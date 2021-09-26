@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+// Import Material UI components
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -14,6 +16,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Paper from '@mui/material/Paper';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -26,6 +29,14 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  height: 60,
+  lineHeight: '60px',
+}));
+
 export default function RecipeReviewCard() {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -34,7 +45,8 @@ export default function RecipeReviewCard() {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Item>
+      <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
@@ -89,5 +101,6 @@ export default function RecipeReviewCard() {
         </CardContent>
       </Collapse>
     </Card>
+    </Item>
   );
 }

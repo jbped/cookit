@@ -1,5 +1,10 @@
 // React 
 import * as React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 
 // Queries/Mutations
 import { useQuery, useMutation } from '@apollo/client';
@@ -18,6 +23,7 @@ import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Button from '@mui/material/Button';
 
 // Material UI methods
 import { styled } from '@mui/material/styles';
@@ -50,8 +56,10 @@ export default function RecipeListItem() {
   // const recipeData = data?.recipe || {};
 
   return (
-    <Grid container spacing={2}>
-        <Grid item xs={6} lg={4}>
+    <Router>
+      <Switch>
+      <Grid container spacing={2}>
+      <Grid item>
             <Box
               sx={{
                 p: 2,
@@ -60,8 +68,10 @@ export default function RecipeListItem() {
                 gap: 2,
               }}
             >
-          <Item>
-          <ListItem
+              <Item
+              onClick>
+                <Route /*to={`/my-kit/recipe/:${recipeData._id}`}*/>
+                   <ListItem
                       elevation="4"
                       sx={{
                           display: "flex",
@@ -69,7 +79,7 @@ export default function RecipeListItem() {
                           marginLeft: ".1rem",
                           marginRight: ".1rem"
                       }}
-                  >
+                    >
                       <ListItemText
                           sx={{
                             display: "flex",
@@ -77,10 +87,10 @@ export default function RecipeListItem() {
                             marginLeft: ".1rem",
                             marginRight: ".2rem"
                           }}
-              >
+                      >
                 {/* uncomment when recipe query is implemented */}
-                {/* <p>{ recipeData.recipeTitle }</p> */}
-                <p>Recipe Name</p>
+                      {/* <p>{ recipeData.recipeTitle }</p> */}
+                  <p>Recipe Name</p>
               </ListItemText>
               {/* Use MUI rating precision component */}
             <Box
@@ -139,9 +149,12 @@ export default function RecipeListItem() {
                       </ListItemIcon>
             </Box>
                 </ListItem>
-                  </Item>
+                </Route>
+          </Item>
             </Box>
         </Grid>
     </Grid>
+      </Switch>
+    </Router>
   );
 }

@@ -89,27 +89,32 @@ export default function Sidenav() {
     {
       name: "Discover",
       icon: <RiCompassDiscoverLine />,
-      link: 'discover'
+      link: 'discover',
+      // component: <Discover/>
     },
     {
       name: "Search",
       icon: <MdSearch />,
-      link: 'search'
+      link: 'search',
+      // component: <Search/>
     },
     {
       name: "My Kit",
       icon: <GiForkKnifeSpoon />,
-      link: 'my-kit'
+      link: 'my-kit',
+      // component: <MyKit/>
     },
     {
       name: "Shopping List",
       icon: <VscChecklist />,
-      link: 'shopping-list'
+      link: 'my-kit/shopping-list',
+      // component: <ShoppingList/>
     },
     {
       name: "Meal Planner",
       icon: <IoIosJournal />,
-      link: 'meal-planner'
+      link: 'meal-planner',
+      // component: <MealPlanner/>
     }
   ]
 
@@ -120,12 +125,33 @@ export default function Sidenav() {
       return "Logout"
     }
   }
+
+  const linkOption = () => {
+    if (!token) {
+      return "login";
+    } else {
+      return "";
+    }
+  }
+
+  const fnOption = () => {
+    if (!token) {
+      return Auth.logout();
+    } else {
+      return Auth.login();
+    }
+  }
+
   const settingsMenuItems = [{
     name: "Settings",
-    icon: <MdSettings />
+    icon: <MdSettings />,
+    link: "settings",
+    fn: null
   }, {
     name: loginOption(),
-    icon: <IoIosLogIn />
+    icon: <IoIosLogIn />,
+    link: linkOption(),
+    fn: fnOption(),
   }]
   console.log(settingsMenuItems);
 
@@ -178,7 +204,9 @@ export default function Sidenav() {
                 >
                   {menuItem.icon}
                 </ListItemIcon>
-                <Route to={`/${menuItem.link}`}>
+                <Route
+                  path={`/${menuItem.link}`}
+                >
                   <ListItemText>
                     {menuItem.name}
                   </ListItemText>
@@ -214,7 +242,10 @@ export default function Sidenav() {
                   {menuItem.icon}
                 </ListItemIcon>
 
-                <Route to={`/${menuItem.name}`}>
+                <Route
+                  to={`/${menuItem.link}`}
+                  onClick={`${menuItem.fnOption}`}
+                >
                   <ListItemText>
                     {menuItem.name}
                   </ListItemText>
