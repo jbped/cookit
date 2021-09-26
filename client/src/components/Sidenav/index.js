@@ -7,16 +7,21 @@ import {
 } from "react-router-dom";
 
 // Global state 
-import store from "../../app/store.js"
 import { sideNavVisible} from "../../utils/globalSlice.js"
 import { useDispatch, useSelector } from "react-redux";
+
+// Queries/Mutations
+// import { GET_ME } from '../utils/queries';
+
+// Auth
+import Auth from "../../utils/auth";
 
 // Import Hover/Popovers
 import HoverPopover from 'material-ui-popup-state/HoverPopover'
 
 // Custom icons
 import { GiKnifeFork, GiForkKnifeSpoon } from 'react-icons/gi';
-import { MdSearch, MdSettings, MdMenu } from 'react-icons/md';
+import { MdSearch, MdSettings } from 'react-icons/md';
 import { RiCompassDiscoverLine } from 'react-icons/ri';
 import { IoIosJournal, IoIosLogIn } from 'react-icons/io';
 import { VscChecklist } from 'react-icons/vsc';
@@ -41,10 +46,6 @@ export default function Sidenav() {
   const state = useSelector(state => state.global.sideNavVisible);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-    
-  // })
-
   const anchor = {
     left: false,
   };
@@ -57,6 +58,27 @@ export default function Sidenav() {
 
     dispatch(sideNavVisible());
   };
+
+  
+  // const { loading, data } = useQuery(GET_ME);
+  // console.log("userData", loading, data);
+  // const userData = data?.me || {};
+  
+  const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+  // const userWelcome = (token) => {
+  //   if (!token) {
+  //     return '';
+  //   } else {
+  //     return (        
+  //       <ListItem>
+  //       <ListItemText>
+  //           <h7>Hello, { userData.username }</h7>
+  //       </ListItemText>
+  //     </ListItem>
+  //     )
+  //   }
+  // }
 
   const imageData = [
     {
@@ -82,13 +104,21 @@ export default function Sidenav() {
     icon: <IoIosJournal />
     }]
   
+  const loginOption = () => {
+    if (!token) {
+      return "Login"
+    } else {
+      return "Logout"
+    }
+  }
   const settingsMenuItems = [{
     name: "Settings",
     icon: <MdSettings/>
   }, {
-    name: "Login/Logout",
+      name: loginOption(),
     icon: <IoIosLogIn/>
-  }]
+    }]
+  console.log(settingsMenuItems);
 
   const list = (anchor) => (
     <Router>
@@ -116,7 +146,14 @@ export default function Sidenav() {
               <ListItemText>
                   <h1>CooKit</h1>
               </ListItemText>
-          </ListItem>
+            </ListItem>
+            {/* {userWelcome} */}
+            {/* Remove the ListItem below when login is working */}
+            <ListItem>
+        <ListItemText>
+            <h7>Hello, Jamie</h7>
+        </ListItemText>
+      </ListItem>
       </List>
             <Divider />
           <MenuList container rowSpacing={1}>
@@ -138,7 +175,7 @@ export default function Sidenav() {
   >
   {menuItem.icon}
 </ListItemIcon>
-    <Route to="/discover">
+    <Route to={`/${menuItem.name}`}>
       <ListItemText>
         {menuItem.name}
       </ListItemText>
@@ -174,7 +211,7 @@ export default function Sidenav() {
                 {menuItem.icon}
               </ListItemIcon>
               
-              <Route to="/settings">
+              <Route to={`/${menuItem.name}`}>
                   <ListItemText>
                     {menuItem.name}
                 </ListItemText>
@@ -192,13 +229,6 @@ export default function Sidenav() {
       <React.Fragment key={anchor}>
         <Grid container spacing={2}>
           <Grid item lg={4}>
-            {/* <MenuList>
-              <MenuItem  onClick={toggleDrawer(anchor, true)}>
-                <ListItemIcon fontSize="large">                  
-                  <MdMenu/>
-                </ListItemIcon>
-              </MenuItem>
-            </MenuList> */}
         <Drawer
           anchor={anchor}
           open={state}
