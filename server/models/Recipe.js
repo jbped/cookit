@@ -1,10 +1,5 @@
 const { Schema, model } = require('mongoose');
-<<<<<<< HEAD
-const { Ingredient } = require('../models');
-const dateFormat = require('../utils/dateFormat')
-=======
 const dateFormat = require('../utils/dateFormat');
->>>>>>> d682678581e57890ecfec432ec93d47572bbebc9
 
 const recipeSchema = new Schema(
     {
