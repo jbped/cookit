@@ -15,7 +15,13 @@ const commentSchema = new Schema(
         username: {
             type: String,
             required: 'comment must have an originating user.'
-        }
+        },
+        upvotes: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Upvote'
+            }
+        ]
     }
 );
 

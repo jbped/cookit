@@ -53,6 +53,7 @@ const typeDefs = gql`
         commentText: String
         createdAt: String
         username: String
+        upvotes: [Upvote]
     }
 
     type Upvote {
@@ -61,22 +62,38 @@ const typeDefs = gql`
     }
 
     type Query {
+        #User-
         me: User
         users: [User]
         user(username: String!): User
+        #Ingredient-
         ingredients: [Ingredient]
         ingredient(ingredientName: String!): Ingredient
+        #Comment-
         comments(recipeId: ID): [Comment]
+        #Recipe-
         recipes: [Recipe]
         recipe: Recipe
+        userUpvotedRecipes: [Recipe]
     }
 
     type Mutation {
+        #User-
         login(email: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
+        #Ingredient-
         addIngredient(ingredientName: String!, measurement: String, quantity: Int, preparationNotes: String): Ingredient
+        #Comment-
         addComment(recipeId: ID!, commentText: String!, username: String): Comment
+        deleteComment(_id: ID!, recipeId: ID!): Comment
+        #Upvote-
+            #UpvoteRecipe
         upvoteRecipe(recipeId: ID!, username: String): Upvote
+        deleteUpvoteRecipe(_id: ID! recipeId: ID!): Upvote
+            #UpvoteComment
+        upvoteComment(commentId: ID!, username: String): Upvote
+        deleteUpvoteComment(_id: ID!, commentId: ID!): Upvote
+        #Recipe-
         addRecipe(public: Boolean!, creator: String, recipeTitle: String!, recipeDescription: String, type: String, season: String, difficulty: Int, servings: Int cookTime: Int, steps: [stepInput], ingredients: [ingredientInput], cookware: [cookwareInput]): Recipe
         saveRecipe(_id: ID): Recipe
         deleteRecipe(_id: ID): Recipe
