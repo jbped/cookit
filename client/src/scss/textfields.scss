@@ -1,0 +1,12 @@
+.TextField-without-border-radius fieldset {
+  border-radius: 0;
+}
+.TextField-no-border-right fieldset {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  // border-radius: 70%;
+}
+.TextField-no-border-left fieldset {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

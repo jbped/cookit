@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
-const { Ingredient } = require('../models');
-const dateFormat = require('../utils/dateFormat')
+
+const dateFormat = require('../utils/dateFormat');
+
 
 const recipeSchema = new Schema(
     {
@@ -25,6 +26,9 @@ const recipeSchema = new Schema(
             maxlength: 30,
             unique: false
         },
+        recipeDescription: {
+            type: String
+        },
         // type as in breakfast, lunch, dinner etc.
         type: {
             type: String,
@@ -46,38 +50,45 @@ const recipeSchema = new Schema(
         cookTime: {
             type: Number
         },
-        // steps: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'Step'
-        //     }
-        // ],
+        steps: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Step'
+            }
+        ],
         ingredients: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'Ingredient'
             }
         ],
-        // cookware: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'Cookware'
-        //     }
-        // ],
-        // comments: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'Comment'
-        //     }
-        // ],
-        // upvotes: [
-        //     {
-        //         type: Schema.Types.ObjectId,
-        //         ref: 'User'
-        //     }
-        // ],
+        cookware: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Cookware'
+            }
+        ],
+        comments: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Comment'
+            }
+        ],
+        upvotes: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Upvote'
+            }
+        ],
+    },
+    {
+        toJSON: {
+            virtuals: true
+        }
     }
 );
+
+
 
 const Recipe = model('Recipe', recipeSchema);
 

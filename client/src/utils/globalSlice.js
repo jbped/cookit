@@ -6,6 +6,7 @@ const initialState = {
   easyCookView: false, //show the fullscreen step by step view
   easyCookStep: 0, // last step visited by user. Needs to be cleared upon leaving the main recipe page
   myKitView: true, //true === row, false === tiled
+  sideNavVisible: false, // true === sideNav appears
 };
 
 export const globalSlice = createSlice({
@@ -27,11 +28,14 @@ export const globalSlice = createSlice({
     },
     myKitView: (state) => {
       state.myKitView = !state.myKitView;
+    },
+    sideNavVisible: (state) => {
+      state.sideNavVisible = !state.sideNavVisible;
     }
   }
 });
 
 const { actions, reducer } = globalSlice
-export const { toggleDarkMode, currentRecipe, easyCookView, easyCookStep, myKitView } = actions;
+export const { toggleDarkMode, currentRecipe, easyCookView, easyCookStep, myKitView, sideNavVisible } = actions;
 
 export default reducer;
