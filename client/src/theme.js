@@ -2,7 +2,10 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   typography: {
-    fontFamily: ['Poppins', 'sans-serif'].join(',')
+    fontFamily: 'Poppins',
+    button: {
+      textTransform: 'none'
+    }
   },
   palette: {
     primary: {
@@ -12,6 +15,6 @@ const theme = createTheme({
       main: '#e0e0e0'
     }
   }
-})
+});
 
 export default theme;
