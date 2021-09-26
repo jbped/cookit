@@ -26,7 +26,6 @@ export default function Header() {
     dispatch(sideNavVisible());
   };
 
-
   let location = useLocation();
   const onNewRecipe = location.pathname.includes('new-recipe')
   // console.log("url", window.location.pathname)

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-// import { newRecipeDragEnd } from '../../../utils/dndHelpers'
+import { useNewRecipeDragEnd } from '../../../utils/dndHelpers'
 import styled from 'styled-components';
 
 // Redux State.... 
@@ -50,7 +50,7 @@ export default function IngredientsSection() {
   //   console.log(update)
   // }
 
-  // Need to turn this into a hook to function going non-DRY for now
+  // // Need to turn this into a hook to function going non-DRY for now
   // const onDragEnd = result => {
   //   newRecipeDragEnd(result) 
   // }

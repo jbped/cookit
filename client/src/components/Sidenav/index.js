@@ -122,7 +122,8 @@ export default function Sidenav() {
   }
   const settingsMenuItems = [{
     name: "Settings",
-    icon: <MdSettings />
+    icon: <MdSettings />,
+    link: "settings"
   }, {
     name: loginOption(),
     icon: <IoIosLogIn />

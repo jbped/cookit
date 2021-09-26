@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 
 // Themes....
 import './App.scss';
@@ -8,6 +8,7 @@ import theme from './theme.js'
 // React Router Pages....
 import NewRecipe from './pages/NewRecipe';
 import MyKit from './pages/MyKit';
+import LoginSignup from './pages/LoginSignup';
 
 // Components....
 import { Box, ThemeProvider } from '@mui/system';
@@ -16,23 +17,30 @@ import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
 
 function App() {
+  let location = useLocation();
+  const hideHeader = (location.pathname.includes('login') || location.pathname.includes('signup')) ? true : false
+
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <header>
-          <Sidenav/>
-          <Header></Header>
+          <Sidenav />
+          {!hideHeader && 
+            <Header />
+          }
         </header>
         <main>
           <Box sx={{
-            px:2,
+            px: 2,
             mt: '61px',
             zIndex: 1,
           }}>
-              <Switch>
-                <Route exact path="/new-recipe" component={NewRecipe}></Route>
-                <Route exact path="/my-kit" component={MyKit}></Route>
+            <Switch>
+              <Route exact path="/new-recipe" component={NewRecipe}></Route>
+              <Route exact path="/my-kit" component={MyKit}></Route>
+              <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
+              <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>
             </Switch>
           </Box>
         </main>
