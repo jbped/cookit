@@ -290,35 +290,32 @@ export const QUERY_RECIPES =gql`
 `;
 
 // Not working right now
-export const QUERY_RECIPE = gql`
+// export const QUERY_RECIPE = gql`
 
-`;
+// `;
 
 // all ingredients
 export const QUERY_INGREDIENTS = gql`
     query ingredients {
-    ingredients {
-        _id
-        ingredientName
-        measurement
-        quantity
-        preparationNotes
+        ingredients {
+            _id
+            ingredientName
+            measurement
+            quantity
+            preparationNotes
+        }
     }
-}
 `;
 
 // Ingredient by name
 export const QUERY_INGREDIENT = gql`
     query ingredient($IngredientName: String!) {
-    ingredient(ingredientName: $IngredientName) {
-        _id
-        ingredientName
-        measurement
-        quantity
-        preparationNotes
+        ingredient(ingredientName: $IngredientName) {
+            _id
+            ingredientName
+            measurement
+            quantity
+            preparationNotes
+        }
     }
-}
 `;
-
-
-
