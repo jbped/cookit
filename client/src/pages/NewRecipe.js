@@ -7,6 +7,7 @@ import { newRecipe } from '../utils/globalSlice';
 // MUI Components....
 import {
   Box,
+  Grid
 } from '@mui/material'
 
 // Custom Components.... 
@@ -25,14 +26,34 @@ export default function NewRecipe() {
 
   return (
     <Box component="form">
-      <ConfirmLeavePage completed={false} />
       <NewRecipeTitle />
-      <RecipeTime />
-      <ServingSize />
-      <PublicSwitch />
-      <RecipeDescription />
-      <IngredientsSection />
-      <DirectionsSection />
+      <ConfirmLeavePage completed={false} />
+
+      <Grid container spacing={{ md: 5, lg: 10 }}>
+
+        <Grid item xs={12} md={6}>
+          <RecipeTime />
+          <ServingSize />
+          <PublicSwitch />
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <RecipeDescription />
+        </Grid>
+
+      </Grid>
+
+      <Grid container spacing={{ md: 5, lg: 10 }}>
+
+        <Grid item xs={12} md={6}>
+          <IngredientsSection />
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <DirectionsSection />
+        </Grid>
+
+      </Grid>
     </Box >
   )
 }

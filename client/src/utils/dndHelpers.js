@@ -1,14 +1,13 @@
-// import React, { useState } from 'react'
+// import React from 'react'
 
-// // Redux State.... 
-// import { useSelector, useDispatch } from 'react-redux';
-// import { newRecipe } from './globalSlice';
-// ChaNGE
+// Redux State.... 
+import { useSelector, useDispatch } from 'react-redux';
+import { newRecipe } from './globalSlice';
+
 // Logic for when an ingredient was moved
-export const newRecipeDragEnd = (props) => {
-  // const [result] = useState(props.result)
-  // const recipeForm = useSelector(state => state.global.newRecipe)
-  // const dispatch = useDispatch();
+export const useNewRecipeDragEnd = ({ result }) => {
+  const recipeForm = useSelector(state => state.global.newRecipe)
+  const dispatch = useDispatch();
   
   const { columns } = recipeForm;
   // console.log(result)
@@ -75,4 +74,5 @@ export const newRecipeDragEnd = (props) => {
     }
   }
   dispatch(newRecipe(newState))
+  return newState;
 };
