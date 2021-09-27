@@ -15,12 +15,6 @@ import { Box, ThemeProvider } from '@mui/system';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
-import RecipeCard from "./components/RecipeCard";
-import RecipeListItem from "./components/RecipeListItem";
-<<<<<<< HEAD
-import MyKit from "./pages/MyKit";
-=======
->>>>>>> 4e994f71bb4097f00e4bb1a55f26dc0f28a99944
 
 function App() {
   let location = useLocation();
@@ -48,12 +42,6 @@ function App() {
               <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
               <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>
             </Switch>
-<<<<<<< HEAD
-            {/* <MyKit/> */}
-=======
-            {/* <RecipeCard />
-            <RecipeListItem /> */}
->>>>>>> 4e994f71bb4097f00e4bb1a55f26dc0f28a99944
           </Box>
         </main>
         <footer>
