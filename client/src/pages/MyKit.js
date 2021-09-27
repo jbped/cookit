@@ -25,6 +25,7 @@ export default function MyKit() {
         display: "inline-block"
       }}
       >
+      <RecipeCard />
       <RecipeListItem />
       </Box>
       </Grid>

@@ -33,8 +33,8 @@ function App() {
           }
         </header>
         <main>
-          <Box sx={{
-            px: 2,
+          <Box paddingX={{ xs: 2, md: 6, lg: 15, xl: 20}}sx={{
+            // px: 2,
             mt: '61px',
             zIndex: 1,
           }}>
@@ -44,8 +44,8 @@ function App() {
               <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
               <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>
             </Switch>
-            <RecipeCard />
-            <RecipeListItem />
+            {/* <RecipeCard />
+            <RecipeListItem /> */}
           </Box>
         </main>
         <footer>
