@@ -3,11 +3,11 @@ import { useLocation } from 'react-router-dom';
 
 import store from "../../app/store.js"
 import { useDispatch, useSelector } from "react-redux";
-import { sideNavVisible} from "../../utils/globalSlice.js"
+import { sideNavVisible } from "../../utils/globalSlice.js"
 import { Link } from "react-router-dom";
 
 import {
-  Box, 
+  Box,
   IconButton,
   Typography
 } from '@mui/material'
@@ -17,7 +17,7 @@ import { MdMenu, MdAdd } from "react-icons/md";
 export default function Header() {
   const state = useSelector(state => state.global.sideNavVisible);
   const dispatch = useDispatch();
-  
+
   const toggleDrawer = () => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
@@ -25,7 +25,6 @@ export default function Header() {
 
     dispatch(sideNavVisible());
   };
-
 
   let location = useLocation();
   const onNewRecipe = location.pathname.includes('new-recipe')
@@ -49,22 +48,22 @@ export default function Header() {
         color="primary"
         onClick={toggleDrawer()}
       >
-        <MdMenu size={25}/>
+        <MdMenu size={25} />
       </IconButton>
-      <Link to="/" style={{textDecoration: 'none', color: 'black'}}>
+      <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
         <Typography variant="h4" sx={{ margin: '.4rem 0 .4rem 0' }}>CooKit</Typography>
       </Link>
 
       {/* Hides the add new recipe button when on the /new-recipe page */}
       {!onNewRecipe ?
-      <Link to="/new-recipe" style={{textDecoration: 'none', color: 'black'}}>
-        <IconButton aria-label="add" color="primary">
-          <MdAdd size={25} />
-        </IconButton>
-      </Link>
+        <Link to="/new-recipe" style={{ textDecoration: 'none', color: 'black' }}>
+          <IconButton aria-label="add" color="primary">
+            <MdAdd size={25} />
+          </IconButton>
+        </Link>
         :
         <IconButton aria-label="add" disabled color="primary">
-          <MdAdd size={25} style={{visibility:'hidden'}}/>
+          <MdAdd size={25} style={{ visibility: 'hidden' }} />
         </IconButton>
       }
     </Box>
