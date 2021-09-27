@@ -15,7 +15,6 @@ import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
 import RecipeCard from "./components/RecipeCard";
 import RecipeListItem from "./components/RecipeListItem";
-import { Box, ThemeProvider } from '@mui/system';
 
 function App() {
   return (
@@ -23,7 +22,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <header>
-          <Sidenav/>
+          {/* <Sidenav/> */}
           <Header></Header>
         </header>
         <main>
