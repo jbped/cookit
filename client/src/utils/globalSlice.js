@@ -37,7 +37,7 @@ export const initialState = {
     }
   },
   currentRecipe: {}, // object that contains the currentRecipes information from db
-  easyCookView: false, //show the fullscreen step by step view
+  easyCookView: false, //show the fullscreen step by step view USE MUI MOBILE STEPPER FOR DISPLAY
   easyCookStep: 0, // last step visited by user. Needs to be cleared upon leaving the main recipe page
   myKitView: true, //true === row, false === tiled
   sideNavVisible: false, // true === sideNav appears
