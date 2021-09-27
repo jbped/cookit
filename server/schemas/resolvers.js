@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Ingredient, Recipe, Step, Cookware, Comment, Upvote } = require('../models');
+const { User, Ingredient, Recipe, Direction, Cookware, Comment, Upvote } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -249,7 +249,7 @@ const resolvers = {
 
         //Recipe mutations
 
-        //For creating a new Recipe that includes steps, ingredients, cookware, comments, and upvotes object id arrays.
+        //For creating a new Recipe that includes directions, ingredients, cookware, comments, and upvotes object id arrays.
         addRecipe: async (parent, args, context) => {
             //Context if user is creating recipe
             if (context.user) {
@@ -262,11 +262,11 @@ const resolvers = {
                 );
 
                 //For pushing the Step object ids up into the steps array on Recipe
-                await Promise.all(args.steps.map(async stp => {
-                    const step = await Step.create(stp);
+                await Promise.all(args.directions.map(async stp => {
+                    const directions = await Direction.create(stp);
                     await Recipe.findByIdAndUpdate(
                         recipe._id,
-                        { $push: { steps: step._id } },
+                        { $push: { directions: direction._id } },
                         { new: true }
                     );
                 }));

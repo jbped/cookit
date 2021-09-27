@@ -15,6 +15,8 @@ import { Box, ThemeProvider } from '@mui/system';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
+import RecipeCard from "./components/RecipeCard";
+import RecipeListItem from "./components/RecipeListItem";
 
 function App() {
   let location = useLocation();
