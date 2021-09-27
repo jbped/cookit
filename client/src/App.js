@@ -15,7 +15,7 @@ import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
 import RecipeCard from "./components/RecipeCard";
 import RecipeListItem from "./components/RecipeListItem";
-import { Box, ThemeProvider } from '@mui/system';
+import MyKit from "./pages/MyKit";
 
 function App() {
   return (
@@ -35,8 +35,7 @@ function App() {
               <Switch>
                 <Route exact path="/new-recipe" component={NewRecipe}></Route>
             </Switch>
-            <RecipeCard />
-            <RecipeListItem />
+            {/* <MyKit/> */}
           </Box>
         </main>
         <footer>

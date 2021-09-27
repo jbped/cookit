@@ -3,7 +3,8 @@ import * as React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Link
 } from "react-router-dom";
 
 // Queries/Mutations
@@ -37,8 +38,8 @@ const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   textAlign: 'center',
   color: theme.palette.text.secondary,
-  height: 60,
-  lineHeight: '60px',
+  // height: 60,
+  // lineHeight: '60px',
 }));
 
 
@@ -68,9 +69,12 @@ export default function RecipeListItem() {
                 gap: 2,
               }}
             >
-              <Item
-              onClick>
-                <Route /*to={`/my-kit/recipe/:${recipeData._id}`}*/>
+              <Item>                
+              <Button
+                  component={Link}
+                  to={`/view-recipe/:`/*${recipeData._id goes here} */}
+                  variant="text"
+                >
                    <ListItem
                       elevation="4"
                       sx={{
@@ -79,7 +83,7 @@ export default function RecipeListItem() {
                           marginLeft: ".1rem",
                           marginRight: ".1rem"
                       }}
-                    >
+                >
                       <ListItemText
                           sx={{
                             display: "flex",
@@ -149,7 +153,7 @@ export default function RecipeListItem() {
                       </ListItemIcon>
             </Box>
                 </ListItem>
-                </Route>
+                </Button>
           </Item>
             </Box>
         </Grid>

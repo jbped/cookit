@@ -3,7 +3,8 @@ import React /*{useEffect}*/ from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Link
 } from "react-router-dom";
 
 // Global state 
@@ -37,6 +38,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 
 
 
@@ -135,23 +137,23 @@ export default function Sidenav() {
   }
 
   const fnOption = () => {
-    if (!token) {
-      return Auth.logout();
-    } else {
-      return Auth.login();
-    }
+    // if (!token) {
+    //   return Auth.logout();
+    // } else {
+    //   return Auth.login();
+    // }
   }
 
   const settingsMenuItems = [{
     name: "Settings",
     icon: <MdSettings />,
     link: "settings",
-    fn: null
+    // fn: null
   }, {
     name: loginOption(),
     icon: <IoIosLogIn />,
     link: linkOption(),
-    fn: fnOption(),
+    // fn: fnOption(),
   }]
   console.log(settingsMenuItems);
 
@@ -179,7 +181,7 @@ export default function Sidenav() {
                 <h1><GiKnifeFork /></h1>
               </ListItemIcon>
               <ListItemText>
-                <h1>CooKit</h1>
+                CooKit
               </ListItemText>
             </ListItem>
             {/* {userWelcome} */}
@@ -187,7 +189,11 @@ export default function Sidenav() {
           <Divider />
           <MenuList container rowSpacing={1}>
             {menuItems.map((menuItem) => (
-
+              <Button
+                component={Link}
+                to={`/${menuItem.link}`}
+                variant="text"
+              >
               <MenuItem
                 key={menuItem.name}
                 value={menuItem.name}
@@ -204,14 +210,11 @@ export default function Sidenav() {
                 >
                   {menuItem.icon}
                 </ListItemIcon>
-                <Route
-                  path={`/${menuItem.link}`}
-                >
                   <ListItemText>
                     {menuItem.name}
                   </ListItemText>
-                </Route>
-              </MenuItem>
+                </MenuItem>
+                </Button>
             ))}
           </MenuList>
           <ImageList variant="masonry" cols={1} gap={0} container>
@@ -226,6 +229,11 @@ export default function Sidenav() {
           <Box></Box>
           <MenuList container rowSpacing={1}>
             {settingsMenuItems.map((menuItem) => (
+              <Button
+              component={Link}
+              to={`/${menuItem.link}`}
+              variant="text"
+            >
               <MenuItem
                 key={menuItem.name}
                 value={menuItem.name}
@@ -241,16 +249,11 @@ export default function Sidenav() {
                   }}>
                   {menuItem.icon}
                 </ListItemIcon>
-
-                <Route
-                  to={`/${menuItem.link}`}
-                  onClick={`${menuItem.fnOption}`}
-                >
                   <ListItemText>
                     {menuItem.name}
                   </ListItemText>
-                </Route>
               </MenuItem>
+              </Button>
             ))}
           </MenuList>
         </Box>
