@@ -289,6 +289,23 @@ export const QUERY_RECIPES =gql`
 }`;
 
 export const QUERY_RECIPES_SHORT =gql`
+    query Query {
+        recipes {
+            _id
+            creator
+            createdAt
+            recipeTitle
+            recipeDescription
+            servings
+            cookTime
+            ingredients {
+                ingredientName
+            }
+        }
+    }
+`;
+
+export const QUERY_RECIPE_BASIC =gql`
     query Query ($_id: ID!) {
         recipes (_id: $_id) {
             _id
