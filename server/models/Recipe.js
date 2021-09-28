@@ -78,6 +78,16 @@ const recipeSchema = new Schema(
                 ref: 'Upvote'
             }
         ],
+        directionsOrder: [
+            {
+                type: String
+            }
+        ],
+        ingredientOrder: [
+            {
+                type: String
+            }
+        ]
     },
     {
         toJSON: {
