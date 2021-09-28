@@ -11,7 +11,7 @@ import {
 import { useQuery } from '@apollo/client';
 import {
     QUERY_ME,
-    // QUERY_RECIPES_SHORT
+    QUERY_RECIPES_SHORT
 } from '../../utils/queries';
 
 // React Components

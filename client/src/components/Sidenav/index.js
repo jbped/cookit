@@ -86,32 +86,27 @@ export default function Sidenav() {
     {
       name: "Discover",
       icon: <RiCompassDiscoverLine />,
-      link: 'discover',
-      component: <Discover/>
+      link: 'discover'
     },
     {
       name: "Search",
       icon: <MdSearch />,
-      link: 'search',
-      component: <Search/>
+      link: 'search'
     },
     {
       name: "My Kit",
       icon: <GiForkKnifeSpoon />,
-      link: 'my-kit',
-      component: <MyKit/>
+      link: 'my-kit'
     },
     {
       name: "Shopping List",
       icon: <VscChecklist />,
-      link: 'my-kit/shopping-list',
-      component: <ShoppingList/>
+      link: 'my-kit/shopping-list'
     },
     {
       name: "Meal Planner",
       icon: <IoIosJournal />,
-      link: 'meal-planner',
-      component: <MealPlanner/>
+      link: 'meal-planner'
     }
   ]
 

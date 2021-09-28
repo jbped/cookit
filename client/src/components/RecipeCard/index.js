@@ -64,7 +64,6 @@ export default function RecipeReviewCard() {
   const { loading, recipeData } = useQuery(QUERY_RECIPES_SHORT);
   console.log("Recipe data", loading, recipeData);
   const recipes = recipeData?.recipe || {};
-  const ingredients = [recipe.ingredients];
   
   const [expanded, setExpanded] = React.useState(false);
 
@@ -127,7 +126,7 @@ export default function RecipeReviewCard() {
             >
               Ingredients:
             </Typography>
-            {ingredients.map((ingredient) => (
+            {recipe.ingredients.map((ingredient) => (
               <Typography
                 paragraph              
               key={ingredient.ingredientName}
