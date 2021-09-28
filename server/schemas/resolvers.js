@@ -51,13 +51,8 @@ const resolvers = {
         },
 
         recipe: async (parent, { _id }) => {
-<<<<<<< HEAD
-            return Recipe.findOne( _id )
-                // .populate('steps')
-=======
             return Recipe.findOne(_id)
                 .populate('directions')
->>>>>>> 18347d637d44a1d863f0ee290cb4ddb2c6362771
                 .populate('ingredients')
                 .populate('cookware')
                 .populate('comments')
