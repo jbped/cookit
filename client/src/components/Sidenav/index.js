@@ -145,7 +145,6 @@ export default function Sidenav() {
     link: linkOption(),
     fn: fnOption(),
   }]
-  console.log("menu items: ", settingsMenuItems);
 
   const list = (anchor) => (
         <Box
@@ -184,14 +183,13 @@ export default function Sidenav() {
           >
             {menuItems.map((menuItem) => (
               <Button
+                key={menuItem.name}
+                value={menuItem.name}
                 component={Link}
                 to={`/${menuItem.link}`}
                 variant="text"
               >
               <MenuItem
-                key={menuItem.name}
-                value={menuItem.name}
-                button
                 sx={{
                   display: 'flex',
                   alignItems: 'center'
@@ -235,10 +233,10 @@ export default function Sidenav() {
               component={Link}
               to={`/${menuItem.link}`}
               variant="text"
-            >
-              <MenuItem
                 key={menuItem.name}
                 value={menuItem.name}
+            >
+              <MenuItem
                 button
                 sx={{
                   display: 'flex',
