@@ -28,10 +28,11 @@ export default function NewRecipe() {
 
   return (
     <Box component="form">
-      <NewRecipeTitle />
-      <ConfirmLeavePage completed={false} />
-
-      <Grid container spacing={{ md: 5, xl: 10 }}  px={{ md: 5, xl: 10 }}>
+      <Box px={{ md: 5, xl: 20 }}>
+        <NewRecipeTitle />
+        <ConfirmLeavePage completed={false} />
+      </Box>
+      <Grid container spacing={{ md: 5, xl: 10 }}  px={{ md: 5, xl: 20 }}>
 
         <Grid item xs={12} md={6}>
           <Box sx={{borderBottom: 1, borderColor: 'divider', mt: 3}}>
@@ -50,7 +51,7 @@ export default function NewRecipe() {
 
       </Grid>
 
-      <Grid container spacing={{ md: 5, xl: 10 }} px={{ md: 5, xl: 10 }}>
+      <Grid container spacing={{ md: 5, xl: 10 }} px={{ md: 5, xl: 20 }}>
 
         <Grid item xs={12} md={6}>
           <IngredientsSection />
