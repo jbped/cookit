@@ -11,6 +11,7 @@ import { newRecipe } from '../../../utils/globalSlice';
 import {
   Box,
   Button,
+  Typography,
 } from '@mui/material';
 
 // Icons....
@@ -28,10 +29,14 @@ import '../../../scss/textfields.scss'
 const DeleteDiv = styled.div`
   margin: 16px 0 0 0;
   padding-top: ${props => (props.isDraggingOver || props.hasItem.length > 0) && '16px'};
+  padding-left:  ${props => (props.isDraggingOver || props.hasItem.length > 0) && '16px'}; 
+  padding-right:  ${props => (props.isDraggingOver || props.hasItem.length > 0) && '16px'}; 
   min-height: 5vh;
   border-radius: 4px;
   text-align: center;
   background-color: ${props => (props.isDraggingOver || props.hasItem.length > 0) ? '#ef5350' : 'inherit'};
+  color: ${props => (props.isDraggingOver || props.hasItem.length > 0) ? '#000000' : 'inherit'};
+
 `;
 
 
@@ -225,10 +230,11 @@ export default function IngredientsSection() {
   return (
     <>
       <Box sx={{
+        mt: 3, 
         borderBottom: 1,
-        borderColor: 'grey.300'
+        borderColor: 'divider'
       }}>
-        <h2>Ingredients</h2>
+        <Typography variant="h5" color="primary">Ingredients</Typography>
       </Box>
       <DragDropContext
         // onDragUpdate={onDragUpdate}
@@ -236,13 +242,13 @@ export default function IngredientsSection() {
       >
         <Droppable droppableId={ingredientsCol.id}>
           {(provided) => (
-            <div
+            <Box component="div"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
               {itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].ingredientId} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
               {provided.placeholder}
-            </div>
+            </Box>
           )}
         </Droppable>
         <Droppable droppableId={deleteIngCol.id}>
@@ -257,7 +263,13 @@ export default function IngredientsSection() {
                 >
                   <Box sx={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'center', justifyContent: 'center', }}>
                     <FaRegTrashAlt />
-                    <p style={{ fontStyle: 'italic', fontSize: '16px', margin: 0, padding: 0 }}>{deleteIngCol.itemIds.length === 0 ? ' - Drop an ingredient here' : ' - Items selected to delete'}</p>
+                    <Typography style={{ fontStyle: 'italic', fontSize: '16px', margin: 0, padding: 0 }}>
+                      &nbsp;
+                      {deleteIngCol.itemIds.length === 0 ? 
+                      'Drop an ingredient here' 
+                      : 
+                      'Items selected to delete'}
+                    </Typography>
                   </Box>
 
                   {columns.deleteIngCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].ingredientId} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
@@ -272,13 +284,13 @@ export default function IngredientsSection() {
                       borderRadius: '0 0 4', 
                       justifyContent: 'end'
                     }}>
-                      <Button variant="outlined" size="small" sx={{marginRight: 2}} onClick={cancelDelete}>Cancel</Button>
-                      <Button size="small" variant="contained" onClick={handleDelete}>Delete</Button>
+                      <Button variant="text" color="secondary" size="small" sx={{marginRight: 2}} onClick={cancelDelete}>Cancel</Button>
+                      <Button size="small" variant="contained" color="secondary" onClick={handleDelete}>Delete</Button>
                     </Box>
                   )}
                 </DeleteDiv>
               ) : (
-                <div
+                <Box component="div"
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   style={{
@@ -291,7 +303,7 @@ export default function IngredientsSection() {
                 >
                   {/* {columns.deleteIngCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)} */}
                   {provided.placeholder}
-                </div>
+                </Box>
               )}
             </>
           )

@@ -8,13 +8,13 @@ import { newRecipe } from '../../../utils/globalSlice';
 // MUI Components....
 import {
   TextField,
-  Box
+  Box,
+  Typography,
+  Paper, 
 } from '@mui/material'
 
 // Icons....
-import {
-  GrDrag
-} from "react-icons/gr";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
 export default function EditableStep({ step, index }) {
   const state = useSelector(state => state.global.newRecipe)
@@ -43,25 +43,25 @@ export default function EditableStep({ step, index }) {
   return (
     <Draggable draggableId={stepId} index={index}>
       {(provided) => (
-        <div
+        <Box component="div"
           id={stepId}
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
-          <Box sx={{
+          <Paper sx={{
             mt: 2,
             py: 2,
             width: '100%',
             border: 1,
-            borderRadius: '4px',
-            borderColor: 'grey.300',
-            backgroundColor: '#FFFFFFD9',
-            backdropFilter: 'blur(4px)'
+            borderRadius: 1,
+            boxShadow: 4,
+            borderColor: 'backdrop.dark',
+            // backgroundColor: 'backdrop.dark',
+            // backdropFilter: 'blur(4px)'
           }}>
             <Box sx={{
               display: 'flex',
               alignItems: 'center',
-              mx: 2,
             }}>
               <TextField
                 id="outlined-size-small"
@@ -71,22 +71,24 @@ export default function EditableStep({ step, index }) {
                 type="text"
                 multiline
                 defaultValue={stepText}
+                color="backdrop"
                 sx={{
                   width: '100%',
                   borderTopRightRadius: 0,
                   borderBottomRightRadius: 0,
-                  flexGrow: '1'
+                  flexGrow: '1',
+                  ml:2
                 }}
                 fullWidth
-                InputLabelProps={{ shrink: true }}
+                InputLabelProps={{ shrink: true, color: 'secondary' }}
                 onBlur={handleChange}
               />
-              <div {...provided.dragHandleProps} style={{marginLeft: 'auto', padding: '.2rem'}}>
-                <GrDrag size={15} />
-              </div>
+              <Box component="div" {...provided.dragHandleProps} sx={{marginLeft: 'auto', px: 2, py: 1, color: "grey"}}>
+                <DragIndicatorIcon size={15} color="grey"/>
+              </Box>
             </Box>
-          </Box>
-        </div>
+          </Paper>
+        </Box>
       )}
     </Draggable>
   )

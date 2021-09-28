@@ -88,7 +88,7 @@ export default function RecipeTime() {
   });
 
   return (
-    < Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+    < Box sx={{ display: 'flex', alignItems: 'center' }}>
       <MdAccessAlarm
         size={25}
         style={{ marginRight: '1rem' }}
@@ -118,6 +118,7 @@ export default function RecipeTime() {
         placeholder="Total Time"
         value={recipeForm.cookTime}
         onChange={handleChange}
+        color="backdrop"
         sx={{
           flexGrow: 1
         }}

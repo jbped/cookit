@@ -61,7 +61,7 @@ export default function ServingSize() {
         style={{ marginRight: '1rem' }}
         {...bindTrigger(servingPopState)}
         {...bindHover(servingPopState)} />
-      <HoverPopover
+      <HoverPopover color="backdrop"
         {...bindPopover(servingPopState)}
         anchorOrigin={{
           vertical: 'top',
@@ -72,15 +72,15 @@ export default function ServingSize() {
           horizontal: 'left',
         }}
       >
-        <div>
+        <Box color="backdrop">
           <p sx={{ margin: "2px 5px" }}>Servings</p>
-        </div>
+        </Box>
       </HoverPopover>
 
       <Button
         variant="contained"
         onClick={handleCounter}
-        color="grey"
+        color="secondary"
         style={{
           borderTopRightRadius: 0,
           borderBottomRightRadius: 0,
@@ -112,15 +112,15 @@ export default function ServingSize() {
       <Button
         variant="contained"
         onClick={handleCounter}
-        color="grey"
-        style={{
+        color="secondary"
+        sx={{
           borderTopLeftRadius: 0,
           borderBottomLeftRadius: 0,
           height: '40px',
           minWidth: '30px',
           maxWidth: '30px',
           boxShadow: '-2px 0px 2px 0px #00000040',
-          fontSize: 22
+          fontSize: 22,
         }}
       >+</Button>
     </Box >

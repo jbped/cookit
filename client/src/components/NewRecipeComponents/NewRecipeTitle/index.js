@@ -8,7 +8,8 @@ import { newRecipe } from '../../../utils/globalSlice';
 import {
   TextField,
   Box,
-  IconButton
+  IconButton,
+  Typography
 } from '@mui/material'
 
 // Icons....
@@ -35,12 +36,12 @@ export default function NewRecipeTitle() {
   }
 
   return (
-    <Box Box sx={{
+    <Box sx={{
       display: 'flex',
       alignItems: 'center',
-      marginTop: '.4rem',
+      pt: 2,
       borderBottom: 1,
-      borderColor: 'grey.300'
+      borderColor: 'divider'
     }
     }>
       {recipeTitle || recipeTitle.length ?
@@ -50,7 +51,9 @@ export default function NewRecipeTitle() {
             label="Recipe Name"
             name="recipeTitle"
             size="small"
+            color="backdrop"
             defaultValue={recipeForm.recipeTitle}
+            InputLabelProps={{ shrink: true, color: 'secondary' }}
             sx={{
               margin: '6px 0 5px 0'
             }}
@@ -69,7 +72,7 @@ export default function NewRecipeTitle() {
         </>
         :
         <>
-          <h2>{recipeForm.recipeTitle}</h2>
+          <Typography variant="h5" color="primary">{recipeForm.recipeTitle}</Typography>
           <IconButton onClick={() => setRecipeName(true)} >
             <MdEdit
               size={25}

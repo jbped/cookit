@@ -10,6 +10,7 @@ import { newRecipe } from '../../../utils/globalSlice';
 import {
   Box,
   Button,
+  Typography,
 } from '@mui/material'
 
 // Icons....
@@ -23,10 +24,13 @@ import EditableStep from '../EditableStep';
 const DeleteDiv = styled.div`
   margin: 16px 0 0 0;
   padding-top: ${props => (props.isDraggingOver || props.hasItem.length > 0) && '16px'};
+  padding-left:  ${props => (props.isDraggingOver || props.hasItem.length > 0) && '16px'}; 
+  padding-right:  ${props => (props.isDraggingOver || props.hasItem.length > 0) && '16px'}; 
   min-height: 5vh;
   border-radius: 4px;
   text-align: center;
   background-color: ${props => (props.isDraggingOver || props.hasItem.length > 0) ? '#ef5350' : 'inherit'};
+  color: ${props => (props.isDraggingOver || props.hasItem.length > 0) ? '#000000' : 'inherit'};
 `;
 
 export default function DirectionsSection() {
@@ -202,10 +206,11 @@ export default function DirectionsSection() {
   return (
     <>
       <Box sx={{
+        mt: 3, 
         borderBottom: 1,
-        borderColor: 'grey.300'
+        borderColor: 'divider'
       }}>
-        <h2>Directions</h2>
+        <Typography variant="h5" color="primary" >Directions</Typography>
       </Box>
       <DragDropContext
         // onDragUpdate={onDragUpdate}
@@ -213,13 +218,13 @@ export default function DirectionsSection() {
       >
         <Droppable droppableId={directionsCol.id}>
           {(provided) => (
-            <div
+            <Box component="div"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
               {itemIds.map((step, i) => <EditableStep key={directions[step].stepId} step={directions[step]} index={i}></EditableStep>)}
               {provided.placeholder}
-            </div>
+            </Box>
           )}
         </Droppable>
         <Droppable droppableId={deleteDirCol.id}>
@@ -232,9 +237,14 @@ export default function DirectionsSection() {
                   isDraggingOver={snapshot.isDraggingOver}
                   hasItem={deleteDirCol.itemIds}
                 >
-                  <Box sx={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'center', justifyContent: 'center', }}>
+                  <Box sx={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'center', justifyContent: 'center'}}>
                     <FaRegTrashAlt />
-                    <p style={{ fontStyle: 'italic', fontSize: '16px', margin: 0, padding: 0 }}>{deleteDirCol.itemIds.length === 0 ? ' - Drop a step here' : ' - Steps selected to delete'}</p>
+                    <Typography style={{ fontStyle: 'italic', fontSize: '16px', margin: 0, padding: 0 }}>
+                      &nbsp;{deleteDirCol.itemIds.length === 0 ? 
+                        'Drop a step here' 
+                        : 
+                        'Steps selected to delete'}
+                    </Typography>
                   </Box>
 
                   {deleteDirCol.itemIds.map((step, i) => <EditableStep key={directions[step].stepId} step={directions[step]} index={i}></EditableStep>)}
@@ -249,13 +259,13 @@ export default function DirectionsSection() {
                       borderRadius: '0 0 4',
                       justifyContent: 'end'
                     }}>
-                      <Button variant="outlined" size="small" sx={{ marginRight: 2 }} onClick={cancelDelete}>Cancel</Button>
-                      <Button size="small" variant="contained" onClick={handleDelete}>Delete</Button>
+                      <Button variant="text" size="small" color="secondary" sx={{ marginRight: 2 }} onClick={cancelDelete}>Cancel</Button>
+                      <Button size="small" variant="contained" color="secondary" onClick={handleDelete}>Delete</Button>
                     </Box>
                   )}
                 </DeleteDiv>
               ) : (
-                <div
+                <Box component="div"
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   style={{
@@ -268,7 +278,7 @@ export default function DirectionsSection() {
                 >
                   {/* {columns.deleteIngCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)} */}
                   {provided.placeholder}
-                </div>
+                </Box>
               )}
             </>
           )

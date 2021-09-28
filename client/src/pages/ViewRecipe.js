@@ -75,19 +75,26 @@ export default function ViewRecipe() {
       {
         ingredientId: "ingredient-1",
         measurement: null,
-        ingredientName: "Egg",
-        quantity: 2,
+        ingredientName: "Eggs",
+        quantity: "2",
         preparationNotes: "large"
       },
       {
         ingredientId: "ingredient-2",
         measurement: "Tbsp",
         ingredientName: "Butter",
-        quantity: 2,
+        quantity: "2",
         preparationNotes: "Salted"
+      },
+      {
+        ingredientId: "ingredient-3",
+        measurement: "c",
+        ingredientName: "Sour Cream",
+        quantity: "1/2",
+        preparationNotes: ""
       }
     ],
-    ingredientsOrder: ["ingredient-1", "ingredient-2"],
+    ingredientsOrder: ["ingredient-1", "ingredient-3", "ingredient-2"],
     comments: [
       {
         _id: "614fe7f963526de392b539d0",
@@ -109,34 +116,51 @@ export default function ViewRecipe() {
     ]
   }
 
-  // Destructuring of 
+  // Destructuring of the keys in the recipe object received from the database
   const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = receivedData
 
   // Splits the createdAt string into to indexes DD/MM/YYYY and time
   const editedDateArr = createdAt.split(' at ');
 
-  // Convert ingredients array to an object organized by the ingredientsOrder
-  const ingredientsObject = {}
-  ingredientsOrder.map(id => {
+  // Create new array of ingredients that is ordered appropriately by the ingredientsOrder
+  const orderedIngredients = []
+  ingredientsOrder.forEach(id => {
     ingredients.filter(ingredient => {
       if (ingredient.ingredientId === id) {
-        ingredientsObject.ingredientId = {...ingredient}
-        return;
+
+        // Base ingredient information 'quantitymeasurement ingredientName' or 'quantity ingredientNate'
+        const quantityText = `${ingredient.quantity}${(ingredient.measurement && !ingredient.measurement !== 'n/a') ? ingredient.measurement : ''} ${ingredient.ingredientName}`
+        // Preparation notes '- preparationNotes' or ''
+        const prepNotesText = ingredient.preparationNotes ? `- ${ingredient.preparationNotes}` : ''
+
+        orderedIngredients.push({...ingredient, quantityText, prepNotesText})
+        return orderedIngredients;
       }
+      return orderedIngredients;
     })
   });
+  console.log('orderedIngredients', orderedIngredients)
+  
+  const columns = () => {
+    const mid = Math.ceil(orderedIngredients.length / 2)
+    const col1 = orderedIngredients.slice(0, mid)
+    const col2 = orderedIngredients.slice(mid, orderedIngredients.length)
+    return {col1: col1, col2: col2}
+  }
 
+  console.log(columns())
   // Convert directions array to an object organized by the directionsOrder
-  const directionsObject = {}
+  const orderedDirections = []
   directionsOrder.forEach(id => {
     directions.filter(direction => {
-      console.log(direction)
-      if (direction.directionId === id) {
-        directionsObject.directionId = {...direction}
+      if (direction.stepId === id) {
+        orderedDirections.push({...direction})
+        return orderedDirections;
       }
+      return orderedDirections;
     })
   });
-
+  console.log('orderedDirections', orderedDirections)
   const editRecipe = () => {
 
   }
@@ -166,7 +190,9 @@ export default function ViewRecipe() {
           marginTop: '.4rem',
           borderBottom: 1,
           borderColor: 'grey.300',
-        }}>
+        }}
+      >
+
         <Box sx={{ display: "flex", alignItems: 'center', }}>
           <Typography variant="h5">{recipeTitle}</Typography>
           {isPublic ?
@@ -174,6 +200,7 @@ export default function ViewRecipe() {
             :
             <Typography variant="subtitle1" fontStyle="italic">&nbsp;- Private</Typography>}
         </Box>
+
         {/* EDIT AND EASY QUICK BUTTONS */}
         <IconButton onClick={editRecipe} >
           <MdEdit
@@ -183,21 +210,27 @@ export default function ViewRecipe() {
             }}
           />
         </IconButton>
-      </Box>
-      <Box sx={{ display: 'flex', alignItems: "center" }}>
-        <Typography variant='body2'>By: {creator} - {editedDateArr[0][0] === '0' ? editedDateArr[0].slice(1) : editedDateArr[0]}</Typography>
 
+      </Box>
+
+      <Box sx={{ display: 'flex', alignItems: "center" }}>
+        <Typography variant='body2'>
+          By: {creator} - {editedDateArr[0][0] === '0' ? editedDateArr[0].slice(1) : editedDateArr[0]}
+        </Typography>
       </Box>
 
       <Grid container spacing={{ md: 5, lg: 10 }}>
-
         <Grid item xs={12} md={6}>
-          <Box sx={{
-            borderBottom: 1,
-            borderColor: 'grey.300'
-          }}>
+
+          <Box 
+            sx={{
+              borderBottom: 1,
+              borderColor: 'grey.300'
+            }}
+          >
             <h2>Details</h2>
           </Box >
+
           {/* TIME */}
           <Box sx={{ mt: 2, display: 'flex', alignItems: "center" }}>
             <MdAccessAlarm
@@ -205,6 +238,7 @@ export default function ViewRecipe() {
               {...bindTrigger(timePopState)}
               {...bindHover(timePopState)}
             />
+
             <HoverPopover
               {...bindPopover(timePopState)}
               anchorOrigin={{
@@ -220,14 +254,20 @@ export default function ViewRecipe() {
                 <p sx={{ margin: "2px 5px" }}>Total time to prepare, cook, and serve</p>
               </div>
             </HoverPopover>
-            <Typography sx={{ ml: 1 }}>{cookTime}</Typography>
+
+            <Typography sx={{ ml: 1 }}>
+              {cookTime}
+            </Typography>
           </Box>
+
           {/* SERVING SIZE */}
           <Box sx={{ mt: 2, display: 'flex', alignItems: "center" }}>
             <BsPeople
               size={25}
               {...bindTrigger(servingPopState)}
-              {...bindHover(servingPopState)} />
+              {...bindHover(servingPopState)} 
+            />
+
             <HoverPopover
               {...bindPopover(servingPopState)}
               anchorOrigin={{
@@ -243,65 +283,47 @@ export default function ViewRecipe() {
                 <p sx={{ margin: "2px 5px" }}>Servings</p>
               </div>
             </HoverPopover>
-            <Typography sx={{ ml: 1 }}>{servings} {servings === 1 ? 'person' : 'people'}</Typography>
+
+            <Typography sx={{ ml: 1 }}>
+              {servings} {servings === 1 ? 'person' : 'people'}
+            </Typography>
+
           </Box>
-          {/* Description */}
-          <Box sx={{
-            borderBottom: 1,
-            borderColor: 'grey.300'
-          }}>
-            <h2>Description</h2>
-          </Box >
-          <Typography>{recipeDescription}</Typography>
+
+
         </Grid>
 
+          
         <Grid item xs={12} md={6}>
-          {/* Ingredients */}
-          <Box sx={{
-            borderBottom: 1,
-            borderColor: 'grey.300'
-          }}>
-            <h2>Ingredients</h2>
-          </Box >
-          {/* <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer> */}
+            {/* Description */}
+            <Box sx={{
+              borderBottom: 1,
+              borderColor: 'grey.300'
+            }}>
+              <h2>Description</h2>
+            </Box >
+            <Typography>{recipeDescription}</Typography>
         </Grid>
 
       </Grid>
 
       <Grid container spacing={{ md: 5, lg: 10 }}>
 
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
+          {/* Ingredients */}
+          <Box 
+            sx={{
+              borderBottom: 1,
+              borderColor: 'grey.300'
+            }}
+          >
+            <h2>Ingredients</h2>
+          </Box >
+
+          {/* {columns().col1.map(index => (<Typography>{index.quantityText}</Typography>)} */}
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           {/* Directions */}
         </Grid>
 
