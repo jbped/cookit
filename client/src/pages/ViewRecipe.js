@@ -189,7 +189,7 @@ export default function ViewRecipe() {
       >
 
         <Box sx={{ display: "flex", alignItems: 'center', }}>
-          <Typography variant="h5" color="primary">{recipeTitle}</Typography>
+          <Typography variant="h4" fontWeight="bold" color="primary">{recipeTitle}</Typography>
           <Typography variant="subtitle1" fontStyle="italic" color="secondary">&nbsp;
             {isPublic ?
               '- Public'
@@ -353,7 +353,7 @@ export default function ViewRecipe() {
           <Grid container spacing={{ md: 5, lg: 10 }}>
 
             <Grid item xs={12} md={6}>
-              <List mt="0">
+              <List sx={{m: 0, p: 0, pt: 0, pb: 0}}>
                 {col1.map(ingredient => (
                   <>
                     <ListItem>
@@ -370,7 +370,7 @@ export default function ViewRecipe() {
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <List mt="0">
+              <List sx={{m: 0, p: 0, pt: 0, pb: 0}}>
                 {col2.map(ingredient => (
                   <>
                     <ListItem>
@@ -392,13 +392,12 @@ export default function ViewRecipe() {
 
 
       {/* Directions */}
-      <Box px={{ md: 5, xl: 20 }}>
+      <Box px={{ md: 5, xl: 20 }} sx={{my: 2}}>
         <Box
           sx={{
             display: 'flex', 
             alignItems: 'center',
             justifyContent: 'space-between',
-            mt: 2,
             borderBottom: 1,
             borderColor: 'divider'
           }}

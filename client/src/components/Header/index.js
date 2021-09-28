@@ -55,8 +55,8 @@ export default function Header() {
           >
             <MdMenu />
           </IconButton>
-          <Typography variant="h4" component="div" color="primary" fontWeight="bold" sx={{ flexGrow: 1, textAlign: 'center', textShadow: "1"}}>
-            Coo<Typography component="span" variant="h4" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
+          <Typography variant="h3" component="div" color="primary" fontWeight="bold" sx={{ flexGrow: 1, textAlign: 'center', textShadow: "1"}}>
+            Coo<Typography component="span" variant="h3" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
           </Typography>
           {!onNewRecipe ?
             <IconButton component={Link} to="/new-recipe" aria-label="add" edge="end" color="light">
