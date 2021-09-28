@@ -288,7 +288,7 @@ export const QUERY_RECIPES =gql`
     }
 }`;
 
-export const QUERY_RECIPE_BASIC =gql`
+export const QUERY_RECIPES_SHORT =gql`
     query Query ($_id: ID!) {
         recipes (_id: $_id) {
             _id

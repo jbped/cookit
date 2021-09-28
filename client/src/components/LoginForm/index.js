@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import React,  { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../../utils/mutations';
-=======
-import React, { useState } from 'react'
->>>>>>> 18347d637d44a1d863f0ee290cb4ddb2c6362771
 import { Link } from "react-router-dom";
 
 import Auth from '../../utils/auth'

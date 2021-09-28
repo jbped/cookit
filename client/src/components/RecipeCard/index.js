@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import * as React from 'react';
-import { useQuery } from '@apollo/client';
-import { QUERY_ME, QUERY_RECIPE_BASIC } from '../../utils/queries'
-=======
 import * as React from 'react';import {
   BrowserRouter as Router,
   Switch,
@@ -25,7 +20,6 @@ import Auth from "../../utils/auth";
 
 // React Icons
 import { IoMdTimer, IoIosPeople } from "react-icons/io";
->>>>>>> 18347d637d44a1d863f0ee290cb4ddb2c6362771
 
 // Import Material UI components
 import { styled } from '@mui/material/styles';
@@ -59,13 +53,6 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function RecipeReviewCard() {
-<<<<<<< HEAD
-  // const {loading, userData} = useQuery()
-
-  // const {data} = useQuery(QUERY_RECIPE_BASIC)
-  // console.log("Recipe review card", data)
-
-=======
    // Get QUERY_ME data
    const {userLoading, userData} = useQuery(QUERY_ME);
    console.log("query_me data", userLoading, userData);
@@ -78,7 +65,6 @@ export default function RecipeReviewCard() {
   console.log("Recipe data", loading, recipeData);
   const recipes = recipeData?.recipe || {};
   
->>>>>>> 18347d637d44a1d863f0ee290cb4ddb2c6362771
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
