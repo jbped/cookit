@@ -288,37 +288,21 @@ export const QUERY_RECIPES =gql`
     }
 }`;
 
-export const QUERY_RECIPES_SHORT =gql`
-    query Query {
-        recipes {
+export const QUERY_RECIPE_BASIC =gql`
+    query Query ($_id: ID!) {
+        recipes (_id: $_id) {
             _id
+            public
             creator
             createdAt
             recipeTitle
-            recipeDescription
             servings
             cookTime
-            ingredients {
-                ingredientName
-            }
-        }
-        cookware {
-        _id
-        cookwareName
-        }
-        comments {
-        _id
-        commentText
-        createdAt
-        username
-        upvotes {
+            directions {
             _id
-            username
-        }
-        }
-        upvotes {
-        _id
-        username
+            stepText
+            stepId
+            }
         }
     }
 `;

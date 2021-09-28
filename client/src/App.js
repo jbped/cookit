@@ -27,7 +27,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <header>
-          {/* <Sidenav/> */}
+          <Sidenav/>
           {!hideHeader && 
             <Header />
           }

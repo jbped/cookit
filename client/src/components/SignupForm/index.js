@@ -112,9 +112,9 @@ export default function SignupForm() {
     try {
       const mutationResponse = await addUser({
         variables: {
-          username: values.username,
-          email: values.email,
-          password: values.password
+          Username: values.username,
+          Email: values.email,
+          Password: values.password
         }
       });
       const token = mutationResponse.data.addUser.token

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useQuery } from '@apollo/client';
+import { QUERY_ME, QUERY_RECIPE_BASIC } from '../../utils/queries'
 
 // Import Material UI components
 import { styled } from '@mui/material/styles';
@@ -38,6 +40,11 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function RecipeReviewCard() {
+  // const {loading, userData} = useQuery()
+
+  // const {data} = useQuery(QUERY_RECIPE_BASIC)
+  // console.log("Recipe review card", data)
+
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {

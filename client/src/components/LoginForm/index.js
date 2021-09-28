@@ -97,8 +97,8 @@ export default function LoginForm() {
     try{
       const mutationResponse = await login({
         variables: {
-          username: values.username,
-          password: values.password
+          Username: values.username,
+          Password: values.password
         }
       });
       Auth.login(mutationResponse.data.login.token)

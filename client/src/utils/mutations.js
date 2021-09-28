@@ -69,3 +69,23 @@ export const DELETE_RECIPE = gql`
         }
     }
 `;
+
+// export const DELETE_RECIPE = gql`
+
+// `;
+
+// export const DELETE_RECIPE = gql`
+
+// `;
+
+// export const DELETE_RECIPE = gql`
+
+// `;
+
+// export const DELETE_RECIPE = gql`
+
+// `;
+
+// export const DELETE_RECIPE = gql`
+
+// `;

@@ -280,3 +280,9 @@ export default function Sidenav() {
     </div>
   )
 };
+
+
+// const logout = event => {
+//   event.preventDefault();
+//   Auth.logout();
+// };

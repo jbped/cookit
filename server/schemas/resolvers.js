@@ -47,7 +47,7 @@ const resolvers = {
 
         recipe: async (parent, { _id }) => {
             return Recipe.findOne( _id )
-                .populate('steps')
+                // .populate('steps')
                 .populate('ingredients')
                 .populate('cookware')
                 .populate('comments')
