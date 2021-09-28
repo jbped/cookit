@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 
 import {
   Grid,
-  Box
+  Box,
+  Typography,
 } from '@mui/material'
 
 export default function LoginSignup({ page }) {
@@ -33,7 +34,9 @@ export default function LoginSignup({ page }) {
       >
         <Grid item xs={12} sm={10} md={6} lg={4} xl={4}>
           <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
-            <h1 style={{ margin: 'auto', textAlign: 'center' }}>CooKit</h1>
+          <Typography variant="h3" component="div" color="primary" fontWeight="bold" sx={{ flexGrow: 1, textAlign: 'center', textShadow: "1"}}>
+            Coo<Typography component="span" variant="h3" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
+          </Typography>          
           </Link>
           {page === 'login' && <LoginForm />}
           {page === 'signup' && <SignupForm />}

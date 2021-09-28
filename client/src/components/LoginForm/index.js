@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 import React,  { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../../utils/mutations';
+=======
+import React, { useState } from 'react'
+>>>>>>> 18347d637d44a1d863f0ee290cb4ddb2c6362771
 import { Link } from "react-router-dom";
 
 import Auth from '../../utils/auth'
@@ -15,13 +19,14 @@ import {
   InputAdornment,
   IconButton,
   Button,
-  Typography
+  Typography,
+  Paper
 } from '@mui/material'
 
 // Icons.... 
-import{ 
-  MdVisibility, 
-  MdVisibilityOff 
+import {
+  MdVisibility,
+  MdVisibilityOff
 } from "react-icons/md";
 
 export default function LoginForm() {
@@ -59,18 +64,18 @@ export default function LoginForm() {
       password: false,
     }
     if (values.username.length > 0) {
-      setValues(prevState => ({ ...prevState, usernameError: false } ))
+      setValues(prevState => ({ ...prevState, usernameError: false }))
       errors.username = false;
-    } else  {
-      setValues(prevState => ({ ...prevState, usernameError: true } ))
+    } else {
+      setValues(prevState => ({ ...prevState, usernameError: true }))
       errors.username = true;
     }
 
     if (values.password.length >= 5) {
-      setValues(prevState => ({ ...prevState, passwordError: false } ))
+      setValues(prevState => ({ ...prevState, passwordError: false }))
       errors.password = false;
-    } else  {
-      setValues(prevState => ({ ...prevState, passwordError: true } ))
+    } else {
+      setValues(prevState => ({ ...prevState, passwordError: true }))
       errors.password = true;
     }
 
@@ -83,7 +88,7 @@ export default function LoginForm() {
     if (username || password) {
       setValues(prevState => ({ ...prevState, errorText: true }))
       return;
-    } 
+    }
 
     setValues(prevState => ({ ...prevState, errorText: false }))
     loginUser()
@@ -110,68 +115,72 @@ export default function LoginForm() {
   }
 
   return (
-    <Box
+    <Paper
       component="form"
       sx={{
         mt: 2,
         padding: 2,
         border: 1,
         borderRadius: 1,
-        borderColor: 'grey.300',
-        backgroundColor: '#FFFFFF',
-        boxShadow: 2
+        borderColor: 'backdrop.dark',
+        boxShadow: 4
       }}
       onSubmit={loginCheck}
     >
-      <Box sx={{ display: 'flex', mt:2}}>
-        <Typography variant="h5" sx={{fontWeight: 'bold'}}>Login</Typography>
-        {values.errorText && 
-          <Typography variant="h6" color="error" sx={{ fontStyle: 'italic'}}>
-            &nbsp;- Error! 
+      <Box sx={{ display: 'flex' }}>
+        <Typography variant="h5" sx={{ fontWeight: 'bold' }} color="primary">Login</Typography>
+        {values.errorText &&
+          <Typography variant="h6" color="error" sx={{ fontStyle: 'italic' }}>
+            &nbsp;- Error!
           </Typography>
         }
-        </Box>
+      </Box>
       <TextField
-          id="username-required"
-          label="Username *"
-          defaultValue=""
-          fullWidth
-          name="username"
-          sx={{ mt: 2 }}
-          error={values.usernameError}
-          onChange={handleChange}
-        />
-        {values.usernameError && <Typography variant="subtitle2" color="error">Please provide a username</Typography>}
+        id="username-required"
+        label="Username *"
+        defaultValue=""
+        fullWidth
+        name="username"
+        sx={{ mt: 2 }}
+        value={values.username}
+        error={values.usernameError}
+        color="backdrop"
+        InputLabelProps={{ color: "secondary" }}
+        onChange={handleChange}
+      />
+      {values.usernameError && <Typography variant="subtitle2" color="error" sx={{ mb: 1 }}>Please provide a username</Typography>}
       <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
-          <InputLabel htmlFor="password" error={values.passwordError}>Password *</InputLabel>
-          <OutlinedInput
-            id="password-required"
-            type={values.showPassword ? 'text' : 'password'}
-            value={values.password}
-            error={values.passwordError}
-            name="password"
-            onChange={handleChange}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {values.showPassword ? <MdVisibilityOff /> : <MdVisibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password *"
-          />
-        </FormControl>
-        {values.passwordError && <Typography variant="subtitle2" color="error">Please provide a password</Typography>}
-        <Box sx={{display: 'flex', justifyContent: 'space-between' }}>
-          <Button component={Link} to="/signup" variant="text "color="grey" sx={{mt: 2,}}>Signup instead</Button>
-          <Button type="submit" variant="contained"color="primary" sx={{mt: 2 }}>Login</Button>
-        </Box>
-    </Box>
+        <InputLabel htmlFor="password" color="secondary" error={values.passwordError}>Password *</InputLabel>
+        <OutlinedInput
+          id="password-required"
+          type={values.showPassword ? 'text' : 'password'}
+          value={values.password}
+          error={values.passwordError}
+          name="password"
+          onChange={handleChange}
+          color="backdrop"
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end"
+                color="backdrop"
+              >
+                {values.showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+              </IconButton>
+            </InputAdornment>
+          }
+          label="Password *"
+        />
+      </FormControl>
+      {values.passwordError && <Typography variant="subtitle2" color="error" sx={{ mb: 1 }}>Please provide a password</Typography>}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Button component={Link} to="/signup" variant="text" color="primary" sx={{ mt: 2, }}>Signup instead</Button>
+        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>Login</Button>
+      </Box>
+    </Paper>
 
   )
 }

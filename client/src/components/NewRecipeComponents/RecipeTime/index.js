@@ -88,7 +88,7 @@ export default function RecipeTime() {
   });
 
   return (
-    < Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+    < Box sx={{ display: 'flex', alignItems: 'center' }}>
       <MdAccessAlarm
         size={25}
         style={{ marginRight: '1rem' }}
@@ -112,12 +112,13 @@ export default function RecipeTime() {
       </HoverPopover>
       <TextField
         id="time-to-serve"
-        name="time"
+        name="cookTime"
         select
         size="small"
         placeholder="Total Time"
-        value={recipeForm.time}
+        value={recipeForm.cookTime}
         onChange={handleChange}
+        color="backdrop"
         sx={{
           flexGrow: 1
         }}

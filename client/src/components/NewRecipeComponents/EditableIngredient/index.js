@@ -10,13 +10,13 @@ import {
   TextField,
   Box,
   MenuItem,
-  // Autocomplete
+  Typography,
+  Paper
 } from '@mui/material'
 
 // Icons....
-import {
-  GrDrag
-} from "react-icons/gr";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+
 
 // Custom SCSS.... 
 import '../../../scss/textfields.scss'
@@ -26,9 +26,9 @@ export default function EditableIngredient({ ing, index }) {
   const dispatch = useDispatch();
 
   const { ingredients } = state;
-  const ingObj = {...ingredients[ing.id]}
+  const ingObj = {...ingredients[ing.ingredientId]}
 
-  const { id, quantity, measurementTypeShort, ingredient, notes } = ingObj;
+  const { ingredientId, quantity, measurementTypeShort, ingredient, notes } = ingObj;
 
   const measurementTypes = [
     {
@@ -102,7 +102,7 @@ export default function EditableIngredient({ ing, index }) {
     dispatch(newRecipe({
       ingredients: {
         ...ingredients,
-        [id]: editedIngObj
+        [ingredientId]: editedIngObj
       }
     }));
     // console.log('ingredients', ingredients);
@@ -111,23 +111,22 @@ export default function EditableIngredient({ ing, index }) {
 
   return (
 
-    <Draggable draggableId={id} index={index}>
+    <Draggable draggableId={ingredientId} index={index}>
       {(provided) => (
         <div
-          id={id}
+          id={ingredientId}
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
-          <Box
+          <Paper 
             sx={{
               mt: 2,
               py: 2,
               width: '100%',
               border: 1,
-              borderRadius: '4px',
-              borderColor: 'grey.300',
-              backgroundColor: '#FFFFFFD9',
-              backdropFilter: 'blur(4px)'
+              borderRadius: 1,
+              boxShadow: 4,
+              borderColor: 'backdrop.dark',
             }}
           >
             <Box sx={{
@@ -143,13 +142,14 @@ export default function EditableIngredient({ ing, index }) {
                   name="quantity"
                   type="text"
                   defaultValue={quantity}
+                  color="backdrop"
                   sx={{
                     width: 100,
                     borderTopRightRadius: 0,
                     borderBottomRightRadius: 0,
                     flexGrow: '1'
                   }}
-                  InputLabelProps={{ shrink: true }}
+                  InputLabelProps={{ shrink: true, color: 'secondary' }}
                   onBlur={handleChange}
                 />
               </div>
@@ -162,7 +162,8 @@ export default function EditableIngredient({ ing, index }) {
                   name="measurementType"
                   // defaultValue={ing.measurementTypeShort}
                   value={measurementTypeShort}
-                  InputLabelProps={{ shrink: true }}
+                  color="backdrop"
+                  InputLabelProps={{ shrink: true, color: 'secondary' }}
                   SelectProps={{ renderValue: option => option }}
                   sx={{
                     width: 80,
@@ -178,9 +179,9 @@ export default function EditableIngredient({ ing, index }) {
                   ))}
                 </TextField>
               </div>
-              <div {...provided.dragHandleProps} style={{marginLeft: 'auto', padding: '.2rem'}}>
-                <GrDrag size={15} />
-              </div>
+              <Box component="div" {...provided.dragHandleProps} sx={{marginLeft: 'auto', px: 2, py: 1, color: "grey"}}>
+                <DragIndicatorIcon size={15} color="grey"/>
+              </Box>
             </Box>
             <Box
               sx={{
@@ -194,6 +195,7 @@ export default function EditableIngredient({ ing, index }) {
                 name="ingredient"
                 type="text"
                 defaultValue={ingredient}
+                color="backdrop"
                 sx={{
                   width: '100%',
                   borderTopRightRadius: 0,
@@ -201,7 +203,7 @@ export default function EditableIngredient({ ing, index }) {
                   flexGrow: '1'
                 }}
                 fullWidth
-                InputLabelProps={{ shrink: true }}
+                InputLabelProps={{ shrink: true, color: 'secondary' }}
                 onBlur={handleChange}
               />
             </Box>
@@ -218,6 +220,7 @@ export default function EditableIngredient({ ing, index }) {
                 type="text"
                 multiline
                 defaultValue={notes}
+                color="backdrop"
                 sx={{
                   width: '100%',
                   borderTopRightRadius: 0,
@@ -225,11 +228,11 @@ export default function EditableIngredient({ ing, index }) {
                   flexGrow: '1'
                 }}
                 fullWidth
-                InputLabelProps={{ shrink: true }}
+                InputLabelProps={{ shrink: true, color: 'secondary' }}
                 onBlur={handleChange}
               />
             </Box>
-          </Box>
+          </Paper>
         </div>
       )}
     </Draggable>

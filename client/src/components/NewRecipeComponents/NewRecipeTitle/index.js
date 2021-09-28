@@ -8,7 +8,8 @@ import { newRecipe } from '../../../utils/globalSlice';
 import {
   TextField,
   Box,
-  IconButton
+  IconButton,
+  Typography
 } from '@mui/material'
 
 // Icons....
@@ -18,7 +19,7 @@ import {
 } from "react-icons/md";
 
 export default function NewRecipeTitle() {
-  const [recipeName, setRecipeName] = useState(false)
+  const [recipeTitle, setRecipeName] = useState(false)
   const recipeForm = useSelector(state => state.global.newRecipe)
   const dispatch = useDispatch();
 
@@ -35,22 +36,24 @@ export default function NewRecipeTitle() {
   }
 
   return (
-    <Box Box sx={{
+    <Box sx={{
       display: 'flex',
       alignItems: 'center',
-      marginTop: '.4rem',
+      pt: 2,
       borderBottom: 1,
-      borderColor: 'grey.300'
+      borderColor: 'divider'
     }
     }>
-      {recipeName || recipeName.length ?
+      {recipeTitle || recipeTitle.length ?
         <>
           <TextField
             id="recipe-name"
             label="Recipe Name"
-            name="recipeName"
+            name="recipeTitle"
             size="small"
-            defaultValue={recipeForm.recipeName}
+            color="backdrop"
+            defaultValue={recipeForm.recipeTitle}
+            InputLabelProps={{ shrink: true, color: 'secondary' }}
             sx={{
               margin: '6px 0 5px 0'
             }}
@@ -69,7 +72,7 @@ export default function NewRecipeTitle() {
         </>
         :
         <>
-          <h2>{recipeForm.recipeName}</h2>
+          <Typography variant="h5" color="primary">{recipeForm.recipeTitle}</Typography>
           <IconButton onClick={() => setRecipeName(true)} >
             <MdEdit
               size={25}

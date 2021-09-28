@@ -39,12 +39,12 @@ export default function ServingSize() {
 
   const handleCounter = e => {
     if (e.target.innerText === '+') {
-      let count = recipeForm.partySize + 1
-      dispatch(newRecipe({ partySize: count }))
+      let count = recipeForm.servings + 1
+      dispatch(newRecipe({ servings: count }))
     }
-    else if (recipeForm.partySize > 1) {
-      let count = recipeForm.partySize - 1
-      dispatch(newRecipe({ partySize: count }))
+    else if (recipeForm.servings > 1) {
+      let count = recipeForm.servings - 1
+      dispatch(newRecipe({ servings: count }))
     }
     console.log(recipeForm)
   };
@@ -61,7 +61,7 @@ export default function ServingSize() {
         style={{ marginRight: '1rem' }}
         {...bindTrigger(servingPopState)}
         {...bindHover(servingPopState)} />
-      <HoverPopover
+      <HoverPopover color="backdrop"
         {...bindPopover(servingPopState)}
         anchorOrigin={{
           vertical: 'top',
@@ -72,15 +72,15 @@ export default function ServingSize() {
           horizontal: 'left',
         }}
       >
-        <div>
+        <Box color="backdrop">
           <p sx={{ margin: "2px 5px" }}>Servings</p>
-        </div>
+        </Box>
       </HoverPopover>
 
       <Button
         variant="contained"
         onClick={handleCounter}
-        color="grey"
+        color="secondary"
         style={{
           borderTopRightRadius: 0,
           borderBottomRightRadius: 0,
@@ -95,8 +95,8 @@ export default function ServingSize() {
         <TextField
           id="outlined-size-small"
           size="small"
-          name="partySize"
-          value={recipeForm.partySize}
+          name="servings"
+          value={recipeForm.servings}
           sx={{
             width: 60,
           }}
@@ -112,15 +112,15 @@ export default function ServingSize() {
       <Button
         variant="contained"
         onClick={handleCounter}
-        color="grey"
-        style={{
+        color="secondary"
+        sx={{
           borderTopLeftRadius: 0,
           borderBottomLeftRadius: 0,
           height: '40px',
           minWidth: '30px',
           maxWidth: '30px',
           boxShadow: '-2px 0px 2px 0px #00000040',
-          fontSize: 22
+          fontSize: 22,
         }}
       >+</Button>
     </Box >

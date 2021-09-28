@@ -38,7 +38,7 @@ export default function PublicSwitch() {
   });
 
   return (
-    < Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
       <AiOutlineEye
         size={25} style={{ marginRight: '1rem' }}
         {...bindTrigger(publicPopState)}
@@ -55,24 +55,25 @@ export default function PublicSwitch() {
           horizontal: 'left',
         }}
       >
-        <div>
+        <Box>
           <p sx={{ margin: "2px 5px" }}>Would you like to make this recipe visible to other CooKit users?</p>
-        </div>
+        </Box>
       </HoverPopover>
       <ToggleButtonGroup
         color="primary"
-        name="public"
-        value={recipeForm.public}
+        name="isPublic"
+        value={recipeForm.isPublic}
         exclusive
         onChange={handleChange}
+        color="secondary"
         sx={{
           flexGrow: 1,
           display: 'flex',
           height: '40px'
         }}
       >
-        <ToggleButton value="private" name="public" sx={{ flexGrow: 1 }}>Private</ToggleButton>
-        <ToggleButton value="public" name="public" sx={{ flexGrow: 1 }}>Public</ToggleButton>
+        <ToggleButton value="private" name="isPublic" sx={{ flexGrow: 1 }}>Private</ToggleButton>
+        <ToggleButton value="public" name="isPublic" sx={{ flexGrow: 1 }}>Public</ToggleButton>
       </ToggleButtonGroup>
     </Box >
   )

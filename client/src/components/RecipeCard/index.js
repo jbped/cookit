@@ -1,23 +1,42 @@
+<<<<<<< HEAD
 import * as React from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_ME, QUERY_RECIPE_BASIC } from '../../utils/queries'
+=======
+import * as React from 'react';import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
+// Queries/Mutations
+import { useQuery, useMutation } from '@apollo/client';
+import {
+    QUERY_ME,
+    QUERY_RECIPES_SHORT
+} from '../../utils/queries';
+
+// React Components
+import ViewRecipe from "../../pages/ViewRecipe";
+
+// Auth
+import Auth from "../../utils/auth";
+
+// React Icons
+import { IoMdTimer, IoIosPeople } from "react-icons/io";
+>>>>>>> 18347d637d44a1d863f0ee290cb4ddb2c6362771
 
 // Import Material UI components
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Paper from '@mui/material/Paper';
 
 const ExpandMore = styled((props) => {
@@ -40,47 +59,67 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function RecipeReviewCard() {
+<<<<<<< HEAD
   // const {loading, userData} = useQuery()
 
   // const {data} = useQuery(QUERY_RECIPE_BASIC)
   // console.log("Recipe review card", data)
 
+=======
+   // Get QUERY_ME data
+   const {userLoading, userData} = useQuery(QUERY_ME);
+   console.log("query_me data", userLoading, userData);
+   const myData = userData?.me || {}
+ 
+   const token = Auth.loggedIn() ? Auth.getToken() : null;
+ 
+   // Get QUERY_RECIPE data
+  const { loading, recipeData } = useQuery(QUERY_RECIPES_SHORT);
+  console.log("Recipe data", loading, recipeData);
+  const recipes = recipeData?.recipe || {};
+  
+>>>>>>> 18347d637d44a1d863f0ee290cb4ddb2c6362771
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+
   return (
     <Item>
+    {recipes.map((recipe) => (
       <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
+            <IconButton
+              aria-label="settings"
+            >
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
-      <CardMedia
-        component="img"
-        height="194"
-        // image="/static/images/cards/paella.jpg"
-        alt="Paella dish"
+        title="Title"
+        subheader={`added: ${recipe.createdAt} by ${recipe.creator}`}
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          This is some text in a paragraph.
-        </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+          >
+          {recipe.recipeDescription}
+          </Typography>
+          <Typography>
+            
+            <IoMdTimer/> Cook Time:
+          </Typography>
+          <Typography>
+            {recipe.cookTime}
+          </Typography>
+          <Typography>
+            <IoIosPeople />  Serves: {`${recipe.servings}`}
+          </Typography>
       </CardContent>
-      <CardActions disableSpacing>
-        {/* <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton> */}
+        <CardActions
+          disableSpacing>
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -90,24 +129,31 @@ export default function RecipeReviewCard() {
           <ExpandMoreIcon />
         </ExpandMore>
       </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-           Text in a paragraph
-          </Typography>
-          <Typography paragraph>
-           Text in a paragragh.
-          </Typography>
-          <Typography paragraph>
-            Text in a paragraph.
-          </Typography>
-          <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then serve.
-          </Typography>
-        </CardContent>
+        <Collapse
+          in={expanded}
+          timeout="auto"
+          unmountOnExit
+        >
+            <CardContent>
+            <Typography
+              paragraph
+            >
+              Ingredients:
+            </Typography>
+            {recipe.ingredients.map((ingredient) => (
+              <Typography
+                paragraph              
+              key={ingredient.ingredientName}
+              value={ingredient.ingredientName}
+              >
+                {`${ingredient.ingredientName}`}
+                {/* Eggs */}
+              </Typography>
+          ))}
+            </CardContent>
       </Collapse>
     </Card>
+        ))}
     </Item>
   );
 }

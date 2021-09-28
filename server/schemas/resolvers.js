@@ -45,9 +45,19 @@ const resolvers = {
             return Recipe.find();
         },
 
+        recipesShort: async (parent, args, { user: { username } }) => {
+            return Recipe.find({ creator: username })
+                .populate('ingredients')
+        },
+
         recipe: async (parent, { _id }) => {
+<<<<<<< HEAD
             return Recipe.findOne( _id )
                 // .populate('steps')
+=======
+            return Recipe.findOne(_id)
+                .populate('directions')
+>>>>>>> 18347d637d44a1d863f0ee290cb4ddb2c6362771
                 .populate('ingredients')
                 .populate('cookware')
                 .populate('comments')
@@ -253,8 +263,7 @@ const resolvers = {
         addRecipe: async (parent, args, context) => {
             //Context if user is creating recipe
             if (context.user) {
-                const { ingredients, directions, cookware, ...editedArgs } = args;
-                console.log(editedArgs);
+                const { directions, ingredients, cookware, ...editedArgs } = args;
                 const recipe = await Recipe.create({ ...editedArgs, creator: context.user.username });
                 await User.findByIdAndUpdate(
                     context.user._id,
@@ -262,9 +271,9 @@ const resolvers = {
                     { new: true }
                 );
 
-                //For pushing the Step object ids up into the steps array on Recipe
-                await Promise.all(args.directions.map(async stp => {
-                    const direction = await Direction.create(stp);
+                //For pushing the Direction object ids up into the steps array on Recipe
+                await Promise.all(args.directions.map(async dir => {
+                    const direction = await Direction.create(dir);
                     await Recipe.findByIdAndUpdate(
                         recipe._id,
                         { $push: { directions: direction._id } },
@@ -299,14 +308,56 @@ const resolvers = {
         },
 
         //For saving a recipe to a user's savedRecipes list.
-        saveRecipe: async (parent, args, context) => {
-            const user = await User.findByIdAndUpdate(
-                context.user._id,
-                { $push: { savedRecipes: args._id } },
-                { new: true }
-            );
+        saveRecipe: async (parent, { _id }, context) => {
+            if (context.user) {
+                const recipe = await Recipe.findById(_id)
+                    .select('-_id -__v')
+                    .populate('directions', '-_id -__v')
+                    .populate('ingredients', '-_id -__v')
+                    .populate('cookware', '-_id -__v');
+                
+                console.log(recipe);
 
-            return user;
+                const { directions, ingredients, cookware, ...filteredRecipe } = recipe;
+
+                const forkedRecipe = await Recipe.create(filteredRecipe._doc);
+
+                const forkedRecipeId = forkedRecipe._id;
+                console.log(new ObjectId(forkedRecipeId));
+                
+                await Promise.all(directions.map(async dir => {
+                    const direction = await Direction.create(dir);
+                    await Recipe.findByIdAndUpdate(
+                        forkedRecipe._id,
+                        { $push: { directions: direction._id } },
+                        { new: true }
+                    );
+                }));
+
+                //For pushing the Ingredient object ids up into the ingredients array on Recipe
+                await Promise.all(ingredients.map(async ing => {
+                    const ingredient = await Ingredient.create(ing);
+                    await Recipe.findByIdAndUpdate(
+                        forkedRecipe._id,
+                        { $push: { ingredients: ingredient._id } },
+                        { new: true }
+                    );
+                }));
+
+                //For pushing the Cookware object ids up into the cookware array on Recipe
+                await Promise.all(cookware.map(async ware => {
+                    const cookware = await Cookware.create(ware);
+                    await Recipe.findByIdAndUpdate(
+                        forkedRecipe._id,
+                        { $push: { cookware: cookware._id } },
+                        { new: true }
+                    );
+                }));
+
+                return forkedRecipe;
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
         },
 
         //For deleting a recipe and all of it's child objects.

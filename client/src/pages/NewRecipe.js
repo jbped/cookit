@@ -7,7 +7,9 @@ import { newRecipe } from '../utils/globalSlice';
 // MUI Components....
 import {
   Box,
-  Grid
+  Grid,
+  Paper,
+  Typography,
 } from '@mui/material'
 
 // Custom Components.... 
@@ -29,12 +31,17 @@ export default function NewRecipe() {
       <NewRecipeTitle />
       <ConfirmLeavePage completed={false} />
 
-      <Grid container spacing={{ md: 5, lg: 10 }}>
+      <Grid container spacing={{ md: 5, xl: 10 }}  px={{ md: 5, xl: 10 }}>
 
         <Grid item xs={12} md={6}>
-          <RecipeTime />
-          <ServingSize />
-          <PublicSwitch />
+          <Box sx={{borderBottom: 1, borderColor: 'divider', mt: 3}}>
+            <Typography variant="h5" color="primary">Details</Typography>
+          </Box>
+          <Paper sx={{p:2, mt: 2}}>
+            <RecipeTime />
+            <ServingSize />
+            <PublicSwitch />
+          </Paper>
         </Grid>
 
         <Grid item xs={12} md={6}>
@@ -43,7 +50,7 @@ export default function NewRecipe() {
 
       </Grid>
 
-      <Grid container spacing={{ md: 5, lg: 10 }}>
+      <Grid container spacing={{ md: 5, xl: 10 }} px={{ md: 5, xl: 10 }}>
 
         <Grid item xs={12} md={6}>
           <IngredientsSection />
