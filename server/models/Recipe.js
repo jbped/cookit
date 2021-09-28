@@ -83,7 +83,7 @@ const recipeSchema = new Schema(
                 type: String
             }
         ],
-        ingredientOrder: [
+        ingredientsOrder: [
             {
                 type: String
             }

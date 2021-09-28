@@ -37,7 +37,7 @@ const typeDefs = gql`
         comments: [Comment]
         upvotes: [Upvote]
         directionsOrder: [String]
-        ingredientOrder: [String]
+        ingredientsOrder: [String]
     }
 
     type Direction {
