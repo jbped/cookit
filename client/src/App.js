@@ -15,10 +15,6 @@ import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
 import RecipeCard from "./components/RecipeCard";
 import RecipeListItem from "./components/RecipeListItem";
-<<<<<<< HEAD
-import { Box, ThemeProvider } from '@mui/system';
-=======
->>>>>>> bcd6f067e379e85e4a84e1586d9331764bd1fec9
 
 function App() {
   return (
@@ -38,11 +34,6 @@ function App() {
               <Switch>
                 <Route exact path="/new-recipe" component={NewRecipe}></Route>
             </Switch>
-<<<<<<< HEAD
-            <RecipeCard />
-            <RecipeListItem />
-=======
->>>>>>> bcd6f067e379e85e4a84e1586d9331764bd1fec9
           </Box>
         </main>
         <footer>
