@@ -120,6 +120,7 @@ export default function LoginForm() {
           fullWidth
           name="username"
           sx={{ mt: 2 }}
+          value={values.username}
           error={values.usernameError}
           onChange={handleChange}
         />

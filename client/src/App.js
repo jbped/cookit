@@ -7,14 +7,15 @@ import theme from './theme.js'
 
 // React Router Pages....
 import NewRecipe from './pages/NewRecipe';
+import ViewRecipe from './pages/ViewRecipe';
+import MyKit from './pages/MyKit';
+import LoginSignup from './pages/LoginSignup';
 
 // Components....
 import { Box, ThemeProvider } from '@mui/system';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
-import RecipeCard from "./components/RecipeCard";
-import RecipeListItem from "./components/RecipeListItem";
 
 function App() {
   return (
@@ -31,8 +32,12 @@ function App() {
             mt: '61px',
             zIndex: 1,
           }}>
-              <Switch>
-                <Route exact path="/new-recipe" component={NewRecipe}></Route>
+            <Switch>
+              <Route exact path="/new-recipe" component={NewRecipe}></Route>
+              <Route exact path="/recipe" component={ViewRecipe}></Route>
+              <Route exact path="/my-kit" component={MyKit}></Route>
+              <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
+              <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>
             </Switch>
           </Box>
         </main>
