@@ -139,31 +139,19 @@ export const QUERY_ME_BASIC = gql`
     }
 `;
 
-export const QUERY_RECIPES =gql`
+export const QUERY_RECIPES_SHORT =gql`
     query Query {
-    recipes {
-        _id
-        public
-        creator
-        createdAt
-        recipeTitle
-        type
-        season
-        difficulty
-        servings
-        cookTime
-        ingredients {
-        _id
-        ingredientName
-        measurement
-        quantity
-        preparationNotes
+        recipes {
+            _id
+            creator
+            createdAt
+            recipeTitle
+            recipeDescription
+            servings
+            cookTime
+            ingredients {
+                ingredientName
+            }
         }
     }
-    }
 `;
-
-
-
-
-
