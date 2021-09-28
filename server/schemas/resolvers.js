@@ -45,6 +45,11 @@ const resolvers = {
             return Recipe.find();
         },
 
+        recipesShort: async (parent, args, { user: { username } }) => {
+            return Recipe.find({ creator: username })
+                .populate('ingredients')
+        },
+
         recipe: async (parent, { _id }) => {
             return Recipe.findOne(_id)
                 .populate('steps')
