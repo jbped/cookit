@@ -7,15 +7,10 @@ const directionSchema = new Schema(
             required: 'step must have a name.',
             trim: true,
         },
-        id: {
+        stepId: {
             type: String,
             required: 'step must have a direction order id'
-        },
-        directionsOrder: [
-            {
-                type: String
-            }
-        ]
+        }
     }
 );
 

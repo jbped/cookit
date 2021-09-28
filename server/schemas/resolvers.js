@@ -253,7 +253,8 @@ const resolvers = {
         addRecipe: async (parent, args, context) => {
             //Context if user is creating recipe
             if (context.user) {
-                const { ingredients, steps, cookware, ...editedArgs } = args;
+                const { ingredients, directions, cookware, ...editedArgs } = args;
+                console.log(editedArgs);
                 const recipe = await Recipe.create({ ...editedArgs, creator: context.user.username });
                 await User.findByIdAndUpdate(
                     context.user._id,
@@ -263,7 +264,7 @@ const resolvers = {
 
                 //For pushing the Step object ids up into the steps array on Recipe
                 await Promise.all(args.directions.map(async stp => {
-                    const directions = await Direction.create(stp);
+                    const direction = await Direction.create(stp);
                     await Recipe.findByIdAndUpdate(
                         recipe._id,
                         { $push: { directions: direction._id } },
