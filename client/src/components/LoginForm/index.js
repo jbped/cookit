@@ -1,5 +1,9 @@
-import React,  { useState } from 'react'
+import React,  { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { LOGIN } from '../../utils/mutations';
 import { Link } from "react-router-dom";
+
+import Auth from '../../utils/auth'
 
 // MUI Components.... 
 import {
@@ -30,6 +34,8 @@ export default function LoginForm() {
   }
 
   const [values, setValues] = useState(initialState);
+
+  const [login, { error }] = useMutation(LOGIN)
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -73,20 +79,32 @@ export default function LoginForm() {
 
   // If there are errors set errorText in values state to true (triggers error text below Login form)
   // Else initiate login function 
-  const errorHandler = ({ username, email, password }) => {
+  const errorHandler = ({ username, password }) => {
     if (username || password) {
       setValues(prevState => ({ ...prevState, errorText: true }))
       return;
     } 
 
     setValues(prevState => ({ ...prevState, errorText: false }))
-    login()
+    loginUser()
   }
 
   // Collects username, email, and password from values state, mutates them, returns values to initialState
-  const login = () => {
+  const loginUser = async () => {
     // Send values.username, values.email, values.password to GraphQL
-    console.log(`Login: \n   Username: ${values.email}\n   Password: ${values.password}`)
+    console.log(`Login: \n   Username: ${values.username}\n   Password: ${values.password}`)
+
+    try{
+      const mutationResponse = await login({
+        variables: {
+          username: values.username,
+          password: values.password
+        }
+      });
+      Auth.login(mutationResponse.data.login.token)
+    } catch (e) {
+      console.error(e)
+    }
     // Clear return values state to initialState
     setValues(initialState)
   }

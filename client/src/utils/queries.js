@@ -321,7 +321,6 @@ export const QUERY_RECIPES_SHORT =gql`
         username
         }
     }
-}
 `;
 
 // Not working right now
