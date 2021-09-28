@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 // Themes....
 import './App.scss';
@@ -7,8 +7,6 @@ import theme from './theme.js'
 
 // React Router Pages....
 import NewRecipe from './pages/NewRecipe';
-import MyKit from './pages/MyKit';
-import LoginSignup from './pages/LoginSignup';
 
 // Components....
 import { Box, ThemeProvider } from '@mui/system';
@@ -17,43 +15,28 @@ import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
 import RecipeCard from "./components/RecipeCard";
 import RecipeListItem from "./components/RecipeListItem";
-<<<<<<< HEAD
-import MyKit from "./pages/MyKit";
-=======
->>>>>>> 4e994f71bb4097f00e4bb1a55f26dc0f28a99944
+import { Box, ThemeProvider } from '@mui/system';
 
 function App() {
-  let location = useLocation();
-  const hideHeader = (location.pathname.includes('login') || location.pathname.includes('signup')) ? true : false
-
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <header>
-          {/* <Sidenav/> */}
-          {!hideHeader && 
-            <Header />
-          }
+          <Sidenav/>
+          <Header></Header>
         </header>
         <main>
-          <Box paddingX={{ xs: 2, md: 6, lg: 15, xl: 20}}sx={{
-            // px: 2,
+          <Box sx={{
+            px:2,
             mt: '61px',
             zIndex: 1,
           }}>
-            <Switch>
-              <Route exact path="/new-recipe" component={NewRecipe}></Route>
-              <Route exact path="/my-kit" component={MyKit}></Route>
-              <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
-              <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>
+              <Switch>
+                <Route exact path="/new-recipe" component={NewRecipe}></Route>
             </Switch>
-<<<<<<< HEAD
-            {/* <MyKit/> */}
-=======
-            {/* <RecipeCard />
-            <RecipeListItem /> */}
->>>>>>> 4e994f71bb4097f00e4bb1a55f26dc0f28a99944
+            <RecipeCard />
+            <RecipeListItem />
           </Box>
         </main>
         <footer>

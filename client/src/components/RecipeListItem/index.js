@@ -8,11 +8,14 @@ import {
 } from "react-router-dom";
 
 // Queries/Mutations
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import {
     QUERY_ME,
-    QUERY_RECIPES
+    // QUERY_RECIPES_SHORT
 } from '../../utils/queries';
+
+// React Components
+import ViewRecipe from "../../pages/ViewRecipe";
 
 // Auth
 import Auth from "../../utils/auth";
@@ -30,37 +33,38 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
 // react-icons
-// import { RiStarSFill, RiStarSLine } from "react-icons/ri";
-import { BiUpvote } from "react-icons/bi";
 import { IoMdTimer, IoIosPeople } from "react-icons/io";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   textAlign: 'center',
   color: theme.palette.text.secondary,
-  // height: 60,
-  // lineHeight: '60px',
 }));
 
 
 export default function RecipeListItem() {
   // Get QUERY_ME data
-  // const {loading, data} = useQuery(QUERY_ME);
-  // console.log("query_me data", loading, data);
-  // const userData = data?.me || {;}
+  const {userLoading, userData} = useQuery(QUERY_ME);
+  console.log("query_me data", userLoading, userData);
+  const myData = userData?.me || {}
 
   const token = Auth.loggedIn() ? Auth.getToken() : null;
 
   // Get QUERY_RECIPE data
-  // const { loading, data } = useQuery(QUERY_RECIPE);
-  // console.log("Recipe data", loading, data);
-  // const recipeData = data?.recipe || {};
+  const { loading, recipeData } = useQuery(QUERY_RECIPES_SHORT);
+  console.log("Recipe data", loading, recipeData);
+  const recipe = recipeData?.recipe || {};
 
   return (
     <Router>
       <Switch>
-      <Grid container spacing={2}>
-      <Grid item>
+        <Grid
+          container
+          spacing={2}
+        >
+          <Grid
+            item
+          >
             <Box
               sx={{
                 p: 2,
@@ -69,10 +73,10 @@ export default function RecipeListItem() {
                 gap: 2,
               }}
             >
-              <Item>                
+              <Item>
               <Button
                   component={Link}
-                  to={`/view-recipe/:`/*${recipeData._id goes here} */}
+                  to={`/recipe/:${recipe._id}`}
                   variant="text"
                 >
                    <ListItem
@@ -92,11 +96,10 @@ export default function RecipeListItem() {
                             marginRight: ".2rem"
                           }}
                       >
-                {/* uncomment when recipe query is implemented */}
-                      {/* <p>{ recipeData.recipeTitle }</p> */}
+                      <p>{ recipe.recipeTitle }</p>
                   <p>Recipe Name</p>
               </ListItemText>
-              {/* Use MUI rating precision component */}
+              {/* Use MUI rating precision component if there is enought time*/}
             <Box
               sx={{
                 display: "flex",
@@ -119,8 +122,7 @@ export default function RecipeListItem() {
                         marginLeft: ".3rem"
                           }}
                       >
-                    {/* <p>{recipeData.cookTime}</p> */}
-                    <p>25 minutes</p>
+                    <p>{recipe.cookTime}</p>
                       </ListItemText>
                       </ListItemIcon>                      
             </Box>
@@ -138,7 +140,7 @@ export default function RecipeListItem() {
                         marginRight: ".2rem",
                           }}
                       >
-                      <BiUpvote />              
+                      <IoIosPeople />              
                   <ListItemText
                   sx={{
                     color: "secondary",
@@ -147,8 +149,7 @@ export default function RecipeListItem() {
                     marginLeft: ".3rem"
                     }}
                   >
-                    {/* <p>{ recipeData.upvotes.length}</p> */}
-                    <p>14</p>
+                    <p>{ recipe.servings}</p>
                         </ListItemText>
                       </ListItemIcon>
             </Box>

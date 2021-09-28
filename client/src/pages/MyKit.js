@@ -11,24 +11,23 @@ export default function MyKit() {
       <Grid
       container
     >
-      {/* <Grid container>
+      <Grid container>
       <Box sx={{
         display: "inline-block"
       }}
       >
       <RecipeCard />
       </Box>
-      </Grid> */}
-      <Grid container>
+      </Grid>
+      {/* <Grid container>
         
       <Box sx={{
         display: "inline-block"
       }}
       >
-      <RecipeCard />
       <RecipeListItem />
       </Box>
-      </Grid>
+      </Grid> */}
       </Grid>
   )
 }

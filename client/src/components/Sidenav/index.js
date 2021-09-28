@@ -1,18 +1,13 @@
 // React imports
-import React /*{useEffect}*/ from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import React from 'react';
+import { Link } from "react-router-dom";
 
 // Global state 
 import { sideNavVisible } from "../../utils/globalSlice.js"
 import { useDispatch, useSelector } from "react-redux";
 
 // Queries/Mutations
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../../utils/queries';
 
 // Auth
@@ -60,25 +55,25 @@ export default function Sidenav() {
   };
 
 
-  // const { loading, data } = useQuery(QUERY_ME);
-  // console.log("userData", loading, data);
-  // const userData = data?.me || {};
+  const { loading, data } = useQuery(QUERY_ME);
+  console.log("userData", loading, data);
+  const userData = data?.me || {};
 
   const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-  // const userWelcome = (token) => {
-  //   if (!token) {
-  //     return '';
-  //   } else {
-  //     return (        
-  //       <ListItem>
-  //       <ListItemText>
-  //           <h7>Hello, { userData.username }</h7>
-  //       </ListItemText>
-  //     </ListItem>
-  //     )
-  //   }
-  // }
+  const userWelcome = (token) => {
+    if (!token) {
+      return '';
+    } else {
+      return (        
+        <ListItem>
+        <ListItemText>
+            <h7>Hello, { userData.username }</h7>
+        </ListItemText>
+      </ListItem>
+      )
+    }
+  }
 
   const imageData = [
     {
@@ -92,31 +87,31 @@ export default function Sidenav() {
       name: "Discover",
       icon: <RiCompassDiscoverLine />,
       link: 'discover',
-      // component: <Discover/>
+      component: <Discover/>
     },
     {
       name: "Search",
       icon: <MdSearch />,
       link: 'search',
-      // component: <Search/>
+      component: <Search/>
     },
     {
       name: "My Kit",
       icon: <GiForkKnifeSpoon />,
       link: 'my-kit',
-      // component: <MyKit/>
+      component: <MyKit/>
     },
     {
       name: "Shopping List",
       icon: <VscChecklist />,
       link: 'my-kit/shopping-list',
-      // component: <ShoppingList/>
+      component: <ShoppingList/>
     },
     {
       name: "Meal Planner",
       icon: <IoIosJournal />,
       link: 'meal-planner',
-      // component: <MealPlanner/>
+      component: <MealPlanner/>
     }
   ]
 
@@ -137,36 +132,37 @@ export default function Sidenav() {
   }
 
   const fnOption = () => {
-    // if (!token) {
-    //   return Auth.logout();
-    // } else {
-    //   return Auth.login();
-    // }
+    if (token) {
+      return Auth.logout();
+    } else {
+      return ''
+    }
   }
 
   const settingsMenuItems = [{
     name: "Settings",
     icon: <MdSettings />,
     link: "settings",
-    // fn: null
+    fn: null
   }, {
     name: loginOption(),
     icon: <IoIosLogIn />,
     link: linkOption(),
-    // fn: fnOption(),
+    fn: fnOption(),
   }]
-  console.log(settingsMenuItems);
+  console.log("menu items: ", settingsMenuItems);
 
   const list = (anchor) => (
-    <Router>
-      <Switch>
         <Box
           sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
           role="presentation"
           onClick={toggleDrawer()}
           onKeyDown={toggleDrawer()}
         >
-          <List container rowSpacing={1}>
+          <List
+            container
+            rowSpacing={1}
+          >
             <ListItem
               sx={{
                 display: 'flex',
@@ -184,10 +180,13 @@ export default function Sidenav() {
                 CooKit
               </ListItemText>
             </ListItem>
-            {/* {userWelcome} */}
+            {userWelcome}
           </List>
           <Divider />
-          <MenuList container rowSpacing={1}>
+          <MenuList
+            container
+            rowSpacing={1}
+          >
             {menuItems.map((menuItem) => (
               <Button
                 component={Link}
@@ -217,7 +216,12 @@ export default function Sidenav() {
                 </Button>
             ))}
           </MenuList>
-          <ImageList variant="masonry" cols={1} gap={0} container>
+          <ImageList
+            variant="masonry"
+            cols={1}
+            gap={0}
+            container
+          >
             <ImageListItem>
               <img
                 src={`${imageData[0].img}?w=248&fit=crop&auto=format`}
@@ -227,7 +231,10 @@ export default function Sidenav() {
             </ImageListItem>
           </ImageList>
           <Box></Box>
-          <MenuList container rowSpacing={1}>
+          <MenuList
+            container
+            rowSpacing={1}
+          >
             {settingsMenuItems.map((menuItem) => (
               <Button
               component={Link}
@@ -257,14 +264,16 @@ export default function Sidenav() {
             ))}
           </MenuList>
         </Box>
-      </Switch>
-    </Router>
   )
   return (
     <div>
       {['left'].map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Grid container spacing={2}>
+        <React.Fragment
+          key={anchor}>
+          <Grid
+            container
+            spacing={2}
+          >
             <Grid item lg={4}>
               <Drawer
                 anchor={anchor}
