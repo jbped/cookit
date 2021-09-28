@@ -17,6 +17,10 @@ const ingredientSchema = new Schema(
         },
         preparationNotes: {
             type: String,
+        },
+        ingredientId: {
+            type: String,
+            required: 'Ingredient must have an order id'
         }
     }
 );

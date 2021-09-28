@@ -7,6 +7,7 @@ const typeDefs = gql`
         measurement: String
         quantity: Int
         preparationNotes: String
+        ingredientId: String
     }
 
     type User {
@@ -29,18 +30,20 @@ const typeDefs = gql`
         season: String
         difficulty: Int
         servings: Int
-        cookTime: Int
-        steps: [Step]
+        cookTime: String
+        directions: [Direction]
         ingredients: [Ingredient]
         cookware: [Cookware]
         comments: [Comment]
         upvotes: [Upvote]
+        directionsOrder: [String]
+        ingredientOrder: [String]
     }
 
-    type Step {
+    type Direction {
         _id: ID
         stepText: String
-        stepNumber: Int
+        stepId: String
     }
 
     type Cookware {
@@ -73,13 +76,14 @@ const typeDefs = gql`
         comments(recipeId: ID): [Comment]
         #Recipe-
         recipes: [Recipe]
+        recipesShort: [Recipe]
         recipe: Recipe
         userUpvotedRecipes: [Recipe]
     }
 
     type Mutation {
         #User-
-        login(email: String!, password: String!): Auth
+        login(username: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
         #Ingredient-
         addIngredient(ingredientName: String!, measurement: String, quantity: Int, preparationNotes: String): Ingredient
@@ -94,7 +98,7 @@ const typeDefs = gql`
         upvoteComment(commentId: ID!, username: String): Upvote
         deleteUpvoteComment(_id: ID!, commentId: ID!): Upvote
         #Recipe-
-        addRecipe(public: Boolean!, creator: String, recipeTitle: String!, recipeDescription: String, type: String, season: String, difficulty: Int, servings: Int cookTime: Int, steps: [stepInput], ingredients: [ingredientInput], cookware: [cookwareInput]): Recipe
+        addRecipe(public: Boolean!, creator: String, recipeTitle: String!, recipeDescription: String, type: String, season: String, difficulty: Int, servings: Int cookTime: String, directions: [directionInput], ingredients: [ingredientInput], cookware: [cookwareInput], directionsOrder: [String], ingredientsOrder: [String]): Recipe
         saveRecipe(_id: ID): Recipe
         deleteRecipe(_id: ID): Recipe
     }
@@ -110,12 +114,13 @@ const typeDefs = gql`
         measurement: String
         quantity: Int
         preparationNotes: String
+        ingredientId: String
     }
 
-    input stepInput {
+    input directionInput {
         _id: ID
         stepText: String
-        stepNumber: Int
+        stepId: String
     }
 
     input cookwareInput {
