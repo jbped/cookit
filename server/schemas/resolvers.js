@@ -94,8 +94,8 @@ const resolvers = {
         },
 
         //For allowing an existing User to login after their token has expired.
-        login: async (parent, { email, password }) => {
-            const user = await User.findOne({ email });
+        login: async (parent, { username, password }) => {
+            const user = await User.findOne({ username });
             if (!user) {
                 throw new AuthenticationError('Incorrect credentials');
             }

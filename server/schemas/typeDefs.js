@@ -76,13 +76,14 @@ const typeDefs = gql`
         comments(recipeId: ID): [Comment]
         #Recipe-
         recipes: [Recipe]
+        recipesShort: [Recipe]
         recipe: Recipe
         userUpvotedRecipes: [Recipe]
     }
 
     type Mutation {
         #User-
-        login(email: String!, password: String!): Auth
+        login(username: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
         #Ingredient-
         addIngredient(ingredientName: String!, measurement: String, quantity: Int, preparationNotes: String): Ingredient
