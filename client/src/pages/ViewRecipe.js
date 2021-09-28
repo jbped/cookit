@@ -12,11 +12,11 @@ import {
   Typography,
   Table,
   TableBody,
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
-  Paper, 
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from '@mui/material'
 
 // Other Components/Hooks.... 
@@ -133,19 +133,19 @@ export default function ViewRecipe() {
         // Preparation notes '- preparationNotes' or ''
         const prepNotesText = ingredient.preparationNotes ? `- ${ingredient.preparationNotes}` : ''
 
-        orderedIngredients.push({...ingredient, quantityText, prepNotesText})
+        orderedIngredients.push({ ...ingredient, quantityText, prepNotesText })
         return orderedIngredients;
       }
       return orderedIngredients;
     })
   });
   console.log('orderedIngredients', orderedIngredients)
-  
+
   const columns = () => {
     const mid = Math.ceil(orderedIngredients.length / 2)
     const col1 = orderedIngredients.slice(0, mid)
     const col2 = orderedIngredients.slice(mid, orderedIngredients.length)
-    return {col1: col1, col2: col2}
+    return { col1: col1, col2: col2 }
   }
 
   console.log(columns())
@@ -154,7 +154,7 @@ export default function ViewRecipe() {
   directionsOrder.forEach(id => {
     directions.filter(direction => {
       if (direction.stepId === id) {
-        orderedDirections.push({...direction})
+        orderedDirections.push({ ...direction })
         return orderedDirections;
       }
       return orderedDirections;
@@ -184,21 +184,25 @@ export default function ViewRecipe() {
       {/* Recipe Title */}
       <Box
         sx={{
+          pt: 2,
           display: "flex",
           justifyContent: "space-between",
           alignItems: 'center',
           marginTop: '.4rem',
           borderBottom: 1,
-          borderColor: 'grey.300',
+          borderColor: 'divider',
         }}
       >
 
         <Box sx={{ display: "flex", alignItems: 'center', }}>
-          <Typography variant="h5">{recipeTitle}</Typography>
-          {isPublic ?
-            <Typography variant="subtitle1" fontStyle="italic">&nbsp;- Public</Typography>
-            :
-            <Typography variant="subtitle1" fontStyle="italic">&nbsp;- Private</Typography>}
+          <Typography variant="h5" color="primary">{recipeTitle}</Typography>
+          <Typography variant="subtitle1" fontStyle="italic" color="secondary">&nbsp;
+            {isPublic ?
+              '- Public'
+              :
+              '- Private'
+            }
+          </Typography>
         </Box>
 
         {/* EDIT AND EASY QUICK BUTTONS */}
@@ -214,110 +218,117 @@ export default function ViewRecipe() {
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: "center" }}>
-        <Typography variant='body2'>
+        <Typography variant='subtitle1'>
           By: {creator} - {editedDateArr[0][0] === '0' ? editedDateArr[0].slice(1) : editedDateArr[0]}
         </Typography>
       </Box>
 
-      <Grid container spacing={{ md: 5, lg: 10 }}>
+      <Grid container spacing={{ md: 5, lg: 10 }} px={{ md: 5, xl: 10 }}>
         <Grid item xs={12} md={6}>
 
-          <Box 
+          <Box
             sx={{
+              mt: 2,
               borderBottom: 1,
-              borderColor: 'grey.300'
+              borderColor: 'divider'
             }}
           >
-            <h2>Details</h2>
+            <Typography variant="h5" color="primary">Details</Typography>
           </Box >
+          <Paper sx={{p: 2, mt: 2}} >
 
-          {/* TIME */}
-          <Box sx={{ mt: 2, display: 'flex', alignItems: "center" }}>
-            <MdAccessAlarm
-              size={25}
-              {...bindTrigger(timePopState)}
-              {...bindHover(timePopState)}
-            />
+            {/* TIME */}
+            <Box sx={{ display: 'flex', alignItems: "center" }}>
+              <MdAccessAlarm
+                size={25}
+                {...bindTrigger(timePopState)}
+                {...bindHover(timePopState)}
+              />
 
-            <HoverPopover
-              {...bindPopover(timePopState)}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-            >
-              <div>
-                <p sx={{ margin: "2px 5px" }}>Total time to prepare, cook, and serve</p>
-              </div>
-            </HoverPopover>
+              <HoverPopover
+                {...bindPopover(timePopState)}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+                <div>
+                  <p sx={{ margin: "2px 5px" }}>Total time to prepare, cook, and serve</p>
+                </div>
+              </HoverPopover>
 
-            <Typography sx={{ ml: 1 }}>
-              {cookTime}
-            </Typography>
-          </Box>
+              <Typography sx={{ ml: 1 }}>
+                {cookTime}
+              </Typography>
+            </Box>
 
-          {/* SERVING SIZE */}
-          <Box sx={{ mt: 2, display: 'flex', alignItems: "center" }}>
-            <BsPeople
-              size={25}
-              {...bindTrigger(servingPopState)}
-              {...bindHover(servingPopState)} 
-            />
+            {/* SERVING SIZE */}
+            <Box sx={{ mt: 2, display: 'flex', alignItems: "center" }}>
+              <BsPeople
+                size={25}
+                {...bindTrigger(servingPopState)}
+                {...bindHover(servingPopState)}
+              />
 
-            <HoverPopover
-              {...bindPopover(servingPopState)}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-            >
-              <div>
-                <p sx={{ margin: "2px 5px" }}>Servings</p>
-              </div>
-            </HoverPopover>
+              <HoverPopover
+                {...bindPopover(servingPopState)}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+                <div>
+                  <p sx={{ margin: "2px 5px" }}>Servings</p>
+                </div>
+              </HoverPopover>
 
-            <Typography sx={{ ml: 1 }}>
-              {servings} {servings === 1 ? 'person' : 'people'}
-            </Typography>
+              <Typography sx={{ ml: 1 }}>
+                {servings} {servings === 1 ? 'person' : 'people'}
+              </Typography>
 
-          </Box>
+            </Box>
 
+          </Paper>
 
         </Grid>
 
-          
+
         <Grid item xs={12} md={6}>
-            {/* Description */}
-            <Box sx={{
-              borderBottom: 1,
-              borderColor: 'grey.300'
-            }}>
-              <h2>Description</h2>
-            </Box >
+          {/* Description */}
+          <Box sx={{
+            mt: 2,
+            borderBottom: 1,
+            borderColor: 'divider'
+          }}>
+            <Typography variant="h5" color="primary">Description</Typography>
+          </Box >
+          <Paper sx={{mt:2, p: 2}}>
             <Typography>{recipeDescription}</Typography>
+          </Paper>
         </Grid>
 
       </Grid>
 
-      <Grid container spacing={{ md: 5, lg: 10 }}>
+      <Grid container spacing={{ md: 5, lg: 10 }} px={{ md: 5, xl: 10 }}>
 
         <Grid item xs={12}>
           {/* Ingredients */}
-          <Box 
+          <Box
             sx={{
+              mt: 2,
               borderBottom: 1,
-              borderColor: 'grey.300'
+              borderColor: 'divider'
             }}
           >
-            <h2>Ingredients</h2>
+            <Typography variant="h5" color="primary">Ingredients</Typography>
           </Box >
 
           {/* {columns().col1.map(index => (<Typography>{index.quantityText}</Typography>)} */}

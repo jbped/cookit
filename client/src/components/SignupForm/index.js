@@ -11,7 +11,8 @@ import {
   InputAdornment,
   IconButton,
   Button,
-  Typography
+  Typography,
+  Paper
 } from '@mui/material'
 
 // Icons.... 
@@ -106,21 +107,20 @@ export default function SignupForm() {
   }
 
   return (
-    <Box
+    <Paper
       component="form"
       sx={{
         mt: 2,
         padding: 2,
         border: 1,
         borderRadius: 1,
-        borderColor: 'grey.300',
-        backgroundColor: '#FFFFFF',
-        boxShadow: 2
+        borderColor: 'backdrop.dark',
+        boxShadow: 4
       }}
       onSubmit={signupCheck}
     >
-      <Box sx={{ display: 'flex', mt: 2 }}>
-        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Signup</Typography>
+      <Box sx={{ display: 'flex' }}>
+        <Typography variant="h5" sx={{ fontWeight: 'bold' }} color="primary">Signup</Typography>
         {values.errorText &&
           <Typography variant="h6" color="error" sx={{ fontStyle: 'italic' }}>
             &nbsp;- Error!
@@ -135,6 +135,8 @@ export default function SignupForm() {
         fullWidth
         sx={{ mt: 2 }}
         error={values.usernameError}
+        color="backdrop"
+        InputLabelProps={{ color: "secondary" }}
         onChange={handleChange('username')}
       />
       {values.usernameError && <Typography variant="subtitle2" color="error">Please provide a username</Typography>}
@@ -144,20 +146,23 @@ export default function SignupForm() {
         label="Email *"
         value={values.email}
         fullWidth
-        sx={{ mt: 1 }}
+        sx={{ mt: 2 }}
         error={values.emailError}
+        color="backdrop"
+        InputLabelProps={{ color: "secondary" }}
         onChange={handleChange('email')}
       />
       {values.emailError && <Typography variant="subtitle2" color="error">Please provide a valid email address</Typography>}
       
-      <FormControl sx={{ mt: 1, }} variant="outlined" fullWidth>
-        <InputLabel htmlFor="password" error={values.passwordError}>Password *</InputLabel>
+      <FormControl sx={{ mt: 2, }} variant="outlined" fullWidth>
+        <InputLabel htmlFor="password" color="secondary" error={values.passwordError}>Password *</InputLabel>
         <OutlinedInput
           id="password-required"
           type={values.showPassword ? 'text' : 'password'}
           value={values.password}
           error={values.passwordError}
           onChange={handleChange('password')}
+          color="backdrop"
           endAdornment={
             <InputAdornment position="end">
               <IconButton
@@ -184,10 +189,10 @@ export default function SignupForm() {
         }
         
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Button component={Link} to="/login" variant="text " color="grey" sx={{ mt: 2, }}>Login instead</Button>
+        <Button component={Link} to="/login" variant="text" color="primary" sx={{ mt: 2, }}>Login instead</Button>
         <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>Signup</Button>
       </Box>
 
-    </Box >
+    </Paper >
   )
 }
