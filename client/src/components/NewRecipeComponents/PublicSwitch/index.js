@@ -61,8 +61,8 @@ export default function PublicSwitch() {
       </HoverPopover>
       <ToggleButtonGroup
         color="primary"
-        name="public"
-        value={recipeForm.public}
+        name="isPublic"
+        value={recipeForm.isPublic}
         exclusive
         onChange={handleChange}
         sx={{
@@ -71,8 +71,8 @@ export default function PublicSwitch() {
           height: '40px'
         }}
       >
-        <ToggleButton value="private" name="public" sx={{ flexGrow: 1 }}>Private</ToggleButton>
-        <ToggleButton value="public" name="public" sx={{ flexGrow: 1 }}>Public</ToggleButton>
+        <ToggleButton value="private" name="isPublic" sx={{ flexGrow: 1 }}>Private</ToggleButton>
+        <ToggleButton value="public" name="isPublic" sx={{ flexGrow: 1 }}>Public</ToggleButton>
       </ToggleButtonGroup>
     </Box >
   )

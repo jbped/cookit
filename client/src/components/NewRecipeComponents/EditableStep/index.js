@@ -21,10 +21,10 @@ export default function EditableStep({ step, index }) {
   const dispatch = useDispatch();
 
   const { directions } = state;
-  const dirObj = { ...directions[step.id] }
+  const dirObj = { ...directions[step.stepId] }
   console.log('dirObj', dirObj)
 
-  const { id, stepText } = dirObj
+  const { stepId, stepText } = dirObj
 
   const handleChange = e => {
     let editedDirObj = { ...dirObj }
@@ -33,18 +33,18 @@ export default function EditableStep({ step, index }) {
     dispatch(newRecipe({
       directions: {
         ...directions,
-        [id]: editedDirObj
+        [stepId]: editedDirObj
       }
     }))
     console.log('directions', directions);
-    console.log('directions[id]', directions[id]);
+    console.log('directions[stepId]', directions[stepId]);
   }
 
   return (
-    <Draggable draggableId={id} index={index}>
+    <Draggable draggableId={stepId} index={index}>
       {(provided) => (
         <div
-          id={id}
+          id={stepId}
           {...provided.draggableProps}
           ref={provided.innerRef}
         >

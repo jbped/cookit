@@ -112,11 +112,11 @@ export default function RecipeTime() {
       </HoverPopover>
       <TextField
         id="time-to-serve"
-        name="time"
+        name="cookTime"
         select
         size="small"
         placeholder="Total Time"
-        value={recipeForm.time}
+        value={recipeForm.cookTime}
         onChange={handleChange}
         sx={{
           flexGrow: 1

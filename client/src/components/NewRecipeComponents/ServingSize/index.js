@@ -39,12 +39,12 @@ export default function ServingSize() {
 
   const handleCounter = e => {
     if (e.target.innerText === '+') {
-      let count = recipeForm.partySize + 1
-      dispatch(newRecipe({ partySize: count }))
+      let count = recipeForm.servings + 1
+      dispatch(newRecipe({ servings: count }))
     }
-    else if (recipeForm.partySize > 1) {
-      let count = recipeForm.partySize - 1
-      dispatch(newRecipe({ partySize: count }))
+    else if (recipeForm.servings > 1) {
+      let count = recipeForm.servings - 1
+      dispatch(newRecipe({ servings: count }))
     }
     console.log(recipeForm)
   };
@@ -95,8 +95,8 @@ export default function ServingSize() {
         <TextField
           id="outlined-size-small"
           size="small"
-          name="partySize"
-          value={recipeForm.partySize}
+          name="servings"
+          value={recipeForm.servings}
           sx={{
             width: 60,
           }}

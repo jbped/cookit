@@ -203,7 +203,7 @@ export default function IngredientsSection() {
       ingredients: {
         ...ingredients,
         [ingredientId]: {
-          id: ingredientId,
+          ingredientId: ingredientId,
           quantity: '',
           measurementType: '',
           measurementTypeShort: '',
@@ -240,7 +240,7 @@ export default function IngredientsSection() {
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
+              {itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].ingredientId} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
               {provided.placeholder}
             </div>
           )}
@@ -260,7 +260,7 @@ export default function IngredientsSection() {
                     <p style={{ fontStyle: 'italic', fontSize: '16px', margin: 0, padding: 0 }}>{deleteIngCol.itemIds.length === 0 ? ' - Drop an ingredient here' : ' - Items selected to delete'}</p>
                   </Box>
 
-                  {columns.deleteIngCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
+                  {columns.deleteIngCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].ingredientId} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
                   {provided.placeholder}
 
                   {deleteIngCol.itemIds.length > 0 && (

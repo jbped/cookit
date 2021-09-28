@@ -18,7 +18,7 @@ import {
 } from "react-icons/md";
 
 export default function NewRecipeTitle() {
-  const [recipeName, setRecipeName] = useState(false)
+  const [recipeTitle, setRecipeName] = useState(false)
   const recipeForm = useSelector(state => state.global.newRecipe)
   const dispatch = useDispatch();
 
@@ -43,14 +43,14 @@ export default function NewRecipeTitle() {
       borderColor: 'grey.300'
     }
     }>
-      {recipeName || recipeName.length ?
+      {recipeTitle || recipeTitle.length ?
         <>
           <TextField
             id="recipe-name"
             label="Recipe Name"
-            name="recipeName"
+            name="recipeTitle"
             size="small"
-            defaultValue={recipeForm.recipeName}
+            defaultValue={recipeForm.recipeTitle}
             sx={{
               margin: '6px 0 5px 0'
             }}
@@ -69,7 +69,7 @@ export default function NewRecipeTitle() {
         </>
         :
         <>
-          <h2>{recipeForm.recipeName}</h2>
+          <h2>{recipeForm.recipeTitle}</h2>
           <IconButton onClick={() => setRecipeName(true)} >
             <MdEdit
               size={25}

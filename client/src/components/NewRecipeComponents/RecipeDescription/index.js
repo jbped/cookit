@@ -31,10 +31,10 @@ export default function RecipeDescription() {
         id="outlined-size-small"
         size="small"
         label="Description"
-        name="description"
+        name="recipeDescription"
         type="text"
         multiline
-        defaultValue={recipeForm.description}
+        defaultValue={recipeForm.recipeDescription}
         sx={{
           mt: 2,
           width: '100%',

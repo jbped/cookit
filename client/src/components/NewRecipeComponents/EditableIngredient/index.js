@@ -26,9 +26,9 @@ export default function EditableIngredient({ ing, index }) {
   const dispatch = useDispatch();
 
   const { ingredients } = state;
-  const ingObj = {...ingredients[ing.id]}
+  const ingObj = {...ingredients[ing.ingredientId]}
 
-  const { id, quantity, measurementTypeShort, ingredient, notes } = ingObj;
+  const { ingredientId, quantity, measurementTypeShort, ingredient, notes } = ingObj;
 
   const measurementTypes = [
     {
@@ -102,7 +102,7 @@ export default function EditableIngredient({ ing, index }) {
     dispatch(newRecipe({
       ingredients: {
         ...ingredients,
-        [id]: editedIngObj
+        [ingredientId]: editedIngObj
       }
     }));
     // console.log('ingredients', ingredients);
@@ -111,10 +111,10 @@ export default function EditableIngredient({ ing, index }) {
 
   return (
 
-    <Draggable draggableId={id} index={index}>
+    <Draggable draggableId={ingredientId} index={index}>
       {(provided) => (
         <div
-          id={id}
+          id={ingredientId}
           {...provided.draggableProps}
           ref={provided.innerRef}
         >

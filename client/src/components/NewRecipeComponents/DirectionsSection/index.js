@@ -185,7 +185,7 @@ export default function DirectionsSection() {
       directions: {
         ...directions,
         [stepId]: {
-          id: stepId,
+          stepId: stepId,
           stepText: ''
         }
       },
@@ -217,7 +217,7 @@ export default function DirectionsSection() {
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {itemIds.map((step, i) => <EditableStep key={directions[step].id} step={directions[step]} index={i}></EditableStep>)}
+              {itemIds.map((step, i) => <EditableStep key={directions[step].stepId} step={directions[step]} index={i}></EditableStep>)}
               {provided.placeholder}
             </div>
           )}
@@ -237,7 +237,7 @@ export default function DirectionsSection() {
                     <p style={{ fontStyle: 'italic', fontSize: '16px', margin: 0, padding: 0 }}>{deleteDirCol.itemIds.length === 0 ? ' - Drop a step here' : ' - Steps selected to delete'}</p>
                   </Box>
 
-                  {deleteDirCol.itemIds.map((step, i) => <EditableStep key={directions[step].id} step={directions[step]} index={i}></EditableStep>)}
+                  {deleteDirCol.itemIds.map((step, i) => <EditableStep key={directions[step].stepId} step={directions[step]} index={i}></EditableStep>)}
                   {provided.placeholder}
 
                   {deleteDirCol.itemIds.length > 0 && (

@@ -3,12 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 export const initialState = {
   darkMode: false, 
   newRecipe: {
-    recipeName: 'New Recipe',
+    recipeTitle: 'New Recipe',
     type: [],
-    time: '',
-    partySize: 1,
-    public: 'private',
-    description: '',
+    cookTime: '',
+    servings: 1,
+    isPublic: 'private',
+    recipeDescription: '',
     ingredients: {},
     directions: {},
     columns: {

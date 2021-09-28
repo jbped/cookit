@@ -7,6 +7,7 @@ import theme from './theme.js'
 
 // React Router Pages....
 import NewRecipe from './pages/NewRecipe';
+import ViewRecipe from './pages/ViewRecipe';
 import MyKit from './pages/MyKit';
 import LoginSignup from './pages/LoginSignup';
 
@@ -38,6 +39,7 @@ function App() {
           }}>
             <Switch>
               <Route exact path="/new-recipe" component={NewRecipe}></Route>
+              <Route exact path="/recipe" component={ViewRecipe}></Route>
               <Route exact path="/my-kit" component={MyKit}></Route>
               <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
               <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>
