@@ -46,12 +46,12 @@ const recipeSchema = new Schema(
             type: Number,
         },
         cookTime: {
-            type: Number
+            type: String
         },
-        steps: [
+        directions: [
             {
                 type: Schema.Types.ObjectId,
-                ref: 'Step'
+                ref: 'Direction'
             }
         ],
         ingredients: [
@@ -78,6 +78,16 @@ const recipeSchema = new Schema(
                 ref: 'Upvote'
             }
         ],
+        directionsOrder: [
+            {
+                type: String
+            }
+        ],
+        ingredientOrder: [
+            {
+                type: String
+            }
+        ]
     },
     {
         toJSON: {
@@ -85,8 +95,6 @@ const recipeSchema = new Schema(
         }
     }
 );
-
-
 
 const Recipe = model('Recipe', recipeSchema);
 

@@ -286,6 +286,41 @@ export const QUERY_RECIPES =gql`
         username
         }
     }
+}`;
+
+export const QUERY_RECIPES_SHORT =gql`
+    query Query {
+        recipes {
+            _id
+            creator
+            createdAt
+            recipeTitle
+            recipeDescription
+            servings
+            cookTime
+            ingredients {
+                ingredientName
+            }
+        }
+        cookware {
+        _id
+        cookwareName
+        }
+        comments {
+        _id
+        commentText
+        createdAt
+        username
+        upvotes {
+            _id
+            username
+        }
+        }
+        upvotes {
+        _id
+        username
+        }
+    }
 }
 `;
 

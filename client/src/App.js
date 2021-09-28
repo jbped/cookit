@@ -17,7 +17,6 @@ import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
 import RecipeCard from "./components/RecipeCard";
 import RecipeListItem from "./components/RecipeListItem";
-// import MyKit from "./pages/MyKit";
 
 function App() {
   let location = useLocation();
@@ -45,9 +44,6 @@ function App() {
               <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
               <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>
             </Switch>
-            {/* <MyKit/> */}
-            {/* <RecipeCard />
-            <RecipeListItem /> */}
           </Box>
         </main>
         <footer>

@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Ingredient, Recipe, Step, Cookware, Comment, Upvote } = require('../models');
+const { User, Ingredient, Recipe, Direction, Cookware, Comment, Upvote } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -94,8 +94,8 @@ const resolvers = {
         },
 
         //For allowing an existing User to login after their token has expired.
-        login: async (parent, { email, password }) => {
-            const user = await User.findOne({ email });
+        login: async (parent, { username, password }) => {
+            const user = await User.findOne({ username });
             if (!user) {
                 throw new AuthenticationError('Incorrect credentials');
             }
@@ -249,11 +249,12 @@ const resolvers = {
 
         //Recipe mutations
 
-        //For creating a new Recipe that includes steps, ingredients, cookware, comments, and upvotes object id arrays.
+        //For creating a new Recipe that includes directions, ingredients, cookware, comments, and upvotes object id arrays.
         addRecipe: async (parent, args, context) => {
             //Context if user is creating recipe
             if (context.user) {
-                const { ingredients, steps, cookware, ...editedArgs } = args;
+                const { ingredients, directions, cookware, ...editedArgs } = args;
+                console.log(editedArgs);
                 const recipe = await Recipe.create({ ...editedArgs, creator: context.user.username });
                 await User.findByIdAndUpdate(
                     context.user._id,
@@ -262,11 +263,11 @@ const resolvers = {
                 );
 
                 //For pushing the Step object ids up into the steps array on Recipe
-                await Promise.all(args.steps.map(async stp => {
-                    const step = await Step.create(stp);
+                await Promise.all(args.directions.map(async stp => {
+                    const direction = await Direction.create(stp);
                     await Recipe.findByIdAndUpdate(
                         recipe._id,
-                        { $push: { steps: step._id } },
+                        { $push: { directions: direction._id } },
                         { new: true }
                     );
                 }));
