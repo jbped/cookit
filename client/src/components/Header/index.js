@@ -53,7 +53,7 @@ export default function Header() {
           >
             <MdMenu />
           </IconButton>
-          <Typography variant="h3" component="div" color="primary" fontWeight="bold" sx={{ flexGrow: 1, textAlign: 'center', textShadow: "1"}}>
+          <Typography variant="h3" component={Link} /*to="/my-kit"*/ to="/" color="primary" fontWeight="bold" sx={{ textDecoration: 'none', flexGrow: 1, textAlign: 'center', textShadow: "1"}}>
             Coo<Typography component="span" variant="h3" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
           </Typography>
           {!onNewRecipe ?
@@ -68,41 +68,5 @@ export default function Header() {
         </Toolbar>
       </AppBar>
     </Box>
-    // <Box sx={{
-    //   display: 'flex',
-    //   alignItems: 'center',
-    //   justifyContent: 'space-between',
-    //   boxShadow: 3,
-    //   position: 'fixed',
-    //   top: 0,
-    //   width: "100vw",
-    //   zIndex: 1100,
-    //   backgroundColor: '#FFFFFFD9',
-    //   backdropFilter: 'blur(4px)'
-    // }}>
-    //   <IconButton
-    //     aria-label="menu"
-    //     color="primary"
-    //     onClick={toggleDrawer()}
-    //   >
-    //     <MdMenu size={25} />
-    //   </IconButton>
-    //   <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
-    //     <Typography variant="h4" sx={{ margin: '.4rem 0 .4rem 0' }}>CooKit</Typography>
-    //   </Link>
-
-    //   {/* Hides the add new recipe button when on the /new-recipe page */}
-    //   {!onNewRecipe ?
-    //     <Link to="/new-recipe" style={{ textDecoration: 'none', color: 'black' }}>
-    //       <IconButton aria-label="add" color="primary">
-    //         <MdAdd size={25} />
-    //       </IconButton>
-    //     </Link>
-    //     :
-    //     <IconButton aria-label="add" disabled color="primary">
-    //       <MdAdd size={25} style={{ visibility: 'hidden' }} />
-    //     </IconButton>
-    //   }
-    // </Box>
   )
 }

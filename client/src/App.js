@@ -19,8 +19,8 @@ import Sidenav from "./components/Sidenav";
 
 function App() {
   let location = useLocation();
-  console.log()
-  const hideHeader = (location.pathname.includes('login') || location.pathname.includes('signup') || location.pathname === ('http://localhost:3000/') /* || location.pathname === ('{ADD HEROKU LINK HERE}/')*/) ? true : false
+  console.log(location)
+  const hideHeader = (location.pathname.includes('login') || location.pathname.includes('signup') || location.pathname === ('/') /* || location.pathname === ('{ADD HEROKU LINK HERE}/')*/) ? true : false
 
   return (
     <Box className="App" sx={{ minHeight: '100vh' }}>

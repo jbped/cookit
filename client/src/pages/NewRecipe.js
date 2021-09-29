@@ -88,51 +88,89 @@ export default function NewRecipe() {
       return; 
     }
 
-    // Very that each items has required elements
-    ingredientsCol.itemIds.map(item => {
+    // All error statuses are pushed to batch object which is a spread of the newRecipe global state
+    let batch = {...recipeForm}
 
-      // Verify that each item has something in quantity
-      if (ingredients[item].quantity.length > 0) {
-        const editedIngredient = {...ingredients[item], errors: {...ingredients[item].errors, quantity: false}}
-        let i = ingredientErrors.indexOf(item)
-        if (i > -1) {
-          const editedErrors = ingredientErrors.slice(i, 1);
-          dispatch(newRecipe({...recipeForm, ingredients: {[item]: editedIngredient}, ingredientErrors: editedErrors}))
-        } else {
-          dispatch(newRecipe({...recipeForm, ingredients: {[item]: editedIngredient}}))
+    // Very that each items has required elements
+    batch.columns.ingredientsCol.itemIds.map(item => {
+
+      // Verify that each item has something in quantity---------------------------------------------The notes below are for each ingredients quantity value. The logic is practically the same for ingredient name and direction stepText
+      if (batch.ingredients[item].quantity.length > 0) {                                                                      // if no error
+        const editedIngredient = {...batch.ingredients[item], errors: {...batch.ingredients[item].errors, quantity: false}}   // create a complete ingredient object with spreads, update the [ingredientId].error.quantity value to false
+        let i = batch.ingredientErrors.indexOf(item)                                                                          //get index of the ingredientId in the ingredientErrors array
+        if (i > -1) {                                                                                                         // if the ingredient id is found in the array
+          const editedErrors = batch.ingredientErrors.slice(i, 1);                                                            // create a new ingredientErrors array with ingredientId removed
+         batch = {...batch, ingredients: {...batch.ingredients, [item]: editedIngredient}, ingredientErrors: editedErrors}    // update batch object with the error free ingredient
+        } else {                                                                                                              // if the ingredientId was not found in the array, there is no need for it to get updated
+          batch = {...batch, ingredients: {...batch.ingredients, [item]: editedIngredient}}                                   // update batch with the updated ingredient object with the error.quantity value === false
         }
-      } else {
-        const editedIngredient = {...ingredients[item], errors: {...ingredients[item].errors, quantity: true}}
-        if (!ingredientErrors.includes(item)){
-          const editedErrors = [...ingredientErrors, item]
-          dispatch(newRecipe({...recipeForm, ingredients: {[item]: editedIngredient}, ingredientErrors: editedErrors}))
-        } else {
-          dispatch(newRecipe({...recipeForm, ingredients: {[item]: editedIngredient}}))
+      } else {                                                                                                                // if there is an error
+        const editedIngredient = {...batch.ingredients[item], errors: {...batch.ingredients[item].errors, quantity: true}}    // create a complete ingredient object with spreads, update the [ingredientId].error.quantity value to true
+        if (!batch.ingredientErrors.includes(item)){                                                                          //check if the ingredientsErrors array doesn't contain the ingredientId
+          const editedErrors = [...batch.ingredientErrors, item]                                                              // add the ingredientId to the cloned array
+          batch = {...batch, ingredients: {...batch.ingredients, [item]: editedIngredient}, ingredientErrors: editedErrors}   //update batch with the updated ingredient and ingredientErrors.
+        } else {                                                                                                              // if ingredientId is already in the ingredientsArray 
+          batch = {...batch, ingredients: {...batch.ingredients, [item]: editedIngredient}}                                   // only update the ingredients object, not the ingredientsErrors array
         }
       }
 
       // Verify that each item has an ingredient
-      if (ingredients[item].ingredient.length > 0) {
-        const editedIngredient = {...ingredients[item], errors: {...ingredients[item].errors, ingredient: false}}
-        let i = ingredientErrors.indexOf(item)
+      if (batch.ingredients[item].ingredient.length > 0) {
+        const editedIngredient = {...batch.ingredients[item], errors: {...batch.ingredients[item].errors, ingredient: false}}
+        let i = batch.ingredientErrors.indexOf(item)
         if (i > -1) {
-          const editedErrors = ingredientErrors.slice(i, 1);
-          dispatch(newRecipe({...recipeForm, ingredients: {[item]: editedIngredient}, ingredientErrors: editedErrors}))
+          const editedErrors = batch.ingredientErrors.slice(i, 1);
+          batch = {...batch, ingredients: {...batch.ingredients, [item]: editedIngredient}, ingredientErrors: editedErrors}
         } else {
-          dispatch(newRecipe({...recipeForm, ingredients: {[item]: editedIngredient}}))
+          batch = {...batch, ingredients: {...batch.ingredients, [item]: editedIngredient}}
         }
       } else {
-        const editedIngredient = {...ingredients[item], errors: {...ingredients[item].errors, ingredient: true}}
-        if (!ingredientErrors.includes(item)){
-          const editedErrors = [...ingredientErrors, item]
-          dispatch(newRecipe({...recipeForm, ingredients: {[item]: editedIngredient}, ingredientErrors: editedErrors}))
+        const editedIngredient = {...batch.ingredients[item], errors: {...batch.ingredients[item].errors, ingredient: true}}
+        if (!batch.ingredientErrors.includes(item)){
+          const editedErrors = [...batch.ingredientErrors, item]
+          batch = {...batch, ingredients: {...batch.ingredients, [item]: editedIngredient}, ingredientErrors: editedErrors}
         } else {
-          dispatch(newRecipe({...recipeForm, ingredients: {[item]: editedIngredient}}))
+          batch = {...batch, ingredients: {...batch.ingredients, [item]: editedIngredient}}
         }
       }
-      console.log('ingredients', ingredients[item].errors)
-      return ingredients[item]
+      console.log(`batch ${item}`, batch)
+      console.log(`${item}`, ingredients[item].errors)
+      return batch.ingredients[item]
     })
+
+    // Very that each step has required stepText
+    batch.columns.directionsCol.itemIds.map(step => {
+
+      // Verify that each step has text in stepText
+      if (directions[step].stepText.length > 0) {
+        const editedDirection = {...batch.directions[step], errors: {...batch.directions[step].errors, stepText: false}}
+        let i = batch.directionErrors.indexOf(step)
+
+        if (i > -1) {
+          const editedErrors = directionErrors.slice(i, 1);
+         batch = {...batch, directions: {...batch.directions, [step]: editedDirection}, directionErrors: editedErrors}
+        } else {
+          batch = {...batch, directions: {...batch.directions, [step]: editedDirection}}
+        }
+
+      } else {
+        const editedDirection = {...batch.directions[step], errors: {...batch.directions[step].errors, stepText: true}}
+
+        if (!directionErrors.includes(step)){
+          const editedErrors = [...batch.directionErrors, step]
+          batch = {...batch, directions: {...batch.directions, [step]: editedDirection}, directionErrors: editedErrors}
+        } else {
+          batch = {...batch, directions: {...batch.directions, [step]: editedDirection}}
+        }
+
+      }
+      console.log(`batch ${step}`, batch)
+      console.log('directions', directions[step].errors)
+      return batch.directions[step]
+    })
+    console.log(`batch`, batch)
+    // Push batch to newRecipe NOTE: THIS IS A COMPLETE OVERWRITE OF NEW RECIPE
+    dispatch(newRecipe(batch))
   }
 
   return (
