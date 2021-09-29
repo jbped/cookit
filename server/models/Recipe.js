@@ -3,7 +3,7 @@ const dateFormat = require('../utils/dateFormat');
 
 const recipeSchema = new Schema(
     {
-        public: {
+        isPublic: {
             type: Boolean,
             required: 'Recipe must be either public or private.'
         },

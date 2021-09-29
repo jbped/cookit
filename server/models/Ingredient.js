@@ -11,7 +11,7 @@ const ingredientSchema = new Schema(
             type: String,
         },
         quantity: {
-            type: Number,
+            type: String,
             required: 'Ingredient must have a quantity.',
             // validate: /^([0-9/])+$/
         },
