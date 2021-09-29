@@ -1,5 +1,6 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User, Ingredient, Recipe, Direction, Cookware, Comment, Upvote } = require('../models');
+const Mongoose = require('mongoose');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -305,49 +306,46 @@ const resolvers = {
         //For saving a recipe to a user's savedRecipes list.
         saveRecipe: async (parent, { _id }, context) => {
             if (context.user) {
-                const recipe = await Recipe.findById(_id)
-                    .select('-_id -__v')
-                    .populate('directions', '-_id -__v')
-                    .populate('ingredients', '-_id -__v')
-                    .populate('cookware', '-_id -__v');
+                recipe = await Recipe.findById(_id, {'_id': 0})
+                    .select('-__v')
+                    .populate('directions', '-__v',)
+                    .populate('ingredients', '-__v',)
+                    .populate('cookware', '-__v',);
+                    
+                const { directions, ingredients, cookware, comments, upvotes, createdAt, forked, ...filteredRecipe } = recipe._doc;
+
+                console.log(filteredRecipe);
+                const forkedRecipe = await Recipe.create({ ...filteredRecipe, forked: true });
                 
-                console.log(recipe);
+                // await Promise.all(directions.map(async dir => {
+                //     console.log(dir);
+                //     const direction = await Direction.create(dir);
+                //     await Recipe.findByIdAndUpdate(
+                //         forkedRecipe._id,
+                //         { $push: { directions: direction._id } },
+                //         { new: true }
+                //     );
+                // }));
 
-                const { directions, ingredients, cookware, ...filteredRecipe } = recipe;
+                // //For pushing the Ingredient object ids up into the ingredients array on Recipe
+                // await Promise.all(ingredients.map(async ing => {
+                //     const ingredient = await Ingredient.create(ing);
+                //     await Recipe.findByIdAndUpdate(
+                //         forkedRecipe._id,
+                //         { $push: { ingredients: ingredient._id } },
+                //         { new: true }
+                //     );
+                // }));
 
-                const forkedRecipe = await Recipe.create(filteredRecipe._doc);
-
-                const forkedRecipeId = forkedRecipe._id;
-                console.log(new ObjectId(forkedRecipeId));
-                
-                await Promise.all(directions.map(async dir => {
-                    const direction = await Direction.create(dir);
-                    await Recipe.findByIdAndUpdate(
-                        forkedRecipe._id,
-                        { $push: { directions: direction._id } },
-                        { new: true }
-                    );
-                }));
-
-                //For pushing the Ingredient object ids up into the ingredients array on Recipe
-                await Promise.all(ingredients.map(async ing => {
-                    const ingredient = await Ingredient.create(ing);
-                    await Recipe.findByIdAndUpdate(
-                        forkedRecipe._id,
-                        { $push: { ingredients: ingredient._id } },
-                        { new: true }
-                    );
-                }));
-
-                //For pushing the Cookware object ids up into the cookware array on Recipe
-                await Promise.all(cookware.map(async ware => {
-                    const cookware = await Cookware.create(ware);
-                    await Recipe.findByIdAndUpdate(
-                        forkedRecipe._id,
-                        { $push: { cookware: cookware._id } },
-                        { new: true }
-                    );
-                }));
+                // //For pushing the Cookware object ids up into the cookware array on Recipe
+                // await Promise.all(cookware.map(async ware => {
+                //     const cookware = await Cookware.create(ware);
+                //     await Recipe.findByIdAndUpdate(
+                //         forkedRecipe._id,
+                //         { $push: { cookware: cookware._id } },
+                //         { new: true }
+                //     );
+                // }));
 
                 return forkedRecipe;
             }

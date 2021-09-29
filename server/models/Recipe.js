@@ -48,6 +48,10 @@ const recipeSchema = new Schema(
         cookTime: {
             type: String
         },
+        forked: {
+            type: Boolean,
+            default: false
+        },
         directions: [
             {
                 type: Schema.Types.ObjectId,
