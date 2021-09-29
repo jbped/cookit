@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // Queries/Mutations
 import { useQuery } from '@apollo/client';
-import { QUERY_ME } from '../../utils/queries';
+import { QUERY_ME_BASIC } from '../../utils/queries';
 
 // Auth
 import Auth from "../../utils/auth";
@@ -55,7 +55,7 @@ export default function Sidenav() {
   };
 
 
-  const { loading, data } = useQuery(QUERY_ME);
+  const { loading, data } = useQuery(QUERY_ME_BASIC);
   console.log("userData", loading, data);
   const userData = data?.me || {};
 

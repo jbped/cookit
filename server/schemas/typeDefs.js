@@ -5,7 +5,7 @@ const typeDefs = gql`
         _id: ID
         ingredientName: String
         measurement: String
-        quantity: Int
+        quantity: String
         preparationNotes: String
         ingredientId: String
     }
