@@ -210,6 +210,12 @@ export default function ViewRecipe() {
     dispatch(setEasyCookStep(easyCookStep - 1));
   };
 
+  const loading = true
+
+  if(loading) {
+    
+  } 
+
   return (
     <Box>
       {/* Recipe Title */}

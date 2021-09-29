@@ -19,7 +19,7 @@ import Sidenav from "./components/Sidenav";
 
 function App() {
   let location = useLocation();
-  const hideHeader = (location.pathname.includes('login') || location.pathname.includes('signup')) ? true : false
+  const hideHeader = (location.pathname.includes('login') || location.pathname.includes('signup') || location.pathname.includes('/')) ? true : false
 
   return (
     <div className="App">
@@ -38,6 +38,7 @@ function App() {
             zIndex: 1,
           }}>
             <Switch>
+              <Route exact path="/"><LoginSignup page={'/'} /></Route>
               <Route exact path="/new-recipe" component={NewRecipe}></Route>
               <Route exact path="/recipe" component={ViewRecipe}></Route>
               <Route exact path="/my-kit" component={MyKit}></Route>

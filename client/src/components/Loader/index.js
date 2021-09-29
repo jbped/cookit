@@ -12,7 +12,8 @@ export default function Loader() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        alignContent: 'center',
       }}
     >
       <Typography variant="h2" component="div" color="primary" fontWeight="bold" sx={{ flexGrow: 1, textAlign: 'center', m: 0 }}>

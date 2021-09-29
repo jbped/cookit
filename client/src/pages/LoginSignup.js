@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginForm from '../components/LoginForm';
 import SignupForm from '../components/SignupForm';
+import LandingPage from '../components/LandingPage';
 import { Link } from "react-router-dom";
 
 import {
@@ -38,6 +39,7 @@ export default function LoginSignup({ page }) {
             Coo<Typography component="span" variant="h2" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
           </Typography>          
           </Link>
+          {page === '/' && <LandingPage />}
           {page === 'login' && <LoginForm />}
           {page === 'signup' && <SignupForm />}
         </Grid>
