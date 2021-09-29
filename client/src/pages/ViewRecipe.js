@@ -189,25 +189,23 @@ export default function ViewRecipe() {
 
   }
 
+  // Function called when a step button is pressed. Opens easy view to that desired step
   const openStep = e => {
     const selectedStep = e.target.dataset.stepIndex
     dispatch(setEasyCookStep(selectedStep))
     dispatch(toggleEasyCookView())
-    console.log(easyCookStep)
   }
 
-  const handleOpen = e => {
+  // Toggled easy view open or closed
+  const toggleEasyView = e => {
     dispatch(toggleEasyCookView())
   }
 
-  const handleClose = e => {
-    dispatch(toggleEasyCookView())
-  }
-
+  // Progresses Easy View to next step
   const handleNext = () => {
     dispatch(setEasyCookStep(easyCookStep + 1));
   };
-
+  // Regresses Easy View to previous step
   const handleBack = () => {
     dispatch(setEasyCookStep(easyCookStep - 1));
   };
@@ -443,7 +441,7 @@ export default function ViewRecipe() {
           }}
         >
           <Typography variant="h5" color="primary">Directions</Typography>
-          <IconButton onClick={handleOpen} >
+          <IconButton onClick={toggleEasyView} >
             <PlayArrowIcon
               size="large"
             />
@@ -472,7 +470,7 @@ export default function ViewRecipe() {
       <Dialog
         fullScreen
         open={easyCookView}
-        onClose={handleClose}
+        onClose={toggleEasyView}
         TransitionComponent={Transition}
       >
         <AppBar sx={{ position: 'relative' }}>
@@ -480,7 +478,7 @@ export default function ViewRecipe() {
             <IconButton
               edge="start"
               color="inherit"
-              onClick={handleClose}
+              onClick={toggleEasyView}
               aria-label="close"
             >
               <CloseIcon />
