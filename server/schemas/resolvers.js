@@ -52,7 +52,6 @@ const resolvers = {
         },
 
         recipe: async (parent, { _id }) => {
-            console.log(_id);
             return Recipe.findOne({_id})
                 .populate('directions')
                 .populate('ingredients')
@@ -311,20 +310,32 @@ const resolvers = {
                     .select('-__v')
                     .populate({path: 'directions', select: '-__v'})
                     .populate({path: 'ingredients', select: '-__v'})
-                    .populate({path: 'cookware', select: '-__v'});
+                    .populate({path: 'cookware', select: '-__v'})
+                    .populate({path: 'comments', select: '-__v'})
+                    .populate({path: 'upvotes', select: '-__v'});
                     
-                const { directions, ingredients, cookware, comments, upvotes, createdAt, forked, ...filteredRecipe } = recipe._doc;
-                const arrayData = [ directions, ingredients, cookware, comments, upvotes ];
+                let { directions, ingredients, cookware, comments, upvotes, createdAt, forked, ...filteredRecipe } = recipe._doc;
 
-                // arrayData.map(item => {
-                //     let name = item.toString();
-                //     const { _id, ...[`filtererd${name}`] } = item;
-                // });
+                const editedDirections = [];
+                const editedIngredients = [];
+                const editedCookware = [];
+
+                const removeId = (data, array) => {
+                    data.map(item => {
+                        const { _doc } = item;
+                        const { _id, ...editedItem } = _doc
+                        array.push(editedItem);
+                    })
+                }
+
+                removeId(directions, editedDirections);
+                removeId(ingredients, editedIngredients);
+                removeId(cookware, editedCookware);
 
                 const forkedRecipe = await Recipe.create({ ...filteredRecipe, forked: true });
+                await User.findByIdAndUpdate(context.user._id, { $push: { savedRecipes: forkedRecipe._id } });
                 
-                await Promise.all(directions.map(async dir => {
-                    console.log(dir);
+                await Promise.all(editedDirections.map(async dir => {
                     const direction = await Direction.create(dir);
                     await Recipe.findByIdAndUpdate(
                         forkedRecipe._id,
@@ -334,7 +345,7 @@ const resolvers = {
                 }));
 
                 //For pushing the Ingredient object ids up into the ingredients array on Recipe
-                await Promise.all(ingredients.map(async ing => {
+                await Promise.all(editedIngredients.map(async ing => {
                     const ingredient = await Ingredient.create(ing);
                     await Recipe.findByIdAndUpdate(
                         forkedRecipe._id,
@@ -344,7 +355,7 @@ const resolvers = {
                 }));
 
                 //For pushing the Cookware object ids up into the cookware array on Recipe
-                await Promise.all(cookware.map(async ware => {
+                await Promise.all(editedCookware.map(async ware => {
                     const cookware = await Cookware.create(ware);
                     await Recipe.findByIdAndUpdate(
                         forkedRecipe._id,
