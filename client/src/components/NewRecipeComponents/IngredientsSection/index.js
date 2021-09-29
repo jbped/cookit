@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { useNewRecipeDragEnd } from '../../../utils/dndHelpers'
 import styled from 'styled-components';
 
 // Redux State.... 
@@ -213,7 +212,11 @@ export default function IngredientsSection() {
           measurementType: '',
           measurementTypeShort: '',
           ingredient: '',
-          notes: ''
+          notes: '',
+          errors: {
+            quantity: false,
+            ingredient: false
+          }
         }
       },
       columns: {

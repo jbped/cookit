@@ -22,7 +22,7 @@ export default function EditableStep({ step, index }) {
 
   const { directions } = state;
   const dirObj = { ...directions[step.stepId] }
-  console.log('dirObj', dirObj)
+  // console.log('dirObj', dirObj)
 
   const { stepId, stepText } = dirObj
 

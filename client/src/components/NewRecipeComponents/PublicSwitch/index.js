@@ -65,15 +65,15 @@ export default function PublicSwitch() {
         value={recipeForm.isPublic}
         exclusive
         onChange={handleChange}
-        color="secondary"
+        
         sx={{
           flexGrow: 1,
           display: 'flex',
           height: '40px'
         }}
       >
-        <ToggleButton value="private" name="isPublic" sx={{ flexGrow: 1 }}>Private</ToggleButton>
-        <ToggleButton value="public" name="isPublic" sx={{ flexGrow: 1 }}>Public</ToggleButton>
+        <ToggleButton value="private" name="isPublic" color="secondary" sx={{ flexGrow: 1 }}>Private</ToggleButton>
+        <ToggleButton value="public" name="isPublic" color="secondary" sx={{ flexGrow: 1 }}>Public</ToggleButton>
       </ToggleButtonGroup>
     </Box >
   )

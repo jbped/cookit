@@ -19,10 +19,11 @@ import Sidenav from "./components/Sidenav";
 
 function App() {
   let location = useLocation();
-  const hideHeader = (location.pathname.includes('login') || location.pathname.includes('signup') || location.pathname.includes('/')) ? true : false
+  console.log()
+  const hideHeader = (location.pathname.includes('login') || location.pathname.includes('signup') || location.pathname === ('http://localhost:3000/') /* || location.pathname === ('{ADD HEROKU LINK HERE}/')*/) ? true : false
 
   return (
-    <div className="App">
+    <Box className="App" sx={{ minHeight: '100vh' }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <header>
@@ -31,27 +32,27 @@ function App() {
             <Header />
           }
         </header>
-        <main>
-          <Box sx={{
-            px: 2,
-            mt: '61px',
-            zIndex: 1,
-          }}>
-            <Switch>
-              <Route exact path="/"><LoginSignup page={'/'} /></Route>
-              <Route exact path="/new-recipe" component={NewRecipe}></Route>
-              <Route exact path="/recipe" component={ViewRecipe}></Route>
-              <Route exact path="/my-kit" component={MyKit}></Route>
-              <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
-              <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>
-            </Switch>
-          </Box>
-        </main>
+
+        <Box sx={{
+          px: 2,
+          mt: '61px',
+          zIndex: 1,
+        }}>
+          <Switch>
+            <Route exact path="/"><LoginSignup page={'/'} /></Route>
+            <Route exact path="/new-recipe" component={NewRecipe}></Route>
+            <Route exact path="/recipe" component={ViewRecipe}></Route>
+            <Route exact path="/my-kit" component={MyKit}></Route>
+            <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
+            <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>
+          </Switch>
+        </Box>
+
         <footer>
 
         </footer>
       </ThemeProvider>
-    </div>
+    </Box>
   );
 }
 

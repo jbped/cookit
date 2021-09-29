@@ -40,6 +40,7 @@ export default function SignupForm() {
   const [values, setValues] = useState(initialState);
 
   const [addUser, { error }] = useMutation(ADD_USER)
+  console.error('Signup Error', error)
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });

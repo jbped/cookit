@@ -1,8 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import store from "../../app/store.js"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { sideNavVisible } from "../../utils/globalSlice.js"
 import { Link } from "react-router-dom";
 
@@ -18,7 +17,6 @@ import {
 import { MdMenu, MdAdd } from "react-icons/md";
 
 export default function Header() {
-  const state = useSelector(state => state.global.sideNavVisible);
   const dispatch = useDispatch();
 
   const toggleDrawer = () => (event) => {
