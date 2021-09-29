@@ -72,7 +72,7 @@ export default function NewRecipeTitle() {
         </>
         :
         <>
-          <Typography variant="h5" color="primary">{recipeForm.recipeTitle}</Typography>
+          <Typography variant="h4" fontWeight="bold" color="primary">{recipeForm.recipeTitle}</Typography>
           <IconButton onClick={() => setRecipeName(true)} >
             <MdEdit
               size={25}

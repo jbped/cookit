@@ -45,7 +45,7 @@ export const ADD_RECIPE = gql`
                 quantity
                 preparationNotes
                 ingredientId
-            },
+            }
             directionsOrder
             ingredientOrder
         }

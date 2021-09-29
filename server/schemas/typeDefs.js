@@ -30,7 +30,8 @@ const typeDefs = gql`
         season: String
         difficulty: Int
         servings: Int
-        cookTime: String
+        cookTime: String,
+        forked: Boolean,
         directions: [Direction]
         ingredients: [Ingredient]
         cookware: [Cookware]

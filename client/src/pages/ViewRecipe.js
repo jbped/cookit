@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,15 +8,14 @@ import { currentRecipe } from '../utils/globalSlice';
 import {
   Box,
   Grid,
+  Button,
   IconButton,
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
+  List,
+  ListItem,
+  ListItemText,
   Paper,
+  Divider,
 } from '@mui/material'
 
 // Other Components/Hooks.... 
@@ -34,6 +33,7 @@ import {
   MdSave,
   MdAccessAlarm,
 } from "react-icons/md";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 import {
   BsPeople
@@ -123,32 +123,23 @@ export default function ViewRecipe() {
   const editedDateArr = createdAt.split(' at ');
 
   // Create new array of ingredients that is ordered appropriately by the ingredientsOrder
-  const orderedIngredients = []
+  const orderedIngredients = [];
   ingredientsOrder.forEach(id => {
     ingredients.filter(ingredient => {
       if (ingredient.ingredientId === id) {
 
         // Base ingredient information 'quantitymeasurement ingredientName' or 'quantity ingredientNate'
-        const quantityText = `${ingredient.quantity}${(ingredient.measurement && !ingredient.measurement !== 'n/a') ? ingredient.measurement : ''} ${ingredient.ingredientName}`
-        // Preparation notes '- preparationNotes' or ''
-        const prepNotesText = ingredient.preparationNotes ? `- ${ingredient.preparationNotes}` : ''
-
+        const quantityText = `${ingredient.quantity} ${(ingredient.measurement && !ingredient.measurement !== 'n/a') ? ingredient.measurement : ''} ${ingredient.ingredientName}`
+        // Preparation notes 'preparationNotes' or ''
+        const prepNotesText = ingredient.preparationNotes ? `${ingredient.preparationNotes}` : ''
         orderedIngredients.push({ ...ingredient, quantityText, prepNotesText })
         return orderedIngredients;
       }
       return orderedIngredients;
     })
-  });
-  console.log('orderedIngredients', orderedIngredients)
+  })
 
-  const columns = () => {
-    const mid = Math.ceil(orderedIngredients.length / 2)
-    const col1 = orderedIngredients.slice(0, mid)
-    const col2 = orderedIngredients.slice(mid, orderedIngredients.length)
-    return { col1: col1, col2: col2 }
-  }
 
-  console.log(columns())
   // Convert directions array to an object organized by the directionsOrder
   const orderedDirections = []
   directionsOrder.forEach(id => {
@@ -160,10 +151,10 @@ export default function ViewRecipe() {
       return orderedDirections;
     })
   });
-  console.log('orderedDirections', orderedDirections)
-  const editRecipe = () => {
 
-  }
+  const mid = Math.ceil(orderedIngredients.length / 2)
+  const col1 = orderedIngredients.slice(0, mid)
+  const col2 = orderedIngredients.slice(mid, orderedIngredients.length)
 
   // state for the time hover popover effect
   const timePopState = usePopupState({
@@ -177,12 +168,15 @@ export default function ViewRecipe() {
     popupId: 'servingsPopover',
   });
 
-  const rows = {}
+  const editRecipe = () => {
+
+  }
 
   return (
     <Box>
       {/* Recipe Title */}
       <Box
+        mx={{ xs: 0, md: 5, xl: 20 }}
         sx={{
           pt: 2,
           display: "flex",
@@ -195,7 +189,7 @@ export default function ViewRecipe() {
       >
 
         <Box sx={{ display: "flex", alignItems: 'center', }}>
-          <Typography variant="h5" color="primary">{recipeTitle}</Typography>
+          <Typography variant="h4" fontWeight="bold" color="primary">{recipeTitle}</Typography>
           <Typography variant="subtitle1" fontStyle="italic" color="secondary">&nbsp;
             {isPublic ?
               '- Public'
@@ -205,7 +199,7 @@ export default function ViewRecipe() {
           </Typography>
         </Box>
 
-        {/* EDIT AND EASY QUICK BUTTONS */}
+        {/* EDIT BUTTONS */}
         <IconButton onClick={editRecipe} >
           <MdEdit
             size={25}
@@ -217,13 +211,13 @@ export default function ViewRecipe() {
 
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: "center" }}>
+      <Box ml={{ xs: 0, md: 5, xl: 20 }} sx={{ display: 'flex', alignItems: "center", }}>
         <Typography variant='subtitle1'>
           By: {creator} - {editedDateArr[0][0] === '0' ? editedDateArr[0].slice(1) : editedDateArr[0]}
         </Typography>
       </Box>
 
-      <Grid container spacing={{ md: 5, lg: 10 }} px={{ md: 5, xl: 10 }}>
+      <Grid container spacing={{ md: 5, lg: 10 }} px={{ md: 5, xl: 20 }}>
         <Grid item xs={12} md={6}>
 
           <Box
@@ -235,7 +229,16 @@ export default function ViewRecipe() {
           >
             <Typography variant="h5" color="primary">Details</Typography>
           </Box >
-          <Paper sx={{p: 2, mt: 2}} >
+          <Paper
+            sx={{
+              p: 2,
+              mt: 2,
+              border: 1,
+              borderRadius: 1,
+              boxShadow: 4,
+              borderColor: 'backdrop.dark',
+            }}
+          >
 
             {/* TIME */}
             <Box sx={{ display: 'flex', alignItems: "center" }}>
@@ -310,35 +313,122 @@ export default function ViewRecipe() {
           }}>
             <Typography variant="h5" color="primary">Description</Typography>
           </Box >
-          <Paper sx={{mt:2, p: 2}}>
+          <Paper
+            sx={{
+              p: 2,
+              mt: 2,
+              border: 1,
+              borderRadius: 1,
+              boxShadow: 4,
+              borderColor: 'backdrop.dark',
+            }}
+          >
             <Typography>{recipeDescription}</Typography>
           </Paper>
         </Grid>
 
       </Grid>
 
-      <Grid container spacing={{ md: 5, lg: 10 }} px={{ md: 5, xl: 10 }}>
+      {/* Ingredients */}
+      <Box px={{ md: 5, xl: 20 }}>
+        <Box
+          sx={{
+            mt: 2,
+            borderBottom: 1,
+            borderColor: 'divider'
+          }}
+        >
+          <Typography variant="h5" color="primary">Ingredients</Typography>
+        </Box >
+        <Paper
+          sx={{
+            p: 2,
+            mt: 2,
+            border: 1,
+            borderRadius: 1,
+            boxShadow: 4,
+            borderColor: 'backdrop.dark',
+          }}
+        >
+          <Grid container spacing={{ md: 5, lg: 10 }}>
 
-        <Grid item xs={12}>
-          {/* Ingredients */}
-          <Box
+            <Grid item xs={12} md={6}>
+              <List sx={{m: 0, p: 0, pt: 0, pb: 0}}>
+                {col1.map(ingredient => (
+                  <>
+                    <ListItem>
+                      <ListItemText
+                        primary={ingredient.quantityText}
+                        secondary={ingredient.prepNotesText ? ingredient.prepNotesText : ' '}
+                      />
+                    </ListItem>
+                    <Divider />
+                  </>
+                )
+                )}
+              </List>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <List sx={{m: 0, p: 0, pt: 0, pb: 0}}>
+                {col2.map(ingredient => (
+                  <>
+                    <ListItem>
+                      <ListItemText
+                        primary={ingredient.quantityText}
+                        secondary={ingredient.prepNotesText ? ingredient.prepNotesText : '-'}
+                      />
+                    </ListItem>
+                    <Divider />
+                  </>
+                )
+                )}
+              </List>
+            </Grid>
+
+          </Grid>
+        </Paper>
+      </Box>
+
+
+      {/* Directions */}
+      <Box px={{ md: 5, xl: 20 }} sx={{my: 2}}>
+        <Box
+          sx={{
+            display: 'flex', 
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderBottom: 1,
+            borderColor: 'divider'
+          }}
+        >
+          <Typography variant="h5" color="primary">Directions</Typography>
+          <IconButton onClick={editRecipe} >
+          <PlayArrowIcon
+            size="large"
+
+          />
+        </IconButton>
+        </Box >
+        {orderedDirections.map((step, i) => (
+          <Paper
             sx={{
+              p: 1,
               mt: 2,
-              borderBottom: 1,
-              borderColor: 'divider'
+              border: 1,
+              borderRadius: 1,
+              boxShadow: 4,
+              borderColor: 'backdrop.dark',
+              display: 'flex',
+              flexWrap: 'nowrap',
+              alignItems: 'center'
             }}
           >
-            <Typography variant="h5" color="primary">Ingredients</Typography>
-          </Box >
-
-          {/* {columns().col1.map(index => (<Typography>{index.quantityText}</Typography>)} */}
-        </Grid>
-
-        <Grid item xs={12}>
-          {/* Directions */}
-        </Grid>
-
-      </Grid>
+            <Button variant="text" size="large" color="secondary" >Step {i + 1}</Button>
+            <Typography sx={{ ml: 1, pl: 1, borderLeft: 1, borderColor: 'divider'}}>{step.stepText}</Typography>
+          </Paper>
+        ))}
+      </Box>
     </Box>
   )
 }

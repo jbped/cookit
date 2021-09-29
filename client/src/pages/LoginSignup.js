@@ -34,8 +34,8 @@ export default function LoginSignup({ page }) {
       >
         <Grid item xs={12} sm={10} md={6} lg={4} xl={4}>
           <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
-          <Typography variant="h3" component="div" color="primary" fontWeight="bold" sx={{ flexGrow: 1, textAlign: 'center', textShadow: "1"}}>
-            Coo<Typography component="span" variant="h3" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
+          <Typography variant="h2" component="div" color="primary" fontWeight="bold" sx={{ flexGrow: 1, textAlign: 'center', textShadow: "1"}}>
+            Coo<Typography component="span" variant="h2" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
           </Typography>          
           </Link>
           {page === 'login' && <LoginForm />}
