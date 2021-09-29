@@ -52,7 +52,8 @@ const resolvers = {
         },
 
         recipe: async (parent, { _id }) => {
-            return Recipe.findOne(_id)
+            console.log(_id);
+            return Recipe.findOne({_id})
                 .populate('directions')
                 .populate('ingredients')
                 .populate('cookware')
@@ -304,48 +305,53 @@ const resolvers = {
         },
 
         //For saving a recipe to a user's savedRecipes list.
-        saveRecipe: async (parent, { _id }, context) => {
+        saveRecipe: async (parent, { recipeId }, context) => {
             if (context.user) {
-                recipe = await Recipe.findById(_id, {'_id': 0})
+                recipe = await Recipe.findById(recipeId, {'_id': 0})
                     .select('-__v')
-                    .populate('directions', '-__v',)
-                    .populate('ingredients', '-__v',)
-                    .populate('cookware', '-__v',);
+                    .populate({path: 'directions', select: '-__v'})
+                    .populate({path: 'ingredients', select: '-__v'})
+                    .populate({path: 'cookware', select: '-__v'});
                     
                 const { directions, ingredients, cookware, comments, upvotes, createdAt, forked, ...filteredRecipe } = recipe._doc;
+                const arrayData = [ directions, ingredients, cookware, comments, upvotes ];
 
-                console.log(filteredRecipe);
+                // arrayData.map(item => {
+                //     let name = item.toString();
+                //     const { _id, ...[`filtererd${name}`] } = item;
+                // });
+
                 const forkedRecipe = await Recipe.create({ ...filteredRecipe, forked: true });
                 
-                // await Promise.all(directions.map(async dir => {
-                //     console.log(dir);
-                //     const direction = await Direction.create(dir);
-                //     await Recipe.findByIdAndUpdate(
-                //         forkedRecipe._id,
-                //         { $push: { directions: direction._id } },
-                //         { new: true }
-                //     );
-                // }));
+                await Promise.all(directions.map(async dir => {
+                    console.log(dir);
+                    const direction = await Direction.create(dir);
+                    await Recipe.findByIdAndUpdate(
+                        forkedRecipe._id,
+                        { $push: { directions: direction._id } },
+                        { new: true }
+                    );
+                }));
 
-                // //For pushing the Ingredient object ids up into the ingredients array on Recipe
-                // await Promise.all(ingredients.map(async ing => {
-                //     const ingredient = await Ingredient.create(ing);
-                //     await Recipe.findByIdAndUpdate(
-                //         forkedRecipe._id,
-                //         { $push: { ingredients: ingredient._id } },
-                //         { new: true }
-                //     );
-                // }));
+                //For pushing the Ingredient object ids up into the ingredients array on Recipe
+                await Promise.all(ingredients.map(async ing => {
+                    const ingredient = await Ingredient.create(ing);
+                    await Recipe.findByIdAndUpdate(
+                        forkedRecipe._id,
+                        { $push: { ingredients: ingredient._id } },
+                        { new: true }
+                    );
+                }));
 
-                // //For pushing the Cookware object ids up into the cookware array on Recipe
-                // await Promise.all(cookware.map(async ware => {
-                //     const cookware = await Cookware.create(ware);
-                //     await Recipe.findByIdAndUpdate(
-                //         forkedRecipe._id,
-                //         { $push: { cookware: cookware._id } },
-                //         { new: true }
-                //     );
-                // }));
+                //For pushing the Cookware object ids up into the cookware array on Recipe
+                await Promise.all(cookware.map(async ware => {
+                    const cookware = await Cookware.create(ware);
+                    await Recipe.findByIdAndUpdate(
+                        forkedRecipe._id,
+                        { $push: { cookware: cookware._id } },
+                        { new: true }
+                    );
+                }));
 
                 return forkedRecipe;
             }
@@ -399,7 +405,15 @@ const resolvers = {
                 return recipe;
             }
             throw new AuthenticationError('You need to be logged in!');
-        }
+        },
+
+        //Direction mutations
+
+        // addDirection: async (parent, { recipeId, stepText, ste }, context) => {
+        //     if (context.user) {
+        //         const direction = await Direction.create()
+        //     }
+        // }
     }
 };
 

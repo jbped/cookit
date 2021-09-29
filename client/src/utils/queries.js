@@ -9,224 +9,208 @@ import { gql } from '@apollo/client'
 // Returns just id username and email
 export const QUERY_USERS = gql`
     query users {
-    users {
-        _id
-        username
-        email
-    }
+        users {
+            _id
+            username
+            email
+        }
     }
 `;
 
 // Returns everything for a specific user
 export const QUERY_USER =gql`
     query user ($Username: String!) {
-    user(username: $Username) {
-        _id
-        email
-        username
-        groceryList {
-        _id
-        ingredientName
-        measurement
-        quantity
-        preparationNotes
-        }
-        recipeKit {
-        _id
-        creator
-        public
-        createdAt
-        recipeTitle
-        recipeDescription
-        type
-        season
-        difficulty
-        servings
-        cookTime
-        steps {
+        user(username: $Username) {
             _id
-            stepText
-            stepNumber
-        }
-        ingredients {
-            _id
-            ingredientName
-            measurement
-            quantity
-            preparationNotes
-        }
-        cookware {
-            _id
-            cookwareName
-        }
-        comments {
-            _id
-            commentText
-            createdAt
+            email
             username
-            upvotes {
-            _id
-            username
+            groceryList {
+                _id
+                ingredientName
+                measurement
+                quantity
+                preparationNotes
             }
-        }
-        upvotes {
-            _id
-            username
-        }
-        }
-        savedRecipes {
-        _id
-        public
-        creator
-        createdAt
-        recipeTitle
-        recipeDescription
-        type
-        season
-        difficulty
-        servings
-        cookTime
-        steps {
-            _id
-            stepText
-            stepNumber
-        }
-        ingredients {
-            _id
-            ingredientName
-            measurement
-            quantity
-            preparationNotes
-        }
-        cookware {
-            _id
-            cookwareName
-        }
-        comments {
-            _id
-            commentText
-            createdAt
-            username
-            upvotes {
-            username
-            _id
+            recipeKit {
+                _id
+                creator
+                public
+                createdAt
+                recipeTitle
+                recipeDescription
+                servings
+                cookTime
+                steps {
+                    _id
+                    stepText
+                    stepNumber
+                }
+                ingredients {
+                    _id
+                    ingredientName
+                    measurement
+                    quantity
+                    preparationNotes
+                }
+                cookware {
+                    _id
+                    cookwareName
+                }
+                comments {
+                    _id
+                    commentText
+                    createdAt
+                    username
+                    upvotes {
+                    _id
+                    username
+                    }
+                }
+                upvotes {
+                    _id
+                    username
+                }
             }
-        }
-        upvotes {
-            _id
-            username
-        }
+            savedRecipes {
+                _id
+                public
+                creator
+                createdAt
+                recipeTitle
+                recipeDescription
+                servings
+                cookTime
+                steps {
+                    _id
+                    stepText
+                    stepNumber
+                }
+                ingredients {
+                    _id
+                    ingredientName
+                    measurement
+                    quantity
+                    preparationNotes
+                }
+                cookware {
+                    _id
+                    cookwareName
+                }
+                comments {
+                    _id
+                    commentText
+                    createdAt
+                    username
+                    upvotes {
+                    username
+                    _id
+                    }
+                }
+                upvotes {
+                    _id
+                    username
+                }
+            }
         }
     }
-
-}
-
-    
 `;
 
 // All info
 export const QUERY_ME = gql`
-    {
+    query me {
         me {
             _id
-            username
             email
+            username
             groceryList {
-            _id
-            ingredientName
-            measurement
-            quantity
-            preparationNotes
+                _id
+                ingredientName
+                measurement
+                quantity
+                preparationNotes
             }
             recipeKit {
-            _id
-            public
-            creator
-            createdAt
-            recipeTitle
-            recipeDescription
-            type
-            season
-            difficulty
-            servings
-            cookTime
-            steps {
                 _id
-                stepText
-                stepNumber
-            }
-            ingredients {
-                _id
-                measurement
-                ingredientName
-                quantity
-                preparationNotes
-            }
-            cookware {
-                _id
-                cookwareName
-            }
-            comments {
-                _id
-                commentText
+                creator
+                public
                 createdAt
-                username
-                upvotes {
-                _id
-                username
+                recipeTitle
+                recipeDescription
+                servings
+                cookTime
+                steps {
+                    _id
+                    stepText
+                    stepNumber
                 }
-            }
-            upvotes {
-                _id
-                username
-            }
+                ingredients {
+                    _id
+                    ingredientName
+                    measurement
+                    quantity
+                    preparationNotes
+                }
+                cookware {
+                    _id
+                    cookwareName
+                }
+                comments {
+                    _id
+                    commentText
+                    createdAt
+                    username
+                    upvotes {
+                    _id
+                    username
+                    }
+                }
+                upvotes {
+                    _id
+                    username
+                }
             }
             savedRecipes {
-            _id
-            public
-            creator
-            createdAt
-            recipeTitle
-            recipeDescription
-            type
-            season
-            difficulty
-            servings
-            cookTime
-            steps {
                 _id
-                stepText
-                stepNumber
-            }
-            ingredients {
-                _id
-                ingredientName
-                measurement
-                quantity
-                preparationNotes
-            }
-            cookware {
-                _id
-                cookwareName
-            }
-            comments {
-                _id
+                public
+                creator
                 createdAt
-            commentText
-                username
-                upvotes {
-                _id
-                username
+                recipeTitle
+                recipeDescription
+                servings
+                cookTime
+                steps {
+                    _id
+                    stepText
+                    stepNumber
                 }
-            }
-            upvotes {
-                _id
-                username
-            }
+                ingredients {
+                    _id
+                    ingredientName
+                    measurement
+                    quantity
+                    preparationNotes
+                }
+                cookware {
+                    _id
+                    cookwareName
+                }
+                comments {
+                    _id
+                    commentText
+                    createdAt
+                    username
+                    upvotes {
+                    username
+                    _id
+                    }
+                }
+                upvotes {
+                    _id
+                    username
+                }
             }
         }
     }
-    
 `;
 
 // Basic info
@@ -243,50 +227,84 @@ export const QUERY_ME_BASIC = gql`
 // All recipes
 export const QUERY_RECIPES =gql`
     query recipes {
-    recipes {
-        _id
-        public
-        creator
-        createdAt
-        recipeTitle
-        recipeDescription
-        type
-        season
-        difficulty
-        servings
-        cookTime
-        steps {
-        _id
-        stepText
-        stepNumber
-        }
-        ingredients {
-        _id
-        ingredientName
-        measurement
-        quantity
-        preparationNotes
-        }
-        cookware {
-        _id
-        cookwareName
-        }
-        comments {
-        _id
-        commentText
-        createdAt
-        username
-        upvotes {
+        recipes {
             _id
-            username
-        }
-        }
-        upvotes {
-        _id
-        username
+            public
+            creator
+            createdAt
+            recipeTitle
+            recipeDescription
+            type
+            season
+            difficulty
+            servings
+            cookTime
+            steps {
+                _id
+                stepText
+                stepNumber
+            }
+            ingredients {
+                _id
+                ingredientName
+                measurement
+                quantity
+                preparationNotes
+            }
+            cookware {
+                _id
+                cookwareName
+            }
+            comments {
+                _id
+                commentText
+                createdAt
+                username
+            upvotes {
+                _id
+                username
+            }
+            }
+            upvotes {
+                _id
+                username
+            }
         }
     }
-}`;
+`;
+
+export const QUERY_RECIPE = gql`
+    query getRecipe {
+        recipe {
+            _id
+            public
+            creator
+            createdAt
+            recipeTitle
+            recipeDescription
+            servings
+            cookTime
+            forked
+            directions {
+                _id
+                stepText
+                stepId
+            }
+            ingredients {
+                _id
+                measurement
+                ingredientName
+                quantity
+                preparationNotes
+            }
+            cookware {
+                cookwareName
+            }
+            directionsOrder
+            ingredientsOrder
+        }
+    }
+`;
 
 export const QUERY_RECIPES_SHORT =gql`
     query Query {
@@ -316,9 +334,9 @@ export const QUERY_RECIPE_BASIC =gql`
             servings
             cookTime
             directions {
-            _id
-            stepText
-            stepId
+                _id
+                stepText
+                stepId
             }
         }
     }
