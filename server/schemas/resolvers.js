@@ -1,5 +1,6 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User, Ingredient, Recipe, Direction, Cookware, Comment, Upvote } = require('../models');
+const Mongoose = require('mongoose');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -51,7 +52,8 @@ const resolvers = {
         },
 
         recipe: async (parent, { _id }) => {
-            return Recipe.findOne(_id)
+            console.log(_id);
+            return Recipe.findOne({_id})
                 .populate('directions')
                 .populate('ingredients')
                 .populate('cookware')
@@ -303,24 +305,26 @@ const resolvers = {
         },
 
         //For saving a recipe to a user's savedRecipes list.
-        saveRecipe: async (parent, { _id }, context) => {
+        saveRecipe: async (parent, { recipeId }, context) => {
             if (context.user) {
-                const recipe = await Recipe.findById(_id)
-                    .select('-_id -__v')
-                    .populate('directions', '-_id -__v')
-                    .populate('ingredients', '-_id -__v')
-                    .populate('cookware', '-_id -__v');
-                
-                console.log(recipe);
+                recipe = await Recipe.findById(recipeId, {'_id': 0})
+                    .select('-__v')
+                    .populate({path: 'directions', select: '-__v'})
+                    .populate({path: 'ingredients', select: '-__v'})
+                    .populate({path: 'cookware', select: '-__v'});
+                    
+                const { directions, ingredients, cookware, comments, upvotes, createdAt, forked, ...filteredRecipe } = recipe._doc;
+                const arrayData = [ directions, ingredients, cookware, comments, upvotes ];
 
-                const { directions, ingredients, cookware, ...filteredRecipe } = recipe;
+                // arrayData.map(item => {
+                //     let name = item.toString();
+                //     const { _id, ...[`filtererd${name}`] } = item;
+                // });
 
-                const forkedRecipe = await Recipe.create(filteredRecipe._doc);
-
-                const forkedRecipeId = forkedRecipe._id;
-                console.log(new ObjectId(forkedRecipeId));
+                const forkedRecipe = await Recipe.create({ ...filteredRecipe, forked: true });
                 
                 await Promise.all(directions.map(async dir => {
+                    console.log(dir);
                     const direction = await Direction.create(dir);
                     await Recipe.findByIdAndUpdate(
                         forkedRecipe._id,
@@ -401,7 +405,15 @@ const resolvers = {
                 return recipe;
             }
             throw new AuthenticationError('You need to be logged in!');
-        }
+        },
+
+        //Direction mutations
+
+        // addDirection: async (parent, { recipeId, stepText, ste }, context) => {
+        //     if (context.user) {
+        //         const direction = await Direction.create()
+        //     }
+        // }
     }
 };
 

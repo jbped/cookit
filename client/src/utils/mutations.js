@@ -1,7 +1,5 @@
 import { gql } from '@apollo/client'
 
-
-
 export const ADD_USER = gql`
     mutation AddUser($Username: String!, $Email: String!, $Password: String!) {
         addUser(username: $Username, email: $Email, password: $Password) {
@@ -20,6 +18,18 @@ export const LOGIN = gql`
             user {
             _id
             }
+        }
+    }
+`;
+
+//Ingredient
+export const ADD_INGREDIENT = gql`
+    mutation addIngredient($ingredientName: String!, $measurement: String, $quantity: Int!, $preparationNotes: String) {
+        addIngredient(ingredientName: $ingredientName, measurement: $measurement, quantity: $quantity, preparationNotes: $preparationNotes) {
+            ingredientName
+            measurement
+            quantity
+            preparationNotes
         }
     }
 `;
@@ -45,27 +55,30 @@ export const ADD_RECIPE = gql`
                 quantity
                 preparationNotes
                 ingredientId
-            },
+            }
             directionsOrder
             ingredientOrder
         }
     }
 `;
 
-export const SAVE_RECIPE = gql`
-    mutation saveRecipe($_id: ID) {
-        saveRecipe(_id: $_id) {
-            _id
-        }
-    }
-`;
+//NOT FUNCTIONAL
+// export const SAVE_RECIPE = gql`
+//     mutation saveRecipe($_id: ID) {
+//         saveRecipe(_id: $_id) {
+//             _id
+//         }
+//     }
+// `;
 
 export const DELETE_RECIPE = gql`
     mutation deleteRecipe($_id: ID) {
         deleteRecipe(_id: $_id) {
-        _id
-        recipeTitle
-        recipeDescription
+            _id
+            recipeTitle
+            recipeDescription
         }
     }
 `;
+
+//Direction

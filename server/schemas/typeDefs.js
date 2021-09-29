@@ -30,7 +30,8 @@ const typeDefs = gql`
         season: String
         difficulty: Int
         servings: Int
-        cookTime: String
+        cookTime: String,
+        forked: Boolean,
         directions: [Direction]
         ingredients: [Ingredient]
         cookware: [Cookware]
@@ -77,7 +78,7 @@ const typeDefs = gql`
         #Recipe-
         recipes: [Recipe]
         recipesShort: [Recipe]
-        recipe: Recipe
+        recipe(_id: ID!): Recipe
         userUpvotedRecipes: [Recipe]
     }
 
@@ -99,8 +100,10 @@ const typeDefs = gql`
         deleteUpvoteComment(_id: ID!, commentId: ID!): Upvote
         #Recipe-
         addRecipe(public: Boolean!, creator: String, recipeTitle: String!, recipeDescription: String, type: String, season: String, difficulty: Int, servings: Int cookTime: String, directions: [directionInput], ingredients: [ingredientInput], cookware: [cookwareInput], directionsOrder: [String], ingredientsOrder: [String]): Recipe
-        saveRecipe(_id: ID): Recipe
+        saveRecipe(recipeId: ID): Recipe
         deleteRecipe(_id: ID): Recipe
+        #Direction-
+        addDirection(recipeId: ID, stepText: String!, stepId: String!): Direction
     }
 
     type Auth {
