@@ -35,6 +35,7 @@ import {
   bindHover,
 } from 'material-ui-popup-state/hooks'
 import HoverPopover from 'material-ui-popup-state/HoverPopover'
+import Loader from '../components/Loader'
 
 
 // Icons....
@@ -150,9 +151,9 @@ export default function ViewRecipe() {
   console.log("this is the recipe returned", recipe)
 
   if (loading) {
-    return <div>Loading...</div>
+    return <Loader></Loader>
   }
-  
+
   // Destructuring of the keys in the recipe object received from the database
   const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = recipe
 
@@ -162,7 +163,7 @@ export default function ViewRecipe() {
   let editedDateArr = []
   let col1 = []
   let col2 = []
-  if (!loading && data.recipe != undefined) {
+  if (!loading && data.recipe !== undefined) {
   // Splits the createdAt string into to indexes DD/MM/YYYY and time
   editedDateArr = createdAt.split(' at ');
 
