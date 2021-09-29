@@ -25,6 +25,7 @@ import DirectionsSection from '../components/NewRecipeComponents/DirectionsSecti
 export default function NewRecipe() {
   const recipeForm = useSelector(state => state.global.newRecipe)
   const dispatch = useDispatch();
+  console.log(recipeForm)
 
   return (
     <Box component="form">

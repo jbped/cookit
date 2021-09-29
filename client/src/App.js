@@ -39,7 +39,7 @@ function App() {
           }}>
             <Switch>
               <Route exact path="/new-recipe" component={NewRecipe}></Route>
-              <Route exact path="/recipe" component={ViewRecipe}></Route>
+              <Route path="/recipe/:recipeId/" component={ViewRecipe}></Route>
               <Route exact path="/my-kit" component={MyKit}></Route>
               <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
               <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>

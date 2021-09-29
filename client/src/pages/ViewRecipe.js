@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { useQuery } from '@apollo/client';
+import { QUERY_RECIPE } from '../utils/queries'
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
@@ -133,14 +137,36 @@ export default function ViewRecipe() {
     ]
   }
 
-  // Destructuring of the keys in the recipe object received from the database
-  const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = receivedData
+  const params = useParams();
+  console.log("params", params)
+  const recipeId = params.recipeId
+  console.log("recipeId", recipeId)
 
+  const { loading, data } = useQuery(QUERY_RECIPE, {
+    variables: { recipeId: recipeId }
+  });
+  console.log("this is the data returned", data)
+  const recipe = data?.recipe || {};
+  console.log("this is the recipe returned", recipe)
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+  // Destructuring of the keys in the recipe object received from the database
+  const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = recipe
+
+
+  let orderedIngredients = [];
+  let orderedDirections = []
+  let editedDateArr = []
+  let col1 = []
+  let col2 = []
+  if (!loading) {
   // Splits the createdAt string into to indexes DD/MM/YYYY and time
-  const editedDateArr = createdAt.split(' at ');
+  editedDateArr = createdAt.split(' at ');
 
   // Create new array of ingredients that is ordered appropriately by the ingredientsOrder
-  const orderedIngredients = [];
+  
   ingredientsOrder.forEach(id => {
     ingredients.filter(ingredient => {
       if (ingredient.ingredientId === id) {
@@ -158,7 +184,7 @@ export default function ViewRecipe() {
 
 
   // Convert directions array to an object organized by the directionsOrder
-  const orderedDirections = []
+  
   directionsOrder.forEach(id => {
     directions.filter(direction => {
       if (direction.stepId === id) {
@@ -170,20 +196,20 @@ export default function ViewRecipe() {
   });
 
   const mid = Math.ceil(orderedIngredients.length / 2)
-  const col1 = orderedIngredients.slice(0, mid)
-  const col2 = orderedIngredients.slice(mid, orderedIngredients.length)
+  col1 = orderedIngredients.slice(0, mid)
+  col2 = orderedIngredients.slice(mid, orderedIngredients.length)
+  }
+  // // state for the time hover popover effect
+  // const timePopState = usePopupState({
+  //   variant: 'popover',
+  //   popupId: 'timePopover',
+  // });
 
-  // state for the time hover popover effect
-  const timePopState = usePopupState({
-    variant: 'popover',
-    popupId: 'timePopover',
-  });
-
-  // state for the servings hover popover effect
-  const servingPopState = usePopupState({
-    variant: 'popover',
-    popupId: 'servingsPopover',
-  });
+  // // state for the servings hover popover effect
+  // const servingPopState = usePopupState({
+  //   variant: 'popover',
+  //   popupId: 'servingsPopover',
+  // });
 
   const editRecipe = () => {
 
@@ -284,11 +310,11 @@ export default function ViewRecipe() {
             <Box sx={{ display: 'flex', alignItems: "center" }}>
               <MdAccessAlarm
                 size={25}
-                {...bindTrigger(timePopState)}
-                {...bindHover(timePopState)}
+                // {...bindTrigger(timePopState)}
+                // {...bindHover(timePopState)}
               />
 
-              <HoverPopover
+              {/* <HoverPopover
                 {...bindPopover(timePopState)}
                 anchorOrigin={{
                   vertical: 'top',
@@ -302,7 +328,7 @@ export default function ViewRecipe() {
                 <div>
                   <p sx={{ margin: "2px 5px" }}>Total time to prepare, cook, and serve</p>
                 </div>
-              </HoverPopover>
+              </HoverPopover> */}
 
               <Typography sx={{ ml: 1 }}>
                 {cookTime}
@@ -313,11 +339,11 @@ export default function ViewRecipe() {
             <Box sx={{ mt: 2, display: 'flex', alignItems: "center" }}>
               <BsPeople
                 size={25}
-                {...bindTrigger(servingPopState)}
-                {...bindHover(servingPopState)}
+                // {...bindTrigger(servingPopState)}
+                // {...bindHover(servingPopState)}
               />
 
-              <HoverPopover
+              {/* <HoverPopover
                 {...bindPopover(servingPopState)}
                 anchorOrigin={{
                   vertical: 'top',
@@ -331,7 +357,7 @@ export default function ViewRecipe() {
                 <div>
                   <p sx={{ margin: "2px 5px" }}>Servings</p>
                 </div>
-              </HoverPopover>
+              </HoverPopover> */}
 
               <Typography sx={{ ml: 1 }}>
                 {servings} {servings === 1 ? 'person' : 'people'}

@@ -36,8 +36,8 @@ export const ADD_INGREDIENT = gql`
 
 //Recipe
 export const ADD_RECIPE = gql`
-    mutation addRecipe($public: Boolean!, $recipeTitle: String!, $recipeDescription: String, $type: String!, $season: String!, $difficulty: Int!, $servings: Int!, $cookTime: String!, $directions: [directionInput], $ingredients: [ingredientInput], $cookware: [cookwareInput], $directionsOrder: [String], $ingredientsOrder: [String]) {
-        addRecipe(public: $public, recipeTitle: $recipeTitle, recipeDescription: $recipeDescription, servings: $servings, cookTime: $cookTime, directions: $directions, ingredients: $ingredients, directionsOrder: $directionsOrder, ingredientsOrder: $ingredientsOrder) {
+    mutation addRecipe($isPublic: Boolean!, $recipeTitle: String!, $recipeDescription: String, $servings: Int!, $cookTime: String!, $directions: [directionInput], $ingredients: [ingredientInput], $directionsOrder: [String], $ingredientsOrder: [String]) {
+        addRecipe(isPublic: $isPublic, recipeTitle: $recipeTitle, recipeDescription: $recipeDescription, servings: $servings, cookTime: $cookTime, directions: $directions, ingredients: $ingredients, directionsOrder: $directionsOrder, ingredientsOrder: $ingredientsOrder) {
             _id
             public
             creator
@@ -57,7 +57,7 @@ export const ADD_RECIPE = gql`
                 ingredientId
             }
             directionsOrder
-            ingredientOrder
+            ingredientsOrder
         }
     }
 `;
