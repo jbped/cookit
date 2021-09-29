@@ -6,6 +6,7 @@ import { gql } from '@apollo/client'
 // }
 
 // This is basic for now.
+// Returns just id username and email
 export const QUERY_USERS = gql`
     query users {
     users {
@@ -16,12 +17,13 @@ export const QUERY_USERS = gql`
     }
 `;
 
+// Returns everything for a specific user
 export const QUERY_USER =gql`
-    query user($Username: String!) {
+    query user ($Username: String!) {
     user(username: $Username) {
         _id
-        username
         email
+        username
         groceryList {
         _id
         ingredientName
@@ -31,34 +33,64 @@ export const QUERY_USER =gql`
         }
         recipeKit {
         _id
-        public
         creator
+        public
         createdAt
         recipeTitle
+        recipeDescription
         type
         season
         difficulty
         servings
         cookTime
+        steps {
+            _id
+            stepText
+            stepNumber
+        }
         ingredients {
             _id
             ingredientName
             measurement
             quantity
             preparationNotes
+        }
+        cookware {
+            _id
+            cookwareName
+        }
+        comments {
+            _id
+            commentText
+            createdAt
+            username
+            upvotes {
+            _id
+            username
+            }
+        }
+        upvotes {
+            _id
+            username
         }
         }
         savedRecipes {
         _id
         public
-        createdAt
         creator
+        createdAt
         recipeTitle
+        recipeDescription
         type
         season
         difficulty
         servings
         cookTime
+        steps {
+            _id
+            stepText
+            stepNumber
+        }
         ingredients {
             _id
             ingredientName
@@ -66,13 +98,33 @@ export const QUERY_USER =gql`
             quantity
             preparationNotes
         }
+        cookware {
+            _id
+            cookwareName
+        }
+        comments {
+            _id
+            commentText
+            createdAt
+            username
+            upvotes {
+            username
+            _id
+            }
+        }
+        upvotes {
+            _id
+            username
+        }
         }
     }
+
 }
 
     
 `;
 
+// All info
 export const QUERY_ME = gql`
     {
         me {
@@ -92,17 +144,41 @@ export const QUERY_ME = gql`
             creator
             createdAt
             recipeTitle
+            recipeDescription
             type
             season
             difficulty
             servings
             cookTime
+            steps {
+                _id
+                stepText
+                stepNumber
+            }
             ingredients {
                 _id
-                ingredientName
                 measurement
+                ingredientName
                 quantity
                 preparationNotes
+            }
+            cookware {
+                _id
+                cookwareName
+            }
+            comments {
+                _id
+                commentText
+                createdAt
+                username
+                upvotes {
+                _id
+                username
+                }
+            }
+            upvotes {
+                _id
+                username
             }
             }
             savedRecipes {
@@ -111,11 +187,17 @@ export const QUERY_ME = gql`
             creator
             createdAt
             recipeTitle
+            recipeDescription
             type
             season
             difficulty
             servings
             cookTime
+            steps {
+                _id
+                stepText
+                stepNumber
+            }
             ingredients {
                 _id
                 ingredientName
@@ -123,12 +205,31 @@ export const QUERY_ME = gql`
                 quantity
                 preparationNotes
             }
+            cookware {
+                _id
+                cookwareName
+            }
+            comments {
+                _id
+                createdAt
+            commentText
+                username
+                upvotes {
+                _id
+                username
+                }
+            }
+            upvotes {
+                _id
+                username
+            }
             }
         }
     }
     
 `;
 
+// Basic info
 export const QUERY_ME_BASIC = gql`
     {
         me {
@@ -138,6 +239,54 @@ export const QUERY_ME_BASIC = gql`
         }
     }
 `;
+
+// All recipes
+export const QUERY_RECIPES =gql`
+    query recipes {
+    recipes {
+        _id
+        public
+        creator
+        createdAt
+        recipeTitle
+        recipeDescription
+        type
+        season
+        difficulty
+        servings
+        cookTime
+        steps {
+        _id
+        stepText
+        stepNumber
+        }
+        ingredients {
+        _id
+        ingredientName
+        measurement
+        quantity
+        preparationNotes
+        }
+        cookware {
+        _id
+        cookwareName
+        }
+        comments {
+        _id
+        commentText
+        createdAt
+        username
+        upvotes {
+            _id
+            username
+        }
+        }
+        upvotes {
+        _id
+        username
+        }
+    }
+}`;
 
 export const QUERY_RECIPES_SHORT =gql`
     query Query {
@@ -152,6 +301,56 @@ export const QUERY_RECIPES_SHORT =gql`
             ingredients {
                 ingredientName
             }
+        }
+    }
+`;
+
+export const QUERY_RECIPE_BASIC =gql`
+    query Query ($_id: ID!) {
+        recipes (_id: $_id) {
+            _id
+            public
+            creator
+            createdAt
+            recipeTitle
+            servings
+            cookTime
+            directions {
+            _id
+            stepText
+            stepId
+            }
+        }
+    }
+`;
+
+// Not working right now
+// export const QUERY_RECIPE = gql`
+
+// `;
+
+// all ingredients
+export const QUERY_INGREDIENTS = gql`
+    query ingredients {
+        ingredients {
+            _id
+            ingredientName
+            measurement
+            quantity
+            preparationNotes
+        }
+    }
+`;
+
+// Ingredient by name
+export const QUERY_INGREDIENT = gql`
+    query ingredient($IngredientName: String!) {
+        ingredient(ingredientName: $IngredientName) {
+            _id
+            ingredientName
+            measurement
+            quantity
+            preparationNotes
         }
     }
 `;
