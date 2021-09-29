@@ -15,12 +15,12 @@ export const initialState = {
       ingredientsCol: {
         id: 'ingredientsCol',
         title: 'Ingredients',
-        itemIds: []
+        itemIds: [] // ingredientsOrder in DB
       },
       directionsCol: {
         id: 'directionsCol',
         title: 'Directions',
-        itemIds: []
+        itemIds: [] //directionsOrder in DB
       },
       deleteIngCol: {
         id: 'deleteIngCol',
@@ -61,10 +61,10 @@ export const globalSlice = createSlice({
     currentRecipe: (state, action) => {
       state.currentRecipe = action.payload;
     },
-    easyCookView: (state) => {
+    toggleEasyCookView: (state) => {
       state.easyCookView = !state.easyCookView;
     },
-    easyCookStep: (state, action) => {
+    setEasyCookStep: (state, action) => {
       state.easyCookStep = action.payload
     },
     myKitView: (state) => {
@@ -82,8 +82,8 @@ export const {
   toggleDarkMode, 
   newRecipe, 
   currentRecipe, 
-  easyCookView, 
-  easyCookStep, 
+  toggleEasyCookView, 
+  setEasyCookStep, 
   myKitView,
   sideNavVisible } = actions;
 
