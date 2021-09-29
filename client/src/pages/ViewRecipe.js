@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
-import { currentRecipe } from '../utils/globalSlice';
+import { setEasyCookStep, toggleEasyCookView } from '../utils/globalSlice';
 
 // MUI Components....
 import {
@@ -16,6 +16,11 @@ import {
   ListItemText,
   Paper,
   Divider,
+  Dialog,
+  Slide,
+  AppBar,
+  Toolbar,
+  MobileStepper
 } from '@mui/material'
 
 // Other Components/Hooks.... 
@@ -27,6 +32,7 @@ import {
 } from 'material-ui-popup-state/hooks'
 import HoverPopover from 'material-ui-popup-state/HoverPopover'
 
+
 // Icons....
 import {
   MdEdit,
@@ -34,12 +40,23 @@ import {
   MdAccessAlarm,
 } from "react-icons/md";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import CloseIcon from '@mui/icons-material/Close';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 import {
   BsPeople
 } from "react-icons/bs";
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default function ViewRecipe() {
+  const easyCookStep = useSelector(state => state.global.easyCookStep);
+  const easyCookView = useSelector(state => state.global.easyCookView);
+  const dispatch = useDispatch();
+
   const receivedData = {
     _id: "614fe7e963526de392b539b5",
     isPublic: true,
@@ -171,6 +188,29 @@ export default function ViewRecipe() {
   const editRecipe = () => {
 
   }
+
+  const openStep = e => {
+    const selectedStep = e.target.dataset.stepIndex
+    dispatch(setEasyCookStep(selectedStep))
+    dispatch(toggleEasyCookView())
+    console.log(easyCookStep)
+  }
+
+  const handleOpen = e => {
+    dispatch(toggleEasyCookView())
+  }
+
+  const handleClose = e => {
+    dispatch(toggleEasyCookView())
+  }
+
+  const handleNext = () => {
+    dispatch(setEasyCookStep(easyCookStep + 1));
+  };
+
+  const handleBack = () => {
+    dispatch(setEasyCookStep(easyCookStep - 1));
+  };
 
   return (
     <Box>
@@ -353,9 +393,9 @@ export default function ViewRecipe() {
           <Grid container spacing={{ md: 5, lg: 10 }}>
 
             <Grid item xs={12} md={6}>
-              <List sx={{m: 0, p: 0, pt: 0, pb: 0}}>
+              <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
                 {col1.map(ingredient => (
-                  <>
+                  <Box key={`${ingredient.ingredientId}-box`}>
                     <ListItem>
                       <ListItemText
                         primary={ingredient.quantityText}
@@ -363,16 +403,16 @@ export default function ViewRecipe() {
                       />
                     </ListItem>
                     <Divider />
-                  </>
+                  </Box>
                 )
                 )}
               </List>
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <List sx={{m: 0, p: 0, pt: 0, pb: 0}}>
+              <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
                 {col2.map(ingredient => (
-                  <>
+                  <Box key={`${ingredient.ingredientId}-box`}>
                     <ListItem>
                       <ListItemText
                         primary={ingredient.quantityText}
@@ -380,7 +420,7 @@ export default function ViewRecipe() {
                       />
                     </ListItem>
                     <Divider />
-                  </>
+                  </Box>
                 )
                 )}
               </List>
@@ -392,10 +432,10 @@ export default function ViewRecipe() {
 
 
       {/* Directions */}
-      <Box px={{ md: 5, xl: 20 }} sx={{my: 2}}>
+      <Box px={{ md: 5, xl: 20 }} sx={{ my: 2 }}>
         <Box
           sx={{
-            display: 'flex', 
+            display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             borderBottom: 1,
@@ -403,15 +443,15 @@ export default function ViewRecipe() {
           }}
         >
           <Typography variant="h5" color="primary">Directions</Typography>
-          <IconButton onClick={editRecipe} >
-          <PlayArrowIcon
-            size="large"
-
-          />
-        </IconButton>
+          <IconButton onClick={handleOpen} >
+            <PlayArrowIcon
+              size="large"
+            />
+          </IconButton>
         </Box >
         {orderedDirections.map((step, i) => (
           <Paper
+            key={`paper-${i}`}
             sx={{
               p: 1,
               mt: 2,
@@ -424,11 +464,75 @@ export default function ViewRecipe() {
               alignItems: 'center'
             }}
           >
-            <Button variant="text" size="large" color="secondary" >Step {i + 1}</Button>
-            <Typography sx={{ ml: 1, pl: 1, borderLeft: 1, borderColor: 'divider'}}>{step.stepText}</Typography>
+            <Button variant="text" id={`step-${i + 1}`} data-step-index={i} size="large" color="secondary" onClick={openStep}>Step {i + 1}</Button>
+            <Typography sx={{ ml: 1, pl: 1, borderLeft: 1, borderColor: 'divider' }}>{step.stepText}</Typography>
           </Paper>
         ))}
       </Box>
+      <Dialog
+        fullScreen
+        open={easyCookView}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+        <AppBar sx={{ position: 'relative' }}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleClose}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              {recipeTitle}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Box sx={{ flexGrow: 1, display: 'flex', flexFlow: 'column', }}>
+          <Paper
+            square
+            elevation={0}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              height: 50,
+              pl: 2,
+              bgcolor: 'background.default',
+            }}
+          >
+            <Typography>{`Step ${parseInt(easyCookStep) + 1}`}</Typography>
+          </Paper>
+          <Box px={{xs: 1, md: '20%', xl: '25%'}}sx={{ width: '100%', my: 'auto', textAlign: 'center'}}>
+            <Typography variant="h4">
+              {orderedDirections[easyCookStep].stepText}
+            </Typography>
+          </Box>
+          <MobileStepper
+            variant="text"
+            steps={orderedDirections.length}
+            position="static"
+            activeStep={easyCookStep}
+            nextButton={
+              <Button
+                size="small"
+                onClick={handleNext}
+                disabled={easyCookStep === orderedDirections.length - 1}
+              >
+                Next
+                <KeyboardArrowRight />
+              </Button>
+            }
+            backButton={
+              <Button size="small" onClick={handleBack} disabled={easyCookStep === 0}>
+                <KeyboardArrowLeft />
+                Back
+              </Button>
+            }
+          />
+        </Box>
+      </Dialog>
     </Box>
   )
 }
