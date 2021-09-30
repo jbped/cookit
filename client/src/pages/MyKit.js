@@ -11,16 +11,14 @@ import Auth from "../utils/auth.js";
 
 // Import MUI components
 import {
-  Container,
   Grid,
   Box,
-  Typography,
   Divider,
-  CardHeader,
-  CardContent,
-  CardActions,
-  Collapse,
-  Paper
+  Typography,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -58,45 +56,79 @@ export default function MyKit() {
           >
             My Kit
           </Typography>
-        </Box>
-      <Box
-      sx={{
-        margin: 0,
-        position: 'fixed',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-        display: 'flex',
-        justifyContent: 'around',
-        alignItems: 'center'
-      }}
+      </Box>
+      <Box row
+        mx={{ xs: 0, md: 5, xl: 20 }}
+        sx={{
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
       >
-        <Grid container
-          spacing={{ md: 5, lg: 10 }}
-          px={{ md: 5, xl: 20 }}
+        <Box px={{ md: 5, xl: 20 }}>
+        <Box
+          sx={{
+            mt: 2,
+            borderBottom: 1,
+            borderColor: 'divider'
+          }}
         >
-          <Grid item
-            xs={12} md={6}
-          >
-          <Box
-            sx={{
-              mt: 2,
-              borderBottom: 1,
-              borderColor: 'divider'
-            }}
-          >
-            <Typography variant="h5" color="primary">Your Recipes</Typography>
-          </Box >
-              <Typography sx={{ ml: 1 }}>
-                  Recipe Card / Recipe Row components should go here.
-            </Typography>
-            <Box>
-              {/* <RecipeCard/> */}
-              {/* <RecipeListItem/> */}
-            </Box>
-        </Grid>
-          <Grid item xs={12} md={6}>
+          <Typography variant="h5" color="primary">Your Recipes</Typography>
+        </Box >
+        <Paper
+          sx={{
+            p: 2,
+            mt: 2,
+            border: 1,
+            borderRadius: 1,
+            boxShadow: 4,
+            borderColor: 'backdrop.dark',
+          }}
+        >
+          <Grid container spacing={{ md: 5, lg: 10 }}>
+
+            <Grid item xs={12} md={6}>
+              <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
+                  <Box key={`-box`}>
+                    <ListItem>
+                      <ListItemText
+                        // primary={}
+                        // secondary={ ? : ' '}
+                      />
+                    </ListItem>
+                    <Divider />
+                  </Box>
+              </List>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
+                  <Box key={`-box`}>
+                    <ListItem>
+                      <ListItemText
+                        // primary={}
+                        // secondary={ ?  : '-'}
+                      />
+                    </ListItem>
+                    <Divider />
+                  </Box>
+              </List>
+            </Grid>
+
+          </Grid>
+        </Paper>
+      </Box>
+      </Box>
+      </Box>
+  )
+}
+
+{/* <Grid item xs={12} md={6}>
           <Box sx={{
             mt: 2,
             borderBottom: 1,
@@ -115,9 +147,4 @@ export default function MyKit() {
             <Typography variant="h5" color="primary">Meal Planner</Typography>
           </Box >
             <Typography>Meal Planner component should go here.</Typography>
-        </Grid>
-      </Grid>
-      </Box>
-    </Box>
-  )
-}
+        </Grid> */}

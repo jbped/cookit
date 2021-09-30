@@ -98,16 +98,16 @@ export default function Sidenav() {
       icon: <GiForkKnifeSpoon />,
       link: 'my-kit'
     },
-    {
-      name: "Shopping List",
-      icon: <VscChecklist />,
-      link: 'my-kit/shopping-list'
-    },
-    {
-      name: "Meal Planner",
-      icon: <IoIosJournal />,
-      link: 'meal-planner'
-    }
+    // {
+    //   name: "Shopping List",
+    //   icon: <VscChecklist />,
+    //   link: 'my-kit/shopping-list'
+    // },
+    // {
+    //   name: "Meal Planner",
+    //   icon: <IoIosJournal />,
+    //   link: 'meal-planner'
+    // }
   ]
 
   const loginOption = () => {
@@ -134,12 +134,14 @@ export default function Sidenav() {
     }
   }
 
-  const settingsMenuItems = [{
-    name: "Settings",
-    icon: <MdSettings />,
-    link: "settings",
-    fn: null
-  }, {
+  const settingsMenuItems = [
+    // {
+  //   name: "Settings",
+  //   icon: <MdSettings />,
+  //   link: "settings",
+  //   fn: null
+  // },
+    {
     name: loginOption(),
     icon: <IoIosLogIn />,
     link: linkOption(),
