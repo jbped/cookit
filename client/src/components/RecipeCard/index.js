@@ -30,7 +30,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
-import Loader from '../components/Loader'
+import Loader from '../Loader'
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -51,7 +51,9 @@ const Item = styled(Paper)(({ theme }) => ({
   lineHeight: '60px',
 }));
 
-export default function RecipeReviewCard() {
+export default function RecipeReviewCard(props) {
+  const [expanded, setExpanded] = React.useState(false);
+
   // Get QUERY_ME data
   const { userLoading, userData } = useQuery(QUERY_ME);
   console.log('query_me data', userLoading, userData);
@@ -147,7 +149,7 @@ export default function RecipeReviewCard() {
   
 
   const { loading, data } = useQuery(QUERY_RECIPE_BASIC, {
-    variables: { recipeId: recipeId }
+    variables: { recipeId: props.recipe.recipeId }
   });
 
   const recipe = data?.recipe || {};
@@ -157,7 +159,6 @@ export default function RecipeReviewCard() {
     return <Loader></Loader>
   }
 
-  const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
