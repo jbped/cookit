@@ -1,4 +1,6 @@
-import * as React from 'react';import {
+import * as React from 'react';
+import {
+  BrowserRouter,
   Link
 } from "react-router-dom";
 
@@ -29,6 +31,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -147,30 +150,35 @@ export default function RecipeReviewCard() {
 
 
   return (
-    
-    <Router>
-      <Switch>
-      <Button
-                  component={Link}
-                  to={`/recipe/:${recipe._id}`}
-                  variant="text"
-                >
     <Item>
       <Card sx={{ maxWidth: 345 }}>
-      <CardHeader
-        action={
+      <Button
+        component={Link}
+        to={`/recipe/${recipe._id}`}
+        // variant="text"
+        // color="text.secondary"
+      >
+          <CardHeader
+            sx={{
+              color: 'white'
+            }}
+            action={
             <IconButton
               aria-label="settings"
             >
           </IconButton>
-        }
-        title="Title"
-        subheader={`added: ${recipe.createdAt} by ${recipe.creator}`}
-      />
+            }
+            title={recipe.recipeTitle}
+            subheader={`added: ${recipe.createdAt} by ${recipe.creator}`}
+          />
+          </Button>
       <CardContent>
-          <Typography
+            <Typography
+              sx={{
+                marginBottom: ".5rem"
+              }}
             variant="body2"
-            color="text.secondary"
+            color="text.white"
           >
           {recipe.recipeDescription}
           </Typography>
@@ -221,8 +229,5 @@ export default function RecipeReviewCard() {
         </Collapse>
       </Card>
       </Item>
-      </Button>
-    </Switch>
-  </Router>
   );
 }

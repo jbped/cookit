@@ -1,8 +1,7 @@
 // React 
 import * as React from 'react';
 import {
-  BrowserRouter as Router,
-  Switch,
+  BrowserRouter,
   Link
 } from "react-router-dom";
 
@@ -131,8 +130,6 @@ export default function RecipeListItem() {
   }
 
   return (
-    <Router>
-      <Switch>
         <Grid
           container
           spacing={2}
@@ -151,7 +148,7 @@ export default function RecipeListItem() {
               <Item>
               <Button
                   component={Link}
-                  to={`/recipe/:${recipe._id}`}
+                  to={`/recipe/${recipe._id}`}
                   variant="text"
                 >
                    <ListItem
@@ -168,11 +165,12 @@ export default function RecipeListItem() {
                             display: "flex",
                             alignItems: "center",
                             marginLeft: ".1rem",
-                            marginRight: ".2rem"
+                            marginRight: ".5rem",
+                            color: 'white'
                           }}
                       >
                       <p>{ recipe.recipeTitle }</p>
-                  <p>Recipe Name</p>
+                  {/* <p>Recipe Name</p> */}
               </ListItemText>
               {/* Use MUI rating precision component if there is enought time*/}
             <Box
@@ -234,7 +232,5 @@ export default function RecipeListItem() {
             </Box>
         </Grid>
     </Grid>
-      </Switch>
-    </Router>
   );
 }

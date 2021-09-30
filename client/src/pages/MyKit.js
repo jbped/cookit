@@ -1,10 +1,11 @@
 // Import React components
-import * as React from 'react'; import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import * as React from 'react';
+// import {
+//   BrowserRouter as Router,
+//   Switch,
+//   Route,
+//   Link
+// } from "react-router-dom";
 
 // Auth
 import Auth from "../utils/auth.js";
@@ -78,9 +79,9 @@ export default function MyKit() {
             borderColor: 'divider'
           }}
         >
-          <Typography variant="h5" color="primary">Your Recipes</Typography>
+          <Typography variant="h5" color="secondary">Your Recipes</Typography>
         </Box >
-        <Paper
+        {/* <Paper
           sx={{
             p: 2,
             mt: 2,
@@ -89,19 +90,20 @@ export default function MyKit() {
             boxShadow: 4,
             borderColor: 'backdrop.dark',
           }}
-        >
+        > */}
           <Grid container spacing={{ md: 5, lg: 10 }}>
 
             <Grid item xs={12} md={6}>
               <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
                   <Box key={`-box`}>
                     <ListItem>
+                      <RecipeCard/>
                       <ListItemText
                         // primary={}
                         // secondary={ ? : ' '}
                       />
                     </ListItem>
-                    <Divider />
+                    {/* <Divider /> */}
                   </Box>
               </List>
             </Grid>
@@ -110,18 +112,19 @@ export default function MyKit() {
               <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
                   <Box key={`-box`}>
                     <ListItem>
+                      <RecipeListItem/>
                       <ListItemText
                         // primary={}
                         // secondary={ ?  : '-'}
                       />
                     </ListItem>
-                    <Divider />
+                    {/* <Divider /> */}
                   </Box>
               </List>
             </Grid>
 
           </Grid>
-        </Paper>
+        {/* </Paper> */}
       </Box>
       </Box>
       </Box>
