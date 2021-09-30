@@ -34,10 +34,10 @@ const userSchema = new Schema(
       }
     ],
     savedRecipes: [
-         {
-             type: Schema.Types.ObjectId,
-             ref: 'Recipe'
-         }
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Recipe'
+      }
     ]
   },
   {

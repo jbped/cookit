@@ -103,7 +103,7 @@ const typeDefs = gql`
         saveRecipe(recipeId: ID): Recipe
         deleteRecipe(_id: ID): Recipe
         #Direction-
-        addDirection(recipeId: ID, stepText: String!, stepId: String!): Direction
+        addDirection(recipeId: ID, stepText: String!): Direction
     }
 
     type Auth {

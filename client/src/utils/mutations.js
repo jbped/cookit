@@ -62,14 +62,13 @@ export const ADD_RECIPE = gql`
     }
 `;
 
-//NOT FUNCTIONAL
-// export const SAVE_RECIPE = gql`
-//     mutation saveRecipe($_id: ID) {
-//         saveRecipe(_id: $_id) {
-//             _id
-//         }
-//     }
-// `;
+export const SAVE_RECIPE = gql`
+    mutation saveRecipe($_id: ID) {
+        saveRecipe(_id: $_id) {
+            _id
+        }
+    }
+`;
 
 export const DELETE_RECIPE = gql`
     mutation deleteRecipe($_id: ID) {
@@ -82,3 +81,13 @@ export const DELETE_RECIPE = gql`
 `;
 
 //Direction
+
+export const ADD_DIRECTION = gql`
+    mutation addDirection($recipeId: ID!, $stepText: String!) {
+        addDirection(recipeId: $recipeId, stepText: $stepText) {
+            _id
+            stepText
+            stepId
+        }
+    }
+`;

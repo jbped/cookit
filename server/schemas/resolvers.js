@@ -375,7 +375,7 @@ const resolvers = {
             //For ensuring that only logged in users can delete recipes
             if (context.user) {
                 //First find the recipe with the given id and delete it
-                const recipe = await Recipe.findOneAndDelete(_id)
+                const recipe = await Recipe.findOneAndDelete(_id);
                 const { steps, ingredients, cookware, comments, upvotes } = recipe;
 
                 await Promise.all(steps.map(async step => {
@@ -420,11 +420,23 @@ const resolvers = {
 
         //Direction mutations
 
-        // addDirection: async (parent, { recipeId, stepText, ste }, context) => {
-        //     if (context.user) {
-        //         const direction = await Direction.create()
-        //     }
-        // }
+        addDirection: async (parent, { recipeId, stepText }, context) => {
+            if (context.user) {
+                const recipeSteps = await Recipe.findById(recipeId, 'directions').populate('directions');
+                const step = 'Step-' + recipeSteps.directions.length;
+
+                const direction = await Direction.create({ stepText, stepId: step })
+
+                await Recipe.findByIdAndUpdate(
+                    recipeId,
+                    { $push: { directions: direction._id, directionsOrder: step }, },
+                    { new: true }
+                )
+
+                return direction;
+            }
+            throw new AuthenticationError('You need to be logged in!');
+        }
     }
 };
 
