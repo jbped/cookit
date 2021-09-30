@@ -42,8 +42,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function RecipeListItem() {
   // Get QUERY_ME data
-  const { userLoading, userData } = useQuery(QUERY_ME);
-  console.log("query_me data", userLoading, userData);
+  const {userLoading, userData} = useQuery(QUERY_ME);
+  // console.log("query_me data", userLoading, userData);
   const myData = userData?.me || {}
 
   const token = Auth.loggedIn() ? Auth.getToken() : null;

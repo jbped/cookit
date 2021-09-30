@@ -19,15 +19,12 @@ import { MdMenu, MdAdd } from "react-icons/md";
 export default function Header() {
   const dispatch = useDispatch();
 
-  const toggleDrawer = () => (event) => {
+  const toggleDrawer = (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     dispatch(sideNavVisible());
   };
-
-  const trigger = useScrollTrigger();
 
   let location = useLocation();
   const onNewRecipe = location.pathname.includes('new-recipe')
@@ -35,7 +32,7 @@ export default function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar in={trigger}>
+      <AppBar>
         <Toolbar
           sx={{
             display: 'flex',
@@ -49,11 +46,17 @@ export default function Header() {
             color="light"
             aria-label="menu"
             // sx={{ mr: 2 }}
-            onClick={toggleDrawer()}
+            onClick={toggleDrawer}
           >
             <MdMenu />
           </IconButton>
-          <Typography variant="h3" component={Link} to="/my-kit" color="primary" fontWeight="bold" sx={{ textDecoration: 'none', flexGrow: 1, textAlign: 'center', textShadow: "1"}}>
+          <Typography variant="h3" component={Link} to="/my-kit" color="primary" fontWeight="bold" 
+            sx={{ 
+              textDecoration: 'none', 
+              flexGrow: 1, 
+              textAlign: 'center', 
+              textShadow: "0px 4px 3px rgba(0,0,0,0.4), 0px 8px 13px rgba(0,0,0,0.1), 0px 18px 23px rgba(0,0,0,0.1)",
+            }}>
             Coo<Typography component="span" variant="h3" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
           </Typography>
           {!onNewRecipe ?
