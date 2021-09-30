@@ -38,7 +38,7 @@ export const ADD_INGREDIENT = gql`
 
 //Recipe
 export const ADD_RECIPE = gql`
-    mutation addRecipe($isPublic: Boolean!, $recipeTitle: String!, $recipeDescription: String, $type: String!, $season: String!, $servings: String!, $cookTime: String!, $directions: [directionInput], $ingredients: [ingredientInput], $cookware: [cookwareInput], $directionsOrder: [String], $ingredientsOrder: [String]) {
+    mutation addRecipe($isPublic: Boolean!, $recipeTitle: String!, $recipeDescription: String!,  $servings: Int!, $cookTime: String!, $directions: [directionInput], $ingredients: [ingredientInput],  $directionsOrder: [String], $ingredientsOrder: [String]) {
         addRecipe(isPublic: $isPublic, recipeTitle: $recipeTitle, recipeDescription: $recipeDescription, servings: $servings, cookTime: $cookTime, directions: $directions, ingredients: $ingredients, directionsOrder: $directionsOrder, ingredientsOrder: $ingredientsOrder) {
             _id
             isPublic

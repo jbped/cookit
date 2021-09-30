@@ -103,7 +103,7 @@ export default function LoginForm() {
         }
       });
       Auth.login(mutationResponse.data.login.token)
-      setValues(initialState)
+      mutationResponse && setValues(initialState)
     } catch (e) {
       console.error('Login Error', e)
     }

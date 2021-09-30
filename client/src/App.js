@@ -41,7 +41,7 @@ function App() {
           <Switch>
             <Route exact path="/"><LoginSignup page={'/'} /></Route>
             <Route exact path="/new-recipe" component={NewRecipePage}></Route>
-            <Route exact path="/recipe" component={ViewRecipe}></Route>
+            <Route exact path="/recipe/:id" component={ViewRecipe}></Route>
             <Route exact path="/my-kit" component={MyKit}></Route>
             <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
             <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>

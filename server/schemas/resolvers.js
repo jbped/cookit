@@ -289,7 +289,7 @@ const resolvers = {
                 }));
 
                 //For pushing the Cookware object ids up into the cookware array on Recipe
-                if (args.cookware){
+                if (cookware){
                     await Promise.all(args.cookware.map(async ware => {
                         const cookware = await Cookware.create(ware);
                         await Recipe.findByIdAndUpdate(

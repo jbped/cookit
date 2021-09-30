@@ -1,6 +1,6 @@
 // React imports
 import React from 'react';
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Global state 
 import { sideNavVisible } from "../../utils/globalSlice.js"
@@ -14,8 +14,8 @@ import {
   Divider,
   ListItem,
   ListItemIcon,
-  // ImageList,
-  // ImageListItem,
+  ImageList,
+  ImageListItem,
   ListItemText,
   MenuList,
   MenuItem,
@@ -43,8 +43,6 @@ import { QUERY_ME_BASIC } from '../../utils/queries';
 export default function Sidenav() {
   const state = useSelector(state => state.global.sideNavVisible);
   const dispatch = useDispatch();
-  const params = useParams();
-  console.log(params)
 
   // const anchor = {
   //   left: false,
@@ -76,12 +74,12 @@ export default function Sidenav() {
   const token = Auth.loggedIn() ? Auth.getToken() : null;
   console.log('token', token)
 
-  // const imageData = [
-  //   {
-  //     img: 'https://i.pinimg.com/736x/16/27/b7/1627b7a21fffc3451299a03251c6b3fc.jpg',
-  //     title: 'delicious-food'
-  //   }
-  // ]
+  const imageData = [
+    {
+      img: 'https://i.pinimg.com/736x/16/27/b7/1627b7a21fffc3451299a03251c6b3fc.jpg',
+      title: 'delicious-food'
+    }
+  ]
 
   // const menuItems = [
   //   // {
@@ -154,71 +152,13 @@ export default function Sidenav() {
         onClick={toggleDrawer()}
         onKeyDown={toggleDrawer()}
       >
-        <Box sx={{ flexGrow: 1 }}>
-          <List
-            
-          >
-            <ListItem
-              sx={{
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  marginRight: '.1rem'
-                }}
-              >
-                <h1><GiKnifeFork /></h1>
-              </ListItemIcon>
-              <ListItemText>
-                <Typography variant="h4" color="primary" fontWeight="bold" sx={{ textShadow: "1" }}>
-                  Coo<Typography component="span" variant="h4" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
-                </Typography>
-              </ListItemText>
-            </ListItem>
-            {Auth.loggedIn() ?
-              (
-                <ListItem>
-                  <ListItemText>
-                    <Typography>Hello, {userData.username}</Typography>
-                  </ListItemText>
-                </ListItem>
-              )
-              :
-              ('')
-            }
-          </List>
-          <Divider />
-          <MenuList
-            
-          >
-            <Button component={Link} to="/my-kit" variant="text" sx={{ mt: 2 }}>
-              <MenuItem
+        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'space-between', flexDirection: 'column', }}>
+          <Box>
+            <List>
+              <ListItem
                 sx={{
                   display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <ListItemIcon
-                  sx={{ marginRight: '.1rem', fontSize: 21 }}
-                >
-                  <MdSearch />
-                </ListItemIcon>
-                <ListItemText>
-                  <Typography variant="h6">
-                    My Kit
-                  </Typography>
-                </ListItemText>
-              </MenuItem>
-            </Button>
-
-            <Button component={Link} to="/new-recipe" variant="text" sx={{ mt: 2 }}>
-              <MenuItem
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-
+                  alignItems: 'center'
                 }}
               >
                 <ListItemIcon
@@ -226,35 +166,101 @@ export default function Sidenav() {
                     marginRight: '.1rem'
                   }}
                 >
-                  <PostAddOutlinedIcon />
+                  <h1><GiKnifeFork /></h1>
                 </ListItemIcon>
                 <ListItemText>
-                  <Typography variant="h6">
-                    New Recipe
+                  <Typography variant="h4" color="primary" fontWeight="bold" sx={{ textShadow: "0px 4px 3px rgba(0,0,0,0.4), 0px 8px 13px rgba(0,0,0,0.1), 0px 18px 23px rgba(0,0,0,0.1)", }}>
+                    Coo<Typography component="span" variant="h4" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
                   </Typography>
-                </ ListItemText>
-              </MenuItem>
-            </Button>
-          </MenuList>
-          {/* <ImageList
-          variant="masonry"
-          cols={1}
-          gap={0}
-          container
-        >
-          <ImageListItem>
-            <img
-              src={`${imageData[0].img}?w=248&fit=crop&auto=format`}
-              alt={imageData[0].title}
-              loading="lazy"
-            />
-          </ImageListItem>
-        </ImageList> */}
+                </ListItemText>
+              </ListItem>
+              {Auth.loggedIn() ?
+                (
+                  <ListItem>
+                    <ListItemText>
+                      <Typography>Hello, {userData.username}</Typography>
+                    </ListItemText>
+                  </ListItem>
+                )
+                :
+                ('')
+              }
+            </List>
+            <Divider />
+            <MenuList>
+              <Button component={Link} to="/my-kit" variant="text" sx={{ mt: 2 }}>
+                <MenuItem
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{ marginRight: '.1rem', fontSize: 21 }}
+                  >
+                    <MdSearch />
+                  </ListItemIcon>
+                  <ListItemText>
+                    <Typography variant="h6">
+                      My Kit
+                    </Typography>
+                  </ListItemText>
+                </MenuItem>
+              </Button>
+
+              <Button component={Link} to="/new-recipe" variant="text" sx={{ mt: 2 }}>
+                <MenuItem
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      marginRight: '.1rem'
+                    }}
+                  >
+                    <PostAddOutlinedIcon />
+                  </ListItemIcon>
+                  <ListItemText>
+                    <Typography variant="h6">
+                      New Recipe
+                    </Typography>
+                  </ ListItemText>
+                </MenuItem>
+              </Button>
+            </MenuList>
+          </Box>
+          <ImageList
+            variant="masonry"
+            cols={1}
+            gap={0}
+            sx={{
+              padding: 0, 
+              margin: 0,
+            }}
+            >
+            <ImageListItem
+            sx={{
+              boxShadow: 'inset 0 7px 9px -7px rgba(0,0,0,0.65), inset 0 -7px 9px -7px rgba(0,0,0,0.65)',
+            }}
+            >
+              <img
+                src={`${imageData[0].img}?w=248&fit=crop&auto=format`}
+                alt={imageData[0].title}
+                loading="lazy"
+                style={{
+                  opacity: ".5"
+                }}
+              />
+            </ImageListItem>
+          </ImageList>
 
         </Box>
         {/* Settings and Logout menu list */}
         <MenuList
-          sx={{ bottom: 0 }}
+        // sx={{ boxShadow: '0 7px 9px -7px rgba(0,0,0,0.6),' }}
         >
           {Auth.loggedIn() ?
             <Button

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
 import { newRecipe} from '../utils/globalSlice';
+import { initialState as initGlobalState } from '../utils/globalSlice'
 
 // MUI Components....
 import {
@@ -18,7 +20,6 @@ import SaveIcon from '@mui/icons-material/Save';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
 
-
 // Custom Components.... 
 import ConfirmLeavePage from '../components/ConfirmLeavePage'
 import NewRecipeTitle from '../components/NewRecipeComponents/NewRecipeTitle';
@@ -29,6 +30,9 @@ import RecipeDescription from '../components/NewRecipeComponents/RecipeDescripti
 import IngredientsSection from '../components/NewRecipeComponents/IngredientsSection';
 import DirectionsSection from '../components/NewRecipeComponents/DirectionsSection';
 
+// Queries/Mutations.... 
+import { useMutation } from '@apollo/client';
+import { ADD_RECIPE } from '../utils/mutations'
 
 function HideOnScroll({ children }) {
   const trigger = useScrollTrigger();
@@ -43,6 +47,7 @@ export default function NewRecipePage() {
   const recipeForm = useSelector(state => state.global.newRecipe)
   const { recipeTitle, cookTime, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm;
   const dispatch = useDispatch();
+  const [addRecipe] = useMutation(ADD_RECIPE)
   // console.log(recipeForm)
 
   // If true display the save button
@@ -147,7 +152,7 @@ export default function NewRecipePage() {
           // console.log('directions true')
           const editedErrors = directionErrors.filter(index => index !== step);
           // console.log(editedErrors)
-         batch = {...batch, directions: {...batch.directions, [step]: editedDirection}, directionErrors: editedErrors}
+          batch = {...batch, directions: {...batch.directions, [step]: editedDirection}, directionErrors: editedErrors}
         } else {
           batch = {...batch, directions: {...batch.directions, [step]: editedDirection}}
         }
@@ -186,11 +191,13 @@ export default function NewRecipePage() {
 
   }
 
-  const createNewRecipe = () => {
+  const createNewRecipe = async () => {
     let ingredientsArr = []
     let directionsArr = []
 
-    ingredientsCol.itemIds.forEach(item => {
+    let publicBool = isPublic === 'private' ? false : true
+
+    await ingredientsCol.itemIds.forEach(item => {
       let trimmedIngredient = {
         ingredientId: ingredients[item].ingredientId,
         quantity: ingredients[item].quantity,
@@ -203,10 +210,10 @@ export default function NewRecipePage() {
       // console.log(`ingArr after ${item} pushed`, ingredientsArr)
     })
 
-    directionsCol.itemIds.forEach(item => {
+    await directionsCol.itemIds.forEach(item => {
       let trimmedStep = {
-        stepId: item.stepId,
-        stepText: item.stepText,
+        stepId: directions[item].stepId,
+        stepText: directions[item].stepText,
       }
       // console.log(`trimmed-${item}`, trimmedStep);
       directionsArr.push(trimmedStep);
@@ -219,7 +226,7 @@ export default function NewRecipePage() {
       recipeTitle,
       cookTime,
       servings, 
-      isPublic,
+      isPublic: publicBool,
       recipeDescription,
       ingredients: ingredientsArr,
       ingredientsOrder: ingredientsCol.itemIds,
@@ -227,6 +234,18 @@ export default function NewRecipePage() {
       directionsOrder: directionsCol.itemIds,
     }
     console.log('newRecipeObj', newRecipeObj)
+    try{
+      const { data } = await addRecipe({
+        variables: {...newRecipeObj}
+      });
+
+      // const { addRecipe } = data; 
+      console.log(data.addRecipe._id)
+      data && dispatch(newRecipe(initGlobalState.newRecipe))
+      window.location.assign(`/recipe/${data.addRecipe._id}`)
+    } catch (e) {
+      console.error('New Recipe Error: ', e)
+    }
   }
 
   return (
