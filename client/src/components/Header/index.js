@@ -19,15 +19,12 @@ import { MdMenu, MdAdd } from "react-icons/md";
 export default function Header() {
   const dispatch = useDispatch();
 
-  const toggleDrawer = () => (event) => {
+  const toggleDrawer = (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     dispatch(sideNavVisible());
   };
-
-  const trigger = useScrollTrigger();
 
   let location = useLocation();
   const onNewRecipe = location.pathname.includes('new-recipe')
@@ -35,7 +32,7 @@ export default function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar in={trigger}>
+      <AppBar>
         <Toolbar
           sx={{
             display: 'flex',
@@ -49,7 +46,7 @@ export default function Header() {
             color="light"
             aria-label="menu"
             // sx={{ mr: 2 }}
-            onClick={toggleDrawer()}
+            onClick={toggleDrawer}
           >
             <MdMenu />
           </IconButton>

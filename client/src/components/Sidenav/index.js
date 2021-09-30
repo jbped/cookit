@@ -22,15 +22,16 @@ import {
   Grid,
   Button,
   Typography,
+  // SwipeableDrawer, StyledBox
 } from '@mui/material/';
 
 // Auth
 import Auth from "../../utils/auth";
 
 // Custom icons
-import { MdSearch, MdSettings } from 'react-icons/md';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import { /*IoIosJournal,*/ IoIosLogIn } from 'react-icons/io';
+import { MdSearch, /*MdSettings*/ } from 'react-icons/md';
 import { GiKnifeFork, /*GiForkKnifeSpoon */ } from 'react-icons/gi';
 // import { RiCompassDiscoverLine } from 'react-icons/ri';
 // import { VscChecklist } from 'react-icons/vsc'
@@ -42,6 +43,8 @@ import { QUERY_ME_BASIC } from '../../utils/queries';
 export default function Sidenav() {
   const state = useSelector(state => state.global.sideNavVisible);
   const dispatch = useDispatch();
+  const params = useParams();
+  console.log(params)
 
   // const anchor = {
   //   left: false,
@@ -54,33 +57,24 @@ export default function Sidenav() {
     dispatch(sideNavVisible());
   };
 
+  const handleLogout = () => {
+    console.log('logout called')
+    Auth.logout();
+  }
+
 
   const { loading, data } = useQuery(QUERY_ME_BASIC);
 
-  // if (loading) {
-  //   // console.log('loading', loading)
-  // } else {
-  //   // console.log("userData", data);
-  // }
+  if (loading) {
+    console.log('loading', loading)
+  } else {
+    // console.log("userData", data);
+  }
 
   const userData = data?.me || {};
 
   const token = Auth.loggedIn() ? Auth.getToken() : null;
-  // console.log('token', token)
-
-  const userWelcome = (token) => {
-    if (!token) {
-      return '';
-    } else {
-      return (
-        <ListItem>
-          <ListItemText>
-            <Typography>Hello, {userData.username}</Typography>
-          </ListItemText>
-        </ListItem>
-      )
-    }
-  }
+  console.log('token', token)
 
   // const imageData = [
   //   {
@@ -122,13 +116,13 @@ export default function Sidenav() {
   //   // }
   // ]
 
-  const fnOption = () => {
-    if (token) {
-      return Auth.logout();
-    } else {
-      return
-    }
-  }
+  // const fnOption = () => {
+  //   if (token) {
+  //     return Auth.logout();
+  //   } else {
+  //     return
+  //   }
+  // }
 
   // const settingsMenuItems = [
   //   // {
@@ -144,71 +138,30 @@ export default function Sidenav() {
   //     fn: fnOption(),
   //   }]
 
-  const list = () => (
-    <Box
-      sx={{ width: 250, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
-      role="presentation"
-      onClick={toggleDrawer}
-      onKeyDown={toggleDrawer}
+  return (
+    <Drawer
+      anchor="left"
+      open={state}
+      onClose={toggleDrawer()}
+      variant="temporary"
+      ModalProps={{
+        keepMounted: true,
+      }}
     >
-      <Box sx={{ flexGrow: 1 }}>
-        <List
-          container
-          rowSpacing={1}
-        >
-          <ListItem
-            sx={{
-              display: 'flex',
-              alignItems: 'center'
-            }}
+      <Box
+        sx={{ width: 250, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
+        role="presentation"
+        onClick={toggleDrawer()}
+        onKeyDown={toggleDrawer()}
+      >
+        <Box sx={{ flexGrow: 1 }}>
+          <List
+            
           >
-            <ListItemIcon
-              sx={{
-                marginRight: '.1rem'
-              }}
-            >
-              <h1><GiKnifeFork /></h1>
-            </ListItemIcon>
-            <ListItemText>
-              <Typography variant="h4" color="primary" fontWeight="bold" sx={{ textShadow: "1" }}>
-                Coo<Typography component="span" variant="h4" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
-              </Typography>
-            </ListItemText>
-          </ListItem>
-          {userWelcome}
-        </List>
-        <Divider />
-        <MenuList
-          container
-          rowSpacing={1}
-        >
-          <Button variant="text">
-            <MenuItem
+            <ListItem
               sx={{
                 display: 'flex',
-                alignItems: 'center',
-                mt: 2
-              }}
-            >
-              <ListItemIcon
-                sx={{ marginRight: '.1rem', fontSize: 21 }}
-              >
-                <MdSearch />
-              </ListItemIcon>
-              <ListItemText>
-                <Typography variant="h6">
-                  My Kit
-                </Typography>
-              </ListItemText>
-            </MenuItem>
-          </Button>
-
-          <Button component={Link} to="/new-recipe" variant="text">
-            <MenuItem
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                mt: 2
+                alignItems: 'center'
               }}
             >
               <ListItemIcon
@@ -216,17 +169,74 @@ export default function Sidenav() {
                   marginRight: '.1rem'
                 }}
               >
-                <PostAddOutlinedIcon />
+                <h1><GiKnifeFork /></h1>
               </ListItemIcon>
               <ListItemText>
-                <Typography variant="h6">
-                  New Recipe
+                <Typography variant="h4" color="primary" fontWeight="bold" sx={{ textShadow: "1" }}>
+                  Coo<Typography component="span" variant="h4" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
                 </Typography>
-              </ ListItemText>
-            </MenuItem>
-          </Button>
-        </MenuList>
-        {/* <ImageList
+              </ListItemText>
+            </ListItem>
+            {Auth.loggedIn() ?
+              (
+                <ListItem>
+                  <ListItemText>
+                    <Typography>Hello, {userData.username}</Typography>
+                  </ListItemText>
+                </ListItem>
+              )
+              :
+              ('')
+            }
+          </List>
+          <Divider />
+          <MenuList
+            
+          >
+            <Button component={Link} to="/my-kit" variant="text" sx={{ mt: 2 }}>
+              <MenuItem
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <ListItemIcon
+                  sx={{ marginRight: '.1rem', fontSize: 21 }}
+                >
+                  <MdSearch />
+                </ListItemIcon>
+                <ListItemText>
+                  <Typography variant="h6">
+                    My Kit
+                  </Typography>
+                </ListItemText>
+              </MenuItem>
+            </Button>
+
+            <Button component={Link} to="/new-recipe" variant="text" sx={{ mt: 2 }}>
+              <MenuItem
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    marginRight: '.1rem'
+                  }}
+                >
+                  <PostAddOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  <Typography variant="h6">
+                    New Recipe
+                  </Typography>
+                </ ListItemText>
+              </MenuItem>
+            </Button>
+          </MenuList>
+          {/* <ImageList
           variant="masonry"
           cols={1}
           gap={0}
@@ -240,94 +250,68 @@ export default function Sidenav() {
             />
           </ImageListItem>
         </ImageList> */}
-        <Box></Box>
 
-      </Box>
-      {/* Settings and Logout menu list */}
-      <MenuList
-        container
-        sx={{ bottom: 0 }}
-        rowSpacing={1}
-      >
-        {token ?
-          <Button
-            variant="text"
-            value="Logout"
-            onClick={fnOption}
-            size="large"
-          >
-            <MenuItem
-              button
-              sx={{
-                display: 'flex',
-                alignItems: 'center'
-              }}
+        </Box>
+        {/* Settings and Logout menu list */}
+        <MenuList
+          sx={{ bottom: 0 }}
+        >
+          {Auth.loggedIn() ?
+            <Button
+              variant="text"
+              value="Logout"
+              onClick={handleLogout}
+              size="large"
             >
-              <ListItemIcon
+              <MenuItem
                 sx={{
-                  marginRight: '.1rem',
-                  fontSize: 20,
-                  fontWeight: 'bold'
-                }}>
-                <IoIosLogIn />
-              </ListItemIcon>
-              <ListItemText>
-                <Typography variant="h6">
-                  Logout
-                </Typography>
-              </ListItemText>
-            </MenuItem>
-          </Button>
-          :
-          <Button
-            component={Link}
-            to="/login"
-            variant="text"
-            value="Login"
-          >
-            <MenuItem
-              button
-              sx={{
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  marginRight: '.1rem'
-                }}>
-                <IoIosLogIn />
-              </ListItemIcon>
-              <ListItemText>
-                Login
-              </ListItemText>
-            </MenuItem>
-          </Button>
-        }
-      </MenuList>
-    </Box>
-  )
-  return (
-    <div>
-      {['left'].map((anchor) => (
-        <React.Fragment
-          key={anchor}>
-          <Grid
-            container
-            spacing={2}
-          >
-            <Grid item lg={4}>
-              <Drawer
-                anchor={anchor}
-                open={state}
-                onClose={toggleDrawer()}
+                  display: 'flex',
+                  alignItems: 'center'
+                }}
               >
-                {list(anchor)}
-              </Drawer>
-            </Grid>
-          </Grid>
-        </React.Fragment>
-      ))}
-    </div>
+                <ListItemIcon
+                  sx={{
+                    marginRight: '.1rem',
+                    fontSize: 20,
+                    fontWeight: 'bold'
+                  }}>
+                  <IoIosLogIn />
+                </ListItemIcon>
+                <ListItemText>
+                  <Typography variant="h6">
+                    Logout
+                  </Typography>
+                </ListItemText>
+              </MenuItem>
+            </Button>
+            :
+            <Button
+              component={Link}
+              to="/login"
+              variant="text"
+              value="Login"
+            // onClick={toggleDrawer()}
+            >
+              <MenuItem
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center'
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    marginRight: '.1rem'
+                  }}>
+                  <IoIosLogIn />
+                </ListItemIcon>
+                <ListItemText>
+                  Login
+                </ListItemText>
+              </MenuItem>
+            </Button>
+          }
+        </MenuList>
+      </Box>
+    </Drawer>
   )
 };

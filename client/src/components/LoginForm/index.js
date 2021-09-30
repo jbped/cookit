@@ -91,8 +91,7 @@ export default function LoginForm() {
   }
 
   // Collects username, email, and password from values state, mutates them, returns values to initialState
-  const loginUser = async (e) => {
-    e.preventDefault();
+  const loginUser = async () => {
     // Send values.username, values.email, values.password to GraphQL
     console.log(`Login: \n   Username: ${values.username}\n   Password: ${values.password}`)
 
@@ -104,11 +103,11 @@ export default function LoginForm() {
         }
       });
       Auth.login(mutationResponse.data.login.token)
+      setValues(initialState)
     } catch (e) {
       console.error('Login Error', e)
     }
     // Clear return values state to initialState
-    setValues(initialState)
   }
 
   return (
@@ -135,7 +134,7 @@ export default function LoginForm() {
       <TextField
         id="username-required"
         label="Username *"
-        defaultValue=""
+        // defaultValue=""
         fullWidth
         name="username"
         sx={{ mt: 2 }}
@@ -157,7 +156,7 @@ export default function LoginForm() {
           name="password"
           onChange={handleChange}
           color="backdrop"
-          autoComplete="password"
+          // autoComplete="password"
           endAdornment={
             <InputAdornment position="end">
               <IconButton

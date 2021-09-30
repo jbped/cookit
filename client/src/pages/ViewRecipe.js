@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useQuery } from '@apollo/client';
@@ -28,13 +28,13 @@ import {
 } from '@mui/material'
 
 // Other Components/Hooks.... 
-import {
-  usePopupState,
-  bindPopover,
-  bindTrigger,
-  bindHover,
-} from 'material-ui-popup-state/hooks'
-import HoverPopover from 'material-ui-popup-state/HoverPopover'
+// import {
+//   usePopupState,
+//   bindPopover,
+//   bindTrigger,
+//   bindHover,
+// } from 'material-ui-popup-state/hooks'
+// import HoverPopover from 'material-ui-popup-state/HoverPopover'
 import Loader from '../components/Loader'
 
 
@@ -149,19 +149,15 @@ export default function ViewRecipe() {
   const recipe = data?.recipe || {};
   console.log("this is the recipe returned", recipe)
 
-  if (loading) {
-    return <Loader></Loader>
-  }
-
   // Destructuring of the keys in the recipe object received from the database
   const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = recipe
-
 
   let orderedIngredients = [];
   let orderedDirections = []
   let editedDateArr = []
   let col1 = []
   let col2 = []
+  
   if (!loading && data.recipe !== undefined) {
   // Splits the createdAt string into to indexes DD/MM/YYYY and time
   editedDateArr = createdAt.split(' at ');
@@ -237,9 +233,9 @@ export default function ViewRecipe() {
     dispatch(setEasyCookStep(easyCookStep - 1));
   };
 
-  if(loading) {
-    
-  } 
+  if (loading) {
+    return <Loader></Loader>
+  }
 
   return (
     <Box>

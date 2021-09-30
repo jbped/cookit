@@ -2,7 +2,7 @@ import React from 'react';
 import LoginForm from '../components/LoginForm';
 import SignupForm from '../components/SignupForm';
 import LandingPage from '../components/LandingPage';
-import { Link, Redirect, useParams } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import Auth from "../utils/auth"
 
