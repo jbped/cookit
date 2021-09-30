@@ -43,6 +43,7 @@ function App() {
             <Route exact path="/new-recipe" component={NewRecipePage}></Route>
             <Route exact path="/recipe/:id" component={ViewRecipe}></Route>
             <Route exact path="/my-kit" component={MyKit}></Route>
+            {/* <Route exact path="/feed" component={RecipeFeed}></Route> */}
             <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
             <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>
           </Switch>

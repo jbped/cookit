@@ -20,7 +20,7 @@ const recipeSchema = new Schema(
             type: String,
             required: 'Recipe must have a title.',
             trim: true,
-            minLength: 5,
+            minLength: 2,
             maxlength: 30,
             unique: false
         },

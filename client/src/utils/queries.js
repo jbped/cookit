@@ -208,41 +208,21 @@ export const QUERY_RECIPES = gql`
             createdAt
             recipeTitle
             recipeDescription
-            type
-            season
-            difficulty
             servings
             cookTime
+            forked
             directions {
-                _id
-                stepText
-                stepId
+            _id
+            stepText
+            stepId
             }
             ingredients {
-                _id
-                ingredientName
-                measurement
-                quantity
-                preparationNotes
-                ingredientId
-            }
-            cookware {
-                _id
-                cookwareName
-            }
-            comments {
-                _id
-                commentText
-                createdAt
-                username
-            upvotes {
-                _id
-                username
-            }
-            }
-            upvotes {
-                _id
-                username
+            _id
+            ingredientName
+            measurement
+            quantity
+            preparationNotes
+            ingredientId
             }
             directionsOrder
             ingredientsOrder

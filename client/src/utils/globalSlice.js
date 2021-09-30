@@ -69,7 +69,7 @@ export const globalSlice = createSlice({
     setEasyCookStep: (state, action) => {
       state.easyCookStep = action.payload
     },
-    myKitView: (state) => {
+    toggleMyKitView: (state) => {
       state.myKitView = !state.myKitView;
     },
     sideNavVisible: (state) => {
@@ -86,7 +86,7 @@ export const {
   currentRecipe, 
   toggleEasyCookView, 
   setEasyCookStep, 
-  myKitView,
+  toggleMyKitView,
   sideNavVisible } = actions;
 
 export default reducer;
