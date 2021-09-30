@@ -14,9 +14,10 @@ import {
 
 export default function LoginSignup({ page }) {
 
-  const  { username: userParam } = useParams();
+  // const  { username: userParam } = useParams();
   // If loggedIn token returns the username that matches the userParam, user is redirected to the main page (/my-kit) file
-  if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
+  // console.log(Auth);
+  if (Auth.loggedIn()) {
     return <Redirect to="/my-kit " />
   }
 

@@ -27,6 +27,7 @@ import {
 
 export default function SignupForm() {
   const initialState = {
+    serverError: '',
     username: '',
     usernameError: false,
     email: '',
@@ -40,8 +41,7 @@ export default function SignupForm() {
   const [values, setValues] = useState(initialState);
 
   const [addUser, { error }] = useMutation(ADD_USER)
-  console.error('Signup Error', error)
-
+  
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
@@ -110,23 +110,22 @@ export default function SignupForm() {
   const signup = async () => {
     // Send values.username, values.email, values.password to GraphQL
     console.log(`Signup created: \n   Username: ${values.username}\n   Email: ${values.email}\n   Password: ${values.password}`)
-    console.log("1")
     try {
-      const mutationResponse = await addUser({
+      const { data } = await addUser({
         variables: {
           Username: values.username,
           Email: values.email,
           Password: values.password
         }
       });
-      const token = mutationResponse.data.addUser.token
-      console.log("1",mutationResponse, token)
+      console.log("1", data)
+      const token = data.addUser.token
       Auth.login(token)
+      // setValues(initialState)
     } catch (e) {
-      console.error(e)
+      console.error('Signup error:', e)
     }
     // Clear return values state to initialState
-    setValues(initialState)
   }
 
   return (

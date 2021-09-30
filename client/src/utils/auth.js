@@ -8,19 +8,19 @@ class AuthService {
     loggedIn() {
         // checks for saved un-expired token
         const token = this.getToken();
-        return !!token && !this.isTokenExpired(token);
+        return !!token /*&& !this.isTokenExpired(token);*/
     }
 
-    isTokenExpired(token) {
-        try {
-            const decoded = decode(token);
-            if (decoded.exp < Date.now() / 1000) {
-                return true;
-            } else return false;
-        } catch (err) {
-            return false;
-        }
-    }
+    // isTokenExpired(token) {
+    //     try {
+    //         const decoded = decode(token);
+    //         if (decoded.exp < Date.now() / 1000) {
+    //             return true;
+    //         } else return false;
+    //     } catch (err) {
+    //         return false;
+    //     }
+    // }
 
     getToken() {
         // retrieve user token
@@ -30,7 +30,7 @@ class AuthService {
     login(idToken) {
         localStorage.setItem('id_token', idToken);
 
-        window.location.assign('/');
+        window.location.assign('/my-kit');
     }
 
     logout() {

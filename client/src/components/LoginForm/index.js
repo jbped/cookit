@@ -36,8 +36,7 @@ export default function LoginForm() {
 
   const [values, setValues] = useState(initialState);
 
-  const [login, { error }] = useMutation(LOGIN)
-  console.error(error)
+  const [login] = useMutation(LOGIN)
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -92,7 +91,8 @@ export default function LoginForm() {
   }
 
   // Collects username, email, and password from values state, mutates them, returns values to initialState
-  const loginUser = async () => {
+  const loginUser = async (e) => {
+    e.preventDefault();
     // Send values.username, values.email, values.password to GraphQL
     console.log(`Login: \n   Username: ${values.username}\n   Password: ${values.password}`)
 
@@ -105,7 +105,7 @@ export default function LoginForm() {
       });
       Auth.login(mutationResponse.data.login.token)
     } catch (e) {
-      console.error(e)
+      console.error('Login Error', e)
     }
     // Clear return values state to initialState
     setValues(initialState)

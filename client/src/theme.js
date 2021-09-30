@@ -21,10 +21,6 @@ const theme = createTheme({
       dark: '#024D64',
       contrastText: '#f5f5f5',
     },
-    background: {
-      default: '#022f40',
-      paper: '#03435b',
-    },
     light: {
       main: '#f5f5f5',
       contrastText: '#000000'
@@ -36,7 +32,11 @@ const theme = createTheme({
       primary: '#f5f5f5',
       secondary: '#ffca3a',
       tertiary: '#e76f51'
-    }
+    },
+    background: {
+      default: '#022f40',
+      paper: '#03435b',
+    },
   },
   components: {
     MuiAppBar: {

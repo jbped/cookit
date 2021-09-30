@@ -43,7 +43,7 @@ export default function NewRecipePage() {
   const recipeForm = useSelector(state => state.global.newRecipe)
   const { recipeTitle, cookTime, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm;
   const dispatch = useDispatch();
-  console.log(recipeForm)
+  // console.log(recipeForm)
 
   // If true display the save button
   const [softComplete, setSoftComplete] = useState(false)
@@ -98,7 +98,7 @@ export default function NewRecipePage() {
       // Verify that each item has something in quantity---------------------------------------------The notes below are for each ingredients quantity value. The logic is practically the same for ingredient name and direction stepText
       if (batch.ingredients[item].quantity.length > 0) {                                                                      // if no error
         const editedIngredient = {...batch.ingredients[item], errors: {...batch.ingredients[item].errors, quantity: false}}   // create a complete ingredient object with spreads, update the [ingredientId].error.quantity value to false
-        if (batch.ingredientErrors.includes(item)) {  
+        if (batch.ingredientErrors.includes(item)) {                                                                          // check if ingredientErrors includes the item if it does
           const editedErrors = ingredientErrors.filter(index => index !== item);                                              // create a new ingredientErrors array with ingredientId filtered out
          batch = {...batch, ingredients: {...batch.ingredients, [item]: editedIngredient}, ingredientErrors: editedErrors}    // update batch object with the error free ingredient
         } else {                                                                                                              // if the ingredientId was not found in the array, there is no need for it to get updated
@@ -144,9 +144,9 @@ export default function NewRecipePage() {
         const editedDirection = {...batch.directions[step], errors: {...batch.directions[step].errors, stepText: false}}
         
         if (batch.directionErrors.includes(step)) { 
-          console.log('directions true')
+          // console.log('directions true')
           const editedErrors = directionErrors.filter(index => index !== step);
-          console.log(editedErrors)
+          // console.log(editedErrors)
          batch = {...batch, directions: {...batch.directions, [step]: editedDirection}, directionErrors: editedErrors}
         } else {
           batch = {...batch, directions: {...batch.directions, [step]: editedDirection}}
