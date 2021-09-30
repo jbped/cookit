@@ -150,7 +150,7 @@ export default function ViewRecipe() {
   console.log("this is the recipe returned", recipe)
 
   if (loading) {
-    
+    return <Loader></Loader>
   }
 
   // Destructuring of the keys in the recipe object received from the database

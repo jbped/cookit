@@ -38,25 +38,43 @@ export const ADD_INGREDIENT = gql`
 
 //Recipe
 export const ADD_RECIPE = gql`
-    mutation addRecipe($isPublic: Boolean!, $recipeTitle: String!, $recipeDescription: String, $type: String!, $season: String!, $servings: String!, $cookTime: String!, $directions: [directionInput], $ingredients: [ingredientInput], $cookware: [cookwareInput], $directionsOrder: [String], $ingredientsOrder: [String]) {
-        addRecipe(isPublic: $isPublic, recipeTitle: $recipeTitle, recipeDescription: $recipeDescription, servings: $servings, cookTime: $cookTime, directions: $directions, ingredients: $ingredients, directionsOrder: $directionsOrder, ingredientsOrder: $ingredientsOrder) {
+    mutation AddRecipeMutation($isPublic: Boolean!, $recipeTitle: String!, $creator: String, $recipeDescription: String, $servings: Int, $cookTime: String, $directions: [directionInput], $ingredients: [ingredientInput], $directionsOrder: [String], $ingredientsOrder: [String]) {
+        addRecipe(isPublic: $isPublic, recipeTitle: $recipeTitle, creator: $creator, recipeDescription: $recipeDescription, servings: $servings, cookTime: $cookTime, directions: $directions, ingredients: $ingredients, directionsOrder: $directionsOrder, ingredientsOrder: $ingredientsOrder) {
             _id
-            isPublic
             creator
-            recipeTitle
+        isPublic
+            createdAt
             recipeDescription
+        recipeTitle
             servings
             cookTime
             directions {
-                stepText
-                stepId
+            _id
+            stepText
+            stepId
             }
+        forked
             ingredients {
-                ingredientName
-                measurement
-                quantity
-                preparationNotes
-                ingredientId
+            _id
+            ingredientName
+            measurement
+            quantity
+            preparationNotes
+            ingredientId
+            }
+            comments {
+            _id
+            commentText
+            createdAt
+            username
+            upvotes {
+                _id
+                username
+            }
+            }
+            upvotes {
+            _id
+            username
             }
             directionsOrder
             ingredientsOrder
