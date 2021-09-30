@@ -43,6 +43,7 @@ export default function NewRecipePage() {
   const recipeForm = useSelector(state => state.global.newRecipe)
   const { recipeTitle, cookTime, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm;
   const dispatch = useDispatch();
+  console.log(recipeForm)
 
   // If true display the save button
   const [softComplete, setSoftComplete] = useState(false)

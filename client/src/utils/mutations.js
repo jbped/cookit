@@ -57,7 +57,7 @@ export const ADD_RECIPE = gql`
                 ingredientId
             }
             directionsOrder
-            ingredientOrder
+            ingredientsOrder
         }
     }
 `;

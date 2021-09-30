@@ -288,14 +288,16 @@ const resolvers = {
                 }));
 
                 //For pushing the Cookware object ids up into the cookware array on Recipe
-                await Promise.all(args.cookware.map(async ware => {
-                    const cookware = await Cookware.create(ware);
-                    await Recipe.findByIdAndUpdate(
-                        recipe._id,
-                        { $push: { cookware: cookware._id } },
-                        { new: true }
-                    );
-                }));
+                if (args.cookware){
+                    await Promise.all(args.cookware.map(async ware => {
+                        const cookware = await Cookware.create(ware);
+                        await Recipe.findByIdAndUpdate(
+                            recipe._id,
+                            { $push: { cookware: cookware._id } },
+                            { new: true }
+                        );
+                    }));
+                }
 
                 return recipe;
             }
