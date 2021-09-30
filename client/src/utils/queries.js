@@ -40,10 +40,10 @@ export const QUERY_USER =gql`
                 recipeDescription
                 servings
                 cookTime
-                steps {
+                directions {
                     _id
                     stepText
-                    stepNumber
+                    stepId
                 }
                 ingredients {
                     _id
@@ -51,6 +51,7 @@ export const QUERY_USER =gql`
                     measurement
                     quantity
                     preparationNotes
+                    ingredientId
                 }
                 cookware {
                     _id
@@ -110,6 +111,8 @@ export const QUERY_USER =gql`
                     _id
                     username
                 }
+                directionsOrder
+                ingredientsOrder
             }
         }
     }
@@ -138,10 +141,10 @@ export const QUERY_ME = gql`
                 recipeDescription
                 servings
                 cookTime
-                steps {
+                directions {
                     _id
                     stepText
-                    stepNumber
+                    stepId
                 }
                 ingredients {
                     _id
@@ -149,6 +152,7 @@ export const QUERY_ME = gql`
                     measurement
                     quantity
                     preparationNotes
+                    ingredientId
                 }
                 cookware {
                     _id
@@ -168,6 +172,8 @@ export const QUERY_ME = gql`
                     _id
                     username
                 }
+                directionsOrder
+                ingredientsOrder
             }
             savedRecipes {
                 _id
@@ -178,10 +184,10 @@ export const QUERY_ME = gql`
                 recipeDescription
                 servings
                 cookTime
-                steps {
+                directions {
                     _id
                     stepText
-                    stepNumber
+                    stepId
                 }
                 ingredients {
                     _id
@@ -189,6 +195,7 @@ export const QUERY_ME = gql`
                     measurement
                     quantity
                     preparationNotes
+                    ingredientId
                 }
                 cookware {
                     _id
@@ -208,6 +215,8 @@ export const QUERY_ME = gql`
                     _id
                     username
                 }
+                directionsOrder
+                ingredientsOrder
             }
         }
     }
@@ -239,10 +248,10 @@ export const QUERY_RECIPES =gql`
             difficulty
             servings
             cookTime
-            steps {
+            directions {
                 _id
                 stepText
-                stepNumber
+                stepId
             }
             ingredients {
                 _id
@@ -250,6 +259,7 @@ export const QUERY_RECIPES =gql`
                 measurement
                 quantity
                 preparationNotes
+                ingredientId
             }
             cookware {
                 _id
@@ -269,6 +279,8 @@ export const QUERY_RECIPES =gql`
                 _id
                 username
             }
+            directionsOrder
+            ingredientsOrder
         }
     }
 `;
@@ -296,6 +308,7 @@ export const QUERY_RECIPE = gql`
                 ingredientName
                 quantity
                 preparationNotes
+                ingredientId
             }
             cookware {
                 cookwareName
@@ -318,7 +331,9 @@ export const QUERY_RECIPES_SHORT =gql`
             cookTime
             ingredients {
                 ingredientName
+                ingredientId
             }
+            ingredientsOrder
         }
     }
 `;
@@ -338,6 +353,7 @@ export const QUERY_RECIPE_BASIC =gql`
                 stepText
                 stepId
             }
+            directionsOrder
         }
     }
 `;
