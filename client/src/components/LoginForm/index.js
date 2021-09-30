@@ -37,6 +37,7 @@ export default function LoginForm() {
   const [values, setValues] = useState(initialState);
 
   const [login, { error }] = useMutation(LOGIN)
+  console.error(error)
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -143,6 +144,7 @@ export default function LoginForm() {
         color="backdrop"
         InputLabelProps={{ color: "secondary" }}
         onChange={handleChange}
+        autoComplete="username"
       />
       {values.usernameError && <Typography variant="subtitle2" color="error" sx={{ mb: 1 }}>Please provide a username</Typography>}
       <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
@@ -155,6 +157,7 @@ export default function LoginForm() {
           name="password"
           onChange={handleChange}
           color="backdrop"
+          autoComplete="password"
           endAdornment={
             <InputAdornment position="end">
               <IconButton
