@@ -38,7 +38,8 @@ const resolvers = {
             return User.findOne({ username })
                 .select('-__v -password')
                 .populate('groceryList')
-                .populate('recipeKit');
+                .populate('recipeKit')
+                .populate('savedRecipes');
         },
 
         //Recipe queries

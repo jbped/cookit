@@ -18,7 +18,7 @@ export const QUERY_USERS = gql`
 `;
 
 // Returns everything for a specific user
-export const QUERY_USER =gql`
+export const QUERY_USER = gql`
     query user ($Username: String!) {
         user(username: $Username) {
             _id
@@ -34,16 +34,16 @@ export const QUERY_USER =gql`
             recipeKit {
                 _id
                 creator
-                public
+                isPublic
                 createdAt
                 recipeTitle
                 recipeDescription
                 servings
                 cookTime
-                steps {
+                directions {
                     _id
                     stepText
-                    stepNumber
+                    stepId
                 }
                 ingredients {
                     _id
@@ -51,6 +51,7 @@ export const QUERY_USER =gql`
                     measurement
                     quantity
                     preparationNotes
+                    ingredientId
                 }
                 cookware {
                     _id
@@ -73,7 +74,7 @@ export const QUERY_USER =gql`
             }
             savedRecipes {
                 _id
-                public
+                isPublic
                 creator
                 createdAt
                 recipeTitle
@@ -110,6 +111,8 @@ export const QUERY_USER =gql`
                     _id
                     username
                 }
+                directionsOrder
+                ingredientsOrder
             }
         }
     }
@@ -123,28 +126,6 @@ export const QUERY_ME = gql`
             username
             email
             groceryList {
-            _id
-            ingredientName
-            measurement
-            quantity
-            preparationNotes
-            ingredientId
-            }
-            recipeKit {
-            _id
-            isPublic
-            creator
-            createdAt
-            recipeTitle
-            recipeDescription
-            servings
-            cookTime
-            directions {
-                _id
-                stepText
-                stepId
-            }
-            ingredients {
                 _id
                 ingredientName
                 measurement
@@ -152,18 +133,58 @@ export const QUERY_ME = gql`
                 preparationNotes
                 ingredientId
             }
-            directionsOrder
-            ingredientsOrder
+            recipeKit {
+                _id
+                creator
+                isPublic
+                createdAt
+                recipeTitle
+                recipeDescription
+                servings
+                cookTime
+                directions {
+                    _id
+                    stepText
+                    stepId
+                }
+                ingredients {
+                    _id
+                    ingredientName
+                    measurement
+                    quantity
+                    preparationNotes
+                    ingredientId
+                }
+                cookware {
+                    _id
+                    cookwareName
+                }
+                comments {
+                    _id
+                    commentText
+                    createdAt
+                    username
+                    upvotes {
+                        _id
+                        username
+                    }
+                }
+                upvotes {
+                    _id
+                    username
+                }
+                directionsOrder
+                ingredientsOrder
             }
             savedRecipes {
-            isPublic
-            _id
-            creator
-            createdAt
-            recipeTitle
-            recipeDescription
-            servings
-            cookTime
+                isPublic
+                _id
+                creator
+                createdAt
+                recipeTitle
+                recipeDescription
+                servings
+                cookTime
             directions {
                 _id
                 stepText
@@ -172,10 +193,10 @@ export const QUERY_ME = gql`
             ingredients {
                 _id
                 measurement
-            ingredientName
+                ingredientName
                 quantity
                 ingredientId
-            preparationNotes
+                preparationNotes
             }
             directionsOrder
             ingredientsOrder
@@ -196,11 +217,11 @@ export const QUERY_ME_BASIC = gql`
 `;
 
 // All recipes
-export const QUERY_RECIPES =gql`
+export const QUERY_RECIPES = gql`
     query recipes {
         recipes {
             _id
-            public
+            isPublic
             creator
             createdAt
             recipeTitle
@@ -210,10 +231,10 @@ export const QUERY_RECIPES =gql`
             difficulty
             servings
             cookTime
-            steps {
+            directions {
                 _id
                 stepText
-                stepNumber
+                stepId
             }
             ingredients {
                 _id
@@ -221,6 +242,7 @@ export const QUERY_RECIPES =gql`
                 measurement
                 quantity
                 preparationNotes
+                ingredientId
             }
             cookware {
                 _id
@@ -240,41 +262,48 @@ export const QUERY_RECIPES =gql`
                 _id
                 username
             }
+            directionsOrder
+            ingredientsOrder
         }
     }
 `;
 
 export const QUERY_RECIPE = gql`
-    query Query($recipeId: ID!) {
-    recipe(_id: $recipeId) {
-        _id
-        creator
-        isPublic
-        createdAt
-        recipeDescription
-        recipeTitle
-        servings
-        cookTime
-        directions {
-        stepText
-        stepId
-        _id
+    query getRecipe {
+        recipe {
+            _id
+            isPublic
+            creator
+            createdAt
+            recipeTitle
+            recipeDescription
+            servings
+            cookTime
+            forked
+            directions {
+                _id
+                stepText
+                stepId
+            }
+            ingredients {
+                _id
+                measurement
+                ingredientName
+                quantity
+                preparationNotes
+                ingredientId
+            }
+            cookware {
+                cookwareName
+            }
+            directionsOrder
+            ingredientsOrder
         }
-        ingredients {
-        _id
-        ingredientName
-        measurement
-        quantity
-        preparationNotes
-        ingredientId
-        }
-        directionsOrder
-        ingredientsOrder
-    }
+
     }
 `;
 
-export const QUERY_RECIPES_SHORT =gql`
+export const QUERY_RECIPES_SHORT = gql`
     query Query {
         recipes {
             _id
@@ -286,16 +315,18 @@ export const QUERY_RECIPES_SHORT =gql`
             cookTime
             ingredients {
                 ingredientName
+                ingredientId
             }
+            ingredientsOrder
         }
     }
 `;
 
-export const QUERY_RECIPE_BASIC =gql`
+export const QUERY_RECIPE_BASIC = gql`
     query Query ($_id: ID!) {
         recipes (_id: $_id) {
             _id
-            public
+            isPublic
             creator
             createdAt
             recipeTitle
@@ -306,14 +337,10 @@ export const QUERY_RECIPE_BASIC =gql`
                 stepText
                 stepId
             }
+            directionsOrder
         }
     }
 `;
-
-// Not working right now
-// export const QUERY_RECIPE = gql`
-
-// `;
 
 // all ingredients
 export const QUERY_INGREDIENTS = gql`
