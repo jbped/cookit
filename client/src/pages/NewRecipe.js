@@ -192,10 +192,21 @@ export default function NewRecipePage() {
   }
 
   const createNewRecipe = async () => {
+    let newRecipeObj = {
+      recipeTitle,
+      cookTime,
+      servings, 
+      recipeDescription,
+      ingredientsOrder: ingredientsCol.itemIds,
+      directionsOrder: directionsCol.itemIds,
+    }
+    console.log('newRecipeObj', newRecipeObj)
+
     let ingredientsArr = []
     let directionsArr = []
 
     let publicBool = isPublic === 'private' ? false : true
+    newRecipeObj.isPublic = publicBool
 
     await ingredientsCol.itemIds.forEach(item => {
       let trimmedIngredient = {
@@ -205,41 +216,24 @@ export default function NewRecipePage() {
         ingredientName: ingredients[item].ingredient,
         preparationNotes: ingredients[item].notes,
       }
-      // console.log(`trimmed-${item}`, trimmedIngredient);
       ingredientsArr.push(trimmedIngredient);
-      // console.log(`ingArr after ${item} pushed`, ingredientsArr)
-    })
+    });
+    newRecipeObj.ingredients = ingredientsArr
 
     await directionsCol.itemIds.forEach(item => {
       let trimmedStep = {
         stepId: directions[item].stepId,
         stepText: directions[item].stepText,
       }
-      // console.log(`trimmed-${item}`, trimmedStep);
       directionsArr.push(trimmedStep);
-      // console.log(`dirArr after ${item} pushed`, directionsArr)
     })
+    newRecipeObj.directions = directionsArr
 
-    // console.log('ingredientsArr: ', ingredientsArr, '\ndirectionsArr: ', directionsArr)
-
-    let newRecipeObj = {
-      recipeTitle,
-      cookTime,
-      servings, 
-      isPublic: publicBool,
-      recipeDescription,
-      ingredients: ingredientsArr,
-      ingredientsOrder: ingredientsCol.itemIds,
-      directions: directionsArr,
-      directionsOrder: directionsCol.itemIds,
-    }
-    console.log('newRecipeObj', newRecipeObj)
     try{
       const { data } = await addRecipe({
         variables: {...newRecipeObj}
       });
 
-      // const { addRecipe } = data; 
       console.log(data.addRecipe._id)
       data && dispatch(newRecipe(initGlobalState.newRecipe))
       window.location.assign(`/recipe/${data.addRecipe._id}`)
