@@ -8,8 +8,8 @@ import {
 // Queries/Mutations
 import { useQuery } from '@apollo/client';
 import {
-    QUERY_ME,
-    // QUERY_RECIPES_SHORT
+  QUERY_ME,
+  // QUERY_RECIPES_SHORT
 } from '../../utils/queries';
 
 // React Components
@@ -42,7 +42,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function RecipeListItem() {
   // Get QUERY_ME data
-  const {userLoading, userData} = useQuery(QUERY_ME);
+  const { userLoading, userData } = useQuery(QUERY_ME);
   console.log("query_me data", userLoading, userData);
   const myData = userData?.me || {}
 
@@ -130,107 +130,84 @@ export default function RecipeListItem() {
   }
 
   return (
-        <Grid
-          container
-          spacing={2}
-        >
-          <Grid
-            item
-          >
-            <Box
+      <Box sx={{ m: 2, bgcolor: 'background.default', display: 'grid', gap: 2 }}>
+        <Item>
+          <Button component={Link} to={`/recipe/${recipe._id}`} variant="text">
+            <ListItem elevation="4"
               sx={{
-                p: 2,
-                bgcolor: 'background.default',
-                display: 'grid',
-                gap: 2,
-              }}
-            >
-              <Item>
-              <Button
-                  component={Link}
-                  to={`/recipe/${recipe._id}`}
-                  variant="text"
-                >
-                   <ListItem
-                      elevation="4"
-                      sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          marginLeft: ".1rem",
-                          marginRight: ".1rem"
-                      }}
-                >
-                      <ListItemText
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            marginLeft: ".1rem",
-                            marginRight: ".5rem",
-                            color: 'white'
-                          }}
-                      >
-                      <p>{ recipe.recipeTitle }</p>
-                  {/* <p>Recipe Name</p> */}
-              </ListItemText>
-              {/* Use MUI rating precision component if there is enought time*/}
-            <Box
-              sx={{
+                p: 0,
                 display: "flex",
                 alignItems: "center",
-              }}
-            >
-            <ListItemIcon
-                       sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginLeft: ".1rem",
-                          }}
-                      >
-                <IoMdTimer />
-                <ListItemText
-                          sx={{
-                        color: "secondary",
-                        display: "flex",
-                        alignItems: "center",
-                        marginLeft: ".3rem"
-                          }}
-                      >
-                    <p>{recipe.cookTime}</p>
-                      </ListItemText>
-                      </ListItemIcon>                      
-            </Box>
-            <Box
-             sx={{
-              display: "flex",
-              alignItems: "center",
-              marginLeft: ".8rem"
-              }}
-            >
-            <ListItemIcon
-                       sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginRight: ".2rem",
-                          }}
-                      >
-                      <IoIosPeople />              
-                  <ListItemText
+              }}>
+              <ListItemText
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginLeft: ".1rem",
+                  marginRight: ".5rem",
+                  color: 'white'
+                }}
+              >
+                <p>{recipe.recipeTitle}</p>
+                {/* <p>Recipe Name</p> */}
+              </ListItemText>
+              {/* Use MUI rating precision component if there is enought time*/}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <ListItemIcon
                   sx={{
-                    color: "secondary",
                     display: "flex",
                     alignItems: "center",
-                    marginLeft: ".3rem"
+                    marginLeft: ".1rem",
+                  }}
+                >
+                  <IoMdTimer />
+                  <ListItemText
+                    sx={{
+                      color: "secondary",
+                      display: "flex",
+                      alignItems: "center",
+                      marginLeft: ".3rem"
                     }}
                   >
-                    <p>{ recipe.servings}</p>
-                        </ListItemText>
-                      </ListItemIcon>
-            </Box>
-                </ListItem>
-                </Button>
-          </Item>
-            </Box>
-        </Grid>
-    </Grid>
+                    <p>{recipe.cookTime}</p>
+                  </ListItemText>
+                </ListItemIcon>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginLeft: ".8rem"
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginRight: ".2rem",
+                  }}
+                >
+                  <IoIosPeople />
+                  <ListItemText
+                    sx={{
+                      color: "secondary",
+                      display: "flex",
+                      alignItems: "center",
+                      marginLeft: ".3rem"
+                    }}
+                  >
+                    <p>{recipe.servings}</p>
+                  </ListItemText>
+                </ListItemIcon>
+              </Box>
+            </ListItem>
+          </Button>
+        </Item>
+      </Box>
   );
 }
