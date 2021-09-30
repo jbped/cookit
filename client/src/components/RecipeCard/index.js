@@ -5,7 +5,7 @@ import { BrowserRouter, Link } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import {
   QUERY_ME,
-  // QUERY_RECIPES_SHORT
+  QUERY_RECIPE_BASIC
 } from '../../utils/queries';
 
 // React Components
@@ -141,6 +141,15 @@ export default function RecipeReviewCard() {
       },
     ],
   };
+
+  
+
+  const { loading, data } = useQuery(QUERY_RECIPE_BASIC, {
+    variables: { recipeId: recipeId }
+  });
+
+  const recipe = data?.recipe || {};
+  console.log("this is the recipe returned", recipe)
 
   const [expanded, setExpanded] = React.useState(false);
 
