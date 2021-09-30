@@ -51,23 +51,11 @@ const Item = styled(Paper)(({ theme }) => ({
   lineHeight: '60px',
 }));
 
-export default function RecipeReviewCard(props) {
-  const [expanded, setExpanded] = React.useState(false);
-
-  // Get QUERY_ME data
-  const { userLoading, userData } = useQuery(QUERY_ME);
-  console.log('query_me data', userLoading, userData);
-  const myData = userData?.me || {};
-
-  const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-  // Get QUERY_RECIPE data
-  // const { loading, recipeData } = useQuery(QUERY_RECIPES_SHORT);
-  // console.log("Recipe data", loading, recipeData);
-  // const recipes = recipeData?.recipe || {};
+export default function RecipeReviewCard({ recipe }) {
+  // console.log(recipe)
 
   // Hardcoded recipes
-  // const recipe = {
+  // recipe = {
   //   _id: '614fe7e963526de392b539b5',
   //   isPublic: true,
   //   creator: 'BoDee_Angus',
@@ -148,21 +136,14 @@ export default function RecipeReviewCard(props) {
 
   
 
-  const { loading, data } = useQuery(QUERY_RECIPE_BASIC, {
-    variables: { recipeId: props.recipe.recipeId }
-  });
-
-  const recipe = data?.recipe || {};
-  console.log("this is the recipe returned", recipe)
-
-  if (loading) {
-    return <Loader></Loader>
-  }
+  
 
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  
 
   return (
     <Item>

@@ -16,13 +16,13 @@ const resolvers = {
 
         //User queries
         me: async (parent, args, context) => {
+            
             if (context.user) {
                 const userData = await User.findOne({ _id: context.user._id })
                     .select('-__v -password')
                     .populate('groceryList')
                     .populate('recipeKit')
                     .populate('savedRecipes');
-
                 return userData;
             }
 
@@ -260,6 +260,7 @@ const resolvers = {
         addRecipe: async (parent, args, context) => {
             //Context if user is creating recipe
             if (context.user) {
+                console.log(args)
                 const { directions, ingredients, cookware, ...editedArgs } = args;
                 const recipe = await Recipe.create({ ...editedArgs, creator: context.user.username });
                 await User.findByIdAndUpdate(
@@ -271,6 +272,7 @@ const resolvers = {
                 //For pushing the Direction object ids up into the steps array on Recipe
                 await Promise.all(args.directions.map(async dir => {
                     const direction = await Direction.create(dir);
+                    console.log(direction)
                     await Recipe.findByIdAndUpdate(
                         recipe._id,
                         { $push: { directions: direction._id } },
@@ -281,6 +283,7 @@ const resolvers = {
                 //For pushing the Ingredient object ids up into the ingredients array on Recipe
                 await Promise.all(args.ingredients.map(async ing => {
                     const ingredient = await Ingredient.create(ing);
+                    console.log(ingredient)
                     await Recipe.findByIdAndUpdate(
                         recipe._id,
                         { $push: { ingredients: ingredient._id } },
