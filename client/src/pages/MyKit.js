@@ -29,9 +29,8 @@ import {
   ListItemText,
   IconButton,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
 import GridViewSharpIcon from '@mui/icons-material/GridViewSharp';
+import DehazeSharpIcon from '@mui/icons-material/DehazeSharp';
 
 // Custom Components....
 import RecipeCard from '../components/RecipeCard';
@@ -46,42 +45,20 @@ export default function MyKit() {
     dispatch(toggleMyKitView());
   };
 
-  const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    height: 60,
-    lineHeight: '60px',
-  }));
-
   // Get QUERY_ME data
   const { loading, data } = useQuery(QUERY_ME);
 
   const myData = data?.me || {};
-
   console.log('query_me data', loading, myData);
 
   const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+  
   if (loading) {
     return <Loader></Loader>;
   }
-
-  const recipes = [...myData.recipeKit];
-  console.log(recipes);
-
-  console.log(recipes);
-
-  // based on query me data pull all the recipes into the mykit page
-  // const recipeId = "6155f06d904fa9fcbbc99922";
-
-  // const { loading, data } = useQuery(QUERY_RECIPE_BASIC, {
-  //   variables: { recipeId: recipeId }
-  // });
-
-  // console.log("this is the recipe returned", recipe)
-
-  // recipes += recipes
+  
+  const recipes = Object.keys(myData).length > 0 ? [...myData.recipeKit] : [];
+  console.log('recipes', recipes);
 
   return (
     <Box mx={{ xs: 0, md: 5, xl: 20 }}>
@@ -108,28 +85,39 @@ export default function MyKit() {
           mt: 2,
           borderBottom: 1,
           borderColor: 'divider',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
         }}
       >
         <Typography variant='h5' color='secondary'>
           My Recipes
         </Typography>
+        <IconButton onClick={toggleView}>
+        {view ? (
+            <GridViewSharpIcon />
+            ) : (
+            <DehazeSharpIcon />
+        )}
+        </IconButton>
+        
       </Box>
 
       {view ? (
         //True === ROW
         <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
-          <Box key={`-box`}>
             {recipes.map((recipe) => (
-              <Typography>helloWorld</Typography>
+              <Box key={recipe._id}>
+                <RecipeListItem key={recipe._id} recipe={recipe}></RecipeListItem>
+              </Box>
             ))}
-          </Box>
         </List>
       ) : (
         // False === Tiles
         <Grid container>
           {recipes.map((recipe) => (
             <Grid item xs={12} md={6}>
-              <RecipeListItem key={recipe._id} recipe={recipe}></RecipeListItem>
+              <RecipeCard key={recipe._id} recipe={recipe}></RecipeCard>
             </Grid>
           ))}
         </Grid>

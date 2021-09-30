@@ -1,24 +1,16 @@
 import * as React from 'react';
-import { BrowserRouter, Link } from 'react-router-dom';
-
-// Queries/Mutations
-import { useQuery, useMutation } from '@apollo/client';
-import {
-  QUERY_ME,
-  QUERY_RECIPE_BASIC
-} from '../../utils/queries';
-
-// React Components
-import ViewRecipe from '../../pages/ViewRecipe';
-
-// Auth
-import Auth from '../../utils/auth';
+import { Link } from 'react-router-dom';
 
 // React Icons
 import { IoMdTimer, IoIosPeople } from 'react-icons/io';
+import {
+  BsPeople
+} from "react-icons/bs";
 
 // Import Material UI components
 import { styled } from '@mui/material/styles';
+
+
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -51,101 +43,8 @@ const Item = styled(Paper)(({ theme }) => ({
   lineHeight: '60px',
 }));
 
-export default function RecipeReviewCard({ recipe }) {
+export default function RecipeReviewCard({recipe}) {
   const [expanded, setExpanded] = React.useState(false);
-
-  // Get QUERY_ME data
-  const { userLoading, userData } = useQuery(QUERY_ME);
-  console.log('query_me data', userLoading, userData);
-  const myData = userData?.me || {};
-
-  const token = Auth.loggedIn() ? Auth.getToken() : null;
-  // console.log(recipe)
-
-  // Hardcoded recipes
-  // recipe = {
-  //   _id: '614fe7e963526de392b539b5',
-  //   isPublic: true,
-  //   creator: 'BoDee_Angus',
-  //   createdAt: '09/25/2021 at 9:24 PM',
-  //   recipeTitle: 'Fried Eggs',
-  //   recipeDescription:
-  //     'Eggs fried in a pan filled with butter, salted and peppered to perfection.',
-  //   type: 'Dinner',
-  //   season: 'All',
-  //   difficulty: 1,
-  //   servings: 6,
-  //   cookTime: '1 hour',
-  //   directions: [
-  //     {
-  //       stepId: 'step-1',
-  //       stepText: 'First, melt butter on pan at medium heat.',
-  //     },
-  //     {
-  //       stepId: 'step-2',
-  //       stepText: 'Then, crack eggs onto pan gently.',
-  //     },
-  //     {
-  //       stepId: 'step-3',
-  //       stepText:
-  //         'Salt and pepper the eggs, and then wait until the edges solidify completely.',
-  //     },
-  //     {
-  //       stepId: 'step-4',
-  //       stepText:
-  //         'Flip eggs over, and let sit for a minute or two. After take off heat and serve.',
-  //     },
-  //   ],
-  //   directionsOrder: ['step-1', 'step-2', 'step-3', 'step-4'],
-  //   ingredients: [
-  //     {
-  //       ingredientId: 'ingredient-1',
-  //       measurement: null,
-  //       ingredientName: 'Eggs',
-  //       quantity: '2',
-  //       preparationNotes: 'large',
-  //     },
-  //     {
-  //       ingredientId: 'ingredient-2',
-  //       measurement: 'Tbsp',
-  //       ingredientName: 'Butter',
-  //       quantity: '2',
-  //       preparationNotes: 'Salted',
-  //     },
-  //     {
-  //       ingredientId: 'ingredient-3',
-  //       measurement: 'c',
-  //       ingredientName: 'Sour Cream',
-  //       quantity: '1/2',
-  //       preparationNotes: '',
-  //     },
-  //   ],
-  //   ingredientsOrder: ['ingredient-1', 'ingredient-3', 'ingredient-2'],
-  //   comments: [
-  //     {
-  //       _id: '614fe7f963526de392b539d0',
-  //       commentText: 'Wow this was delicious!',
-  //       username: 'BoDee_Angus',
-  //       upvotes: [
-  //         {
-  //           _id: '614feb27c6da2f76bdc176f2',
-  //           username: null,
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   upvotes: [
-  //     {
-  //       _id: '614feb21c6da2f76bdc176ee',
-  //       username: 'BoDee_Angus',
-  //     },
-  //   ],
-  // };
-
-  
-
-  
-
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
