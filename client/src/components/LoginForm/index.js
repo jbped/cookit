@@ -37,6 +37,7 @@ export default function LoginForm() {
   const [values, setValues] = useState(initialState);
 
   const [login, { error }] = useMutation(LOGIN)
+  console.error(error)
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
