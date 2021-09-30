@@ -190,7 +190,10 @@ export default function DirectionsSection() {
         ...directions,
         [stepId]: {
           stepId: stepId,
-          stepText: ''
+          stepText: '',
+          errors: {
+            stepText: false,
+          }
         }
       },
       columns: {

@@ -140,6 +140,7 @@ export default function SignupForm() {
         borderColor: 'backdrop.dark',
         boxShadow: 4
       }}
+      autoComplete="true"
       onSubmit={signupCheck}
     >
       <Box sx={{ display: 'flex' }}>
@@ -161,6 +162,7 @@ export default function SignupForm() {
         color="backdrop"
         InputLabelProps={{ color: "secondary" }}
         onChange={handleChange('username')}
+        autoComplete="new-username"
       />
       {values.usernameError && <Typography variant="subtitle2" color="error">Please provide a username</Typography>}
       
@@ -174,6 +176,7 @@ export default function SignupForm() {
         color="backdrop"
         InputLabelProps={{ color: "secondary" }}
         onChange={handleChange('email')}
+        autoComplete="new-password"
       />
       {values.emailError && <Typography variant="subtitle2" color="error">Please provide a valid email address</Typography>}
       
