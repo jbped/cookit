@@ -102,6 +102,7 @@ const typeDefs = gql`
         addRecipe(isPublic: Boolean!, creator: String, recipeTitle: String!, recipeDescription: String, type: String, season: String, difficulty: Int, servings: Int cookTime: String, directions: [directionInput], ingredients: [ingredientInput], cookware: [cookwareInput], directionsOrder: [String], ingredientsOrder: [String]): Recipe
         saveRecipe(recipeId: ID): Recipe
         deleteRecipe(_id: ID): Recipe
+        editRecipe(recipeId: ID!, isPublic: Boolean, creator: String, recipeTitle: String, recipeDescription: String, type: String, season: String, difficulty: Int, servings: Int cookTime: String, directions: [directionInput], ingredients: [ingredientInput], cookware: [cookwareInput], directionsOrder: [String], ingredientsOrder: [String]): Recipe
         #Direction-
         addDirection(recipeId: ID, stepText: String!): Direction
     }
