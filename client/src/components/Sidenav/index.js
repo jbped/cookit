@@ -83,11 +83,11 @@ export default function Sidenav() {
   ]
 
   const menuItems = [
-    {
-      name: "Discover",
-      icon: <RiCompassDiscoverLine />,
-      link: 'discover'
-    },
+    // {
+    //   name: "Discover",
+    //   icon: <RiCompassDiscoverLine />,
+    //   link: 'discover'
+    // },
     {
       name: "Search",
       icon: <MdSearch />,
