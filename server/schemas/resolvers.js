@@ -380,7 +380,7 @@ const resolvers = {
                 const recipe = await Recipe.findOneAndDelete(_id);
                 const { steps, ingredients, cookware, comments, upvotes } = recipe;
 
-                await Promise.all(steps.map(async step => {
+                await Promise.all(directions.map(async step => {
                     await Step.findOneAndDelete(
                         { _id: step },
                         { new: true }
@@ -416,6 +416,72 @@ const resolvers = {
                 }));
 
                 return recipe;
+            }
+            throw new AuthenticationError('You need to be logged in!');
+        },
+
+        editRecipe: async (parent, args, context) => {
+            //For ensuring that only logged in users can delete recipes
+            if (context.user) {
+                const { recipeId, directions, ingredients, cookware, ...editedArgs } = args;
+
+                const oldRecipe = await Recipe.findById(recipeId);
+
+                await Promise.all(oldRecipe.directions.map(async drect => {
+                    await Direction.findOneAndDelete(
+                        { _id: drect },
+                        { new: true }
+                    )
+                }));
+
+                await Promise.all(oldRecipe.ingredients.map(async ingredient => {
+                    await Ingredient.findOneAndDelete(
+                        { _id: ingredient },
+                        { new: true }
+                    )
+                }));
+
+                await Promise.all(oldRecipe.cookware.map(async ware => {
+                    await Cookware.findOneAndDelete(
+                        { _id: ware },
+                        { new: true }
+                    )
+                }));
+
+                const newRecipe = await Recipe.findOneAndReplace(
+                    { _id: recipeId },
+                    { ...editedArgs, creator: context.user.username, comments: oldRecipe.comments, upvotes: oldRecipe.upvotes },
+                    { new: true }
+                );
+
+                await Promise.all(directions.map(async dir => {
+                    const direction = await Direction.create(dir);
+                    await Recipe.findByIdAndUpdate(
+                        newRecipe._id,
+                        { $push: { directions: direction._id } },
+                        { new: true }
+                    );
+                }));
+
+                await Promise.all(ingredients.map(async ing => {
+                    const ingredient = await Ingredient.create(ing);
+                    await Recipe.findByIdAndUpdate(
+                        newRecipe._id,
+                        { $push: { ingredients: ingredient._id } },
+                        { new: true }
+                    );
+                }));
+
+                await Promise.all(cookware.map(async ware => {
+                    const cookware = await Cookware.create(ware);
+                    await Recipe.findByIdAndUpdate(
+                        newRecipe._id,
+                        { $push: { cookware: cookware._id } },
+                        { new: true }
+                    );
+                }));
+
+                return newRecipe;
             }
             throw new AuthenticationError('You need to be logged in!');
         },
