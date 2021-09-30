@@ -34,7 +34,7 @@ export const QUERY_USER =gql`
             recipeKit {
                 _id
                 creator
-                public
+                isPublic
                 createdAt
                 recipeTitle
                 recipeDescription
@@ -73,7 +73,7 @@ export const QUERY_USER =gql`
             }
             savedRecipes {
                 _id
-                public
+                isPublic
                 creator
                 createdAt
                 recipeTitle
@@ -132,7 +132,7 @@ export const QUERY_ME = gql`
             recipeKit {
                 _id
                 creator
-                public
+                isPublic
                 createdAt
                 recipeTitle
                 recipeDescription

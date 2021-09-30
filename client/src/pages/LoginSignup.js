@@ -2,7 +2,9 @@ import React from 'react';
 import LoginForm from '../components/LoginForm';
 import SignupForm from '../components/SignupForm';
 import LandingPage from '../components/LandingPage';
-import { Link } from "react-router-dom";
+import { Link, Redirect, useParams } from "react-router-dom";
+
+import Auth from "../utils/auth"
 
 import {
   Grid,
@@ -11,6 +13,13 @@ import {
 } from '@mui/material'
 
 export default function LoginSignup({ page }) {
+
+  const  { username: userParam } = useParams();
+  // If loggedIn token returns the username that matches the userParam, user is redirected to the main page (/my-kit) file
+  if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
+    return <Redirect to="/my-kit " />
+  }
+
   return (
     <Box
       sx={{

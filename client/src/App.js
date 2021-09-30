@@ -19,7 +19,7 @@ import Sidenav from "./components/Sidenav";
 
 function App() {
   let location = useLocation();
-  console.log(location)
+  // console.log('location', location)
   const hideHeader = (location.pathname.includes('login') || location.pathname.includes('signup') || location.pathname === ('/') /* || location.pathname === ('{ADD HEROKU LINK HERE}/')*/) ? true : false
 
   return (
