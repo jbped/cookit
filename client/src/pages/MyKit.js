@@ -7,6 +7,13 @@ import * as React from 'react';
 //   Link
 // } from "react-router-dom";
 
+// Queries/Mutations
+import { useQuery, useMutation } from '@apollo/client';
+import {
+  QUERY_ME,
+  QUERY_RECIPE_BASIC
+} from '../utils/queries';
+
 // Auth
 import Auth from '../utils/auth.js';
 
@@ -26,6 +33,9 @@ import { styled } from '@mui/material/styles';
 // Custom Components....
 import RecipeCard from '../components/RecipeCard';
 import RecipeListItem from '../components/RecipeListItem';
+import Loader from '../components/Loader'
+
+
 
 export default function MyKit() {
   const Item = styled(Paper)(({ theme }) => ({
@@ -35,6 +45,39 @@ export default function MyKit() {
     height: 60,
     lineHeight: '60px',
   }));
+
+  // Get QUERY_ME data
+  const { loading, data } = useQuery(QUERY_ME);
+  
+  const myData = data?.me || {};
+
+  // console.log('query_me data', loading, myData);
+
+  const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+  if (loading) {
+    return <Loader></Loader>
+  }
+
+  const recipes = [...myData.recipeKit]
+
+  console.log(recipes)
+  
+  // based on query me data pull all the recipes into the mykit page
+  // const recipeId = "6155f06d904fa9fcbbc99922";
+
+  // const { loading, data } = useQuery(QUERY_RECIPE_BASIC, {
+  //   variables: { recipeId: recipeId }
+  // });
+
+  
+  // console.log("this is the recipe returned", recipe)
+
+  // recipes += recipes
+
+
+  
+
 
   return (
     <Box
@@ -94,13 +137,23 @@ export default function MyKit() {
             <Grid item xs={12} md={6}>
               <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
                 <Box key={`-box`}>
-                  <ListItem>
-                    <RecipeCard />
-                    <ListItemText
-                    // primary={}
-                    // secondary={ ? : ' '}
-                    />
-                  </ListItem>
+                      {/* <ListItem>
+                        <RecipeCard key={recipe._id} recipe={recipe} />
+                        {/* <ListItemText
+                          // primary={}
+                          // secondary={ ? : ' '}
+                          /> */}
+                      {/* </ListItem>  */}
+                    {recipes.map(recipe => (
+                      <ListItem>
+                        <RecipeCard key={recipe._id} recipe={recipe} />
+                        <ListItemText
+                          // primary={}
+                          // secondary={ ? : ' '}
+                          />
+                      </ListItem>
+                      )
+                    )}
                   {/* <Divider /> */}
                 </Box>
               </List>
@@ -109,13 +162,23 @@ export default function MyKit() {
             <Grid item xs={12} md={6}>
               <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
                 <Box key={`-box`}>
-                  <ListItem>
+                {recipes.map(recipe => (
+                      <ListItem>
+                        <RecipeListItem key={recipe._id} recipe={recipe} />
+                        <ListItemText
+                          // primary={}
+                          // secondary={ ? : ' '}
+                          />
+                      </ListItem>
+                      )
+                )}
+                  {/* <ListItem>
                     <RecipeListItem />
-                    <ListItemText
+                    {/* <ListItemText
                     // primary={}
                     // secondary={ ?  : '-'}
-                    />
-                  </ListItem>
+                    /> */}
+                  {/* </ListItem>  */}
                   {/* <Divider /> */}
                 </Box>
               </List>
