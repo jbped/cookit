@@ -1,24 +1,16 @@
 import React from 'react'
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
 import {
-  QUERY_ME,
   QUERY_RECIPES
 } from '../utils/queries';
 
 import {
     Grid,
     Box,
-    Divider,
     Typography,
-    Paper,
     List,
-    ListItem,
-    ListItemText,
-    IconButton,
   } from '@mui/material';
-import GridViewSharpIcon from '@mui/icons-material/GridViewSharp';
-import DehazeSharpIcon from '@mui/icons-material/DehazeSharp';
 
 import Loader from '../components/Loader'
   
