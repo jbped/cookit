@@ -149,6 +149,10 @@ export default function ViewRecipe() {
   const recipe = data?.recipe || {};
   console.log("this is the recipe returned", recipe)
 
+  if (loading) {
+    return <Loader></Loader>
+  }
+
   // Destructuring of the keys in the recipe object received from the database
   const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = recipe
 
