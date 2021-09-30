@@ -52,6 +52,14 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function RecipeReviewCard({ recipe }) {
+  const [expanded, setExpanded] = React.useState(false);
+
+  // Get QUERY_ME data
+  const { userLoading, userData } = useQuery(QUERY_ME);
+  console.log('query_me data', userLoading, userData);
+  const myData = userData?.me || {};
+
+  const token = Auth.loggedIn() ? Auth.getToken() : null;
   // console.log(recipe)
 
   // Hardcoded recipes
