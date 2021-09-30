@@ -21,7 +21,17 @@ const resolvers = {
                 const userData = await User.findOne({ _id: context.user._id })
                     .select('-__v -password')
                     .populate('groceryList')
-                    .populate('recipeKit')
+                    .populate({
+                        path: 'recipeKit',
+                        populate: {
+                            path: 'ingredients',
+                            model: 'Ingredient'
+                        },
+                        populate : {
+                            path: 'directions',
+                            model: 'Direction'
+                        }
+                    })
                     .populate('savedRecipes');
                 return userData;
             }

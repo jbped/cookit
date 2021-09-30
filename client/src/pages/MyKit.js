@@ -48,10 +48,10 @@ export default function MyKit() {
 
   // Get QUERY_ME data
   const { loading, data } = useQuery(QUERY_ME);
-  
+
   const myData = data?.me || {};
 
-  // console.log('query_me data', loading, myData);
+  console.log('query_me data', loading, myData);
 
   const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -62,7 +62,7 @@ export default function MyKit() {
   const recipes = [...myData.recipeKit]
 
   console.log(recipes)
-  
+
   // based on query me data pull all the recipes into the mykit page
   // const recipeId = "6155f06d904fa9fcbbc99922";
 
@@ -70,60 +70,61 @@ export default function MyKit() {
   //   variables: { recipeId: recipeId }
   // });
 
-  
+
   // console.log("this is the recipe returned", recipe)
 
   // recipes += recipes
 
 
-  
+
 
 
   return (
-    <Box
-      mx={{ xs: 0, md: 5, xl: 20 }}
-      sx={{
-        pt: 2,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: '.4rem',
-        borderBottom: 1,
-        borderColor: 'divider',
-      }}
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Typography variant='h4' fontWeight='bold' color='primary'>
-          My Kit
-        </Typography>
-      </Box>
+    <Box>
       <Box
         mx={{ xs: 0, md: 5, xl: 20 }}
         sx={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
+          pt: 2,
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
           alignItems: 'center',
+          marginTop: '.4rem',
+          borderBottom: 1,
+          borderColor: 'divider',
         }}
       >
-        <Box px={{ md: 5, xl: 20 }}>
-          <Box
-            sx={{
-              mt: 2,
-              borderBottom: 1,
-              borderColor: 'divider',
-              margin: 2
-            }}
-          >
-            <Typography variant='h5' color='secondary'>
-              My Recipes
-            </Typography>
-          </Box>
-          {/* <Paper
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant='h4' fontWeight='bold' color='primary'>
+            My Kit
+          </Typography>
+        </Box>
+        <Box
+          mx={{ xs: 0, md: 5, xl: 20 }}
+          sx={{
+            position: 'fixed',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Box px={{ md: 5, xl: 20 }}>
+            <Box
+              sx={{
+                mt: 2,
+                borderBottom: 1,
+                borderColor: 'divider',
+                margin: 2
+              }}
+            >
+              <Typography variant='h5' color='secondary'>
+                My Recipes
+              </Typography>
+            </Box>
+            {/* <Paper
           sx={{
             p: 2,
             mt: 2,
@@ -133,58 +134,59 @@ export default function MyKit() {
             borderColor: 'backdrop.dark',
           }}
         > */}
-          <Grid container spacing={{ md: 5, lg: 10 }}>
-            <Grid item xs={12} md={6}>
-              <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
-                <Box key={`-box`}>
-                      {/* <ListItem>
+            <Grid container spacing={{ md: 5, lg: 10 }}>
+              <Grid item xs={12} md={6}>
+                <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
+                  <Box key={`-box`}>
+                    {/* <ListItem>
                         <RecipeCard key={recipe._id} recipe={recipe} />
                         {/* <ListItemText
                           // primary={}
                           // secondary={ ? : ' '}
                           /> */}
-                      {/* </ListItem>  */}
+                    {/* </ListItem>  */}
                     {recipes.map(recipe => (
                       <ListItem>
                         <RecipeCard key={recipe._id} recipe={recipe} />
                         <ListItemText
-                          // primary={}
-                          // secondary={ ? : ' '}
-                          />
+                        // primary={}
+                        // secondary={ ? : ' '}
+                        />
                       </ListItem>
-                      )
+                    )
                     )}
-                  {/* <Divider /> */}
-                </Box>
-              </List>
-            </Grid>
+                    {/* <Divider /> */}
+                  </Box>
+                </List>
+              </Grid>
 
-            <Grid item xs={12} md={6}>
-              <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
-                <Box key={`-box`}>
-                {recipes.map(recipe => (
+              <Grid item xs={12} md={6}>
+                <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
+                  <Box key={`-box`}>
+                    {recipes.map(recipe => (
                       <ListItem>
                         <RecipeListItem key={recipe._id} recipe={recipe} />
                         <ListItemText
-                          // primary={}
-                          // secondary={ ? : ' '}
-                          />
+                        // primary={}
+                        // secondary={ ? : ' '}
+                        />
                       </ListItem>
-                      )
-                )}
-                  {/* <ListItem>
+                    )
+                    )}
+                    {/* <ListItem>
                     <RecipeListItem />
                     {/* <ListItemText
                     // primary={}
                     // secondary={ ?  : '-'}
                     /> */}
-                  {/* </ListItem>  */}
-                  {/* <Divider /> */}
-                </Box>
-              </List>
+                    {/* </ListItem>  */}
+                    {/* <Divider /> */}
+                  </Box>
+                </List>
+              </Grid>
             </Grid>
-          </Grid>
-          {/* </Paper> */}
+            {/* </Paper> */}
+          </Box>
         </Box>
       </Box>
     </Box>
