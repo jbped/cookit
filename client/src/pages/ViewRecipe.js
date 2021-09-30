@@ -161,12 +161,8 @@ export default function ViewRecipe() {
   let editedDateArr = []
   let col1 = []
   let col2 = []
-<<<<<<< HEAD
-  // if (!loading && data.recipe !== undefined) {
-=======
   
   if (!loading && data.recipe !== undefined) {
->>>>>>> develop
   // Splits the createdAt string into to indexes DD/MM/YYYY and time
   editedDateArr = createdAt.split(' at ');
 
