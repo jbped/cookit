@@ -138,7 +138,6 @@ export default function RecipeReviewCard({ recipe }) {
 
   
 
-  const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
