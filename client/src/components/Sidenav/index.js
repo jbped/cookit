@@ -230,6 +230,29 @@ export default function Sidenav() {
                   </ ListItemText>
                 </MenuItem>
               </Button>
+
+              <Button component={Link} to="/feed" variant="text" sx={{ mt: 2 }}>
+                <MenuItem
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      marginRight: '.1rem'
+                    }}
+                  >
+                    <PostAddOutlinedIcon />
+                  </ListItemIcon>
+                  <ListItemText>
+                    <Typography variant="h6">
+                      Recipe Feed
+                    </Typography>
+                  </ ListItemText>
+                </MenuItem>
+              </Button>
             </MenuList>
           </Box>
           <ImageList
