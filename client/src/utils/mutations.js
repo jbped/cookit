@@ -80,6 +80,40 @@ export const DELETE_RECIPE = gql`
     }
 `;
 
+export const EDIT_RECIPE = gql`
+    mutation editRecipe($recipeId: ID!, $isPublic: Boolean, $recipeTitle: String, $recipeDescription: String, $type: String!, $season: String!, $difficulty: Int!, $servings: Int!, $cookTime: String!, $directions: [directionInput], $ingredients: [ingredientInput], $cookware: [cookwareInput], $directionsOrder: [String], $ingredientsOrder: [String]) {
+        editRecipe(recipeId: $recipeId, isPublic: $isPublic, recipeTitle: $recipeTitle, recipeDescription: $recipeDescription, type: $type, season: $season, difficulty: $difficulty, servings: $servings, cookTime: $cookTime, directions: $directions, ingredients: $ingredients, cookware: $cookware, directionsOrder: $directionsOrder, ingredientsOrder: $ingredientsOrder) {
+            _id
+            isPublic,
+            creator,
+            recipeTitle,
+            recipeDescription,
+            type,
+            season,
+            difficulty,
+            servings,
+            cookTime,
+            forked,
+            directions {
+                stepText
+                stepId
+            }
+            ingredients {
+                ingredientName
+                measurement
+                quantity
+                preparationNotes
+                ingredientId
+            }
+            cookware {
+                cookwareName
+            }
+            directionsOrder
+            ingredientsOrder
+        }
+    }
+`;
+
 //Direction
 
 export const ADD_DIRECTION = gql`
