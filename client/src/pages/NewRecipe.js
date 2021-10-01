@@ -45,8 +45,13 @@ function HideOnScroll({ children }) {
 
 export default function NewRecipePage() {
   const recipeForm = useSelector(state => state.global.newRecipe)
-  const { recipeTitle, cookTime, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm;
   const dispatch = useDispatch();
+  // Ensures that on mount recipe state is cleared
+  useEffect(() => {
+    dispatch(newRecipe(initGlobalState.newRecipe))
+  }, [])
+
+  const { recipeTitle, cookTime, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm;
   const [addRecipe] = useMutation(ADD_RECIPE)
   // console.log(recipeForm)
 
@@ -79,14 +84,15 @@ export default function NewRecipePage() {
     ingredientsCol.itemIds.length > 0  ? softChecks.ingredientsOrder = true : softChecks.ingredientsOrder = false;
     directionsCol.itemIds.length > 0  ? softChecks.directionsOrder = true : softChecks.directionsOrder = false;
 
-    console.log('softChecks', softChecks)
+    // console.log('softChecks', softChecks)
 
     // If all keys in softChecks are true update softComplete state to true
-    softChecks.recipeTitle && softChecks.cookTime && softChecks.recipeDescription && softChecks.ingredients && softChecks.directions && softChecks.ingredientsOrder && softChecks.directionsOrder ? setSoftComplete(true) : setSoftComplete(false)
+    softChecks.recipeTitle && softChecks.cookTime && softChecks.recipeDescription && softChecks.ingredients && softChecks.directions && softChecks.ingredientsOrder && softChecks.directionsOrder ? setSoftComplete(true) : setSoftComplete(false);
+    (!softChecks.recipeTitle || !softChecks.cookTime || !softChecks.recipeDescription || !softChecks.ingredients || !softChecks.directions || !softChecks.ingredientsOrder || !softChecks.directionsOrder) && dispatch(newRecipe({formCleared: false}));
 
-    console.log('softComplete', softComplete)
+    // console.log('softComplete', softComplete)
 
-  }, [recipeForm, cookTime.length, directions, directionsCol.itemIds.length, ingredients, ingredientsCol.itemIds.length, recipeTitle, recipeDescription.length, softComplete])
+  }, [recipeForm, cookTime.length, directions, directionsCol.itemIds.length, ingredients, ingredientsCol.itemIds.length, recipeTitle, recipeDescription.length, softComplete]);
 
   const formCheck = e => {
     e.preventDefault();
@@ -186,6 +192,7 @@ export default function NewRecipePage() {
       return;
     } else {
       // console.log('createNewRecipe')
+      dispatch(newRecipe({formCleared: true}))
       createNewRecipe()
     }
 
@@ -200,7 +207,7 @@ export default function NewRecipePage() {
       ingredientsOrder: ingredientsCol.itemIds,
       directionsOrder: directionsCol.itemIds,
     }
-    console.log('newRecipeObj', newRecipeObj)
+    // console.log('newRecipeObj', newRecipeObj)
 
     let ingredientsArr = []
     let directionsArr = []
@@ -228,13 +235,14 @@ export default function NewRecipePage() {
       directionsArr.push(trimmedStep);
     })
     newRecipeObj.directions = directionsArr
+    // console.log('recipe created', formCleared)
 
     try{
       const { data } = await addRecipe({
         variables: {...newRecipeObj}
       });
 
-      console.log(data.addRecipe._id)
+      // console.log(data.addRecipe._id)
       data && dispatch(newRecipe(initGlobalState.newRecipe))
       window.location.assign(`/recipe/${data.addRecipe._id}`)
     } catch (e) {

@@ -16,9 +16,11 @@ export default function RecipeDescription() {
   const recipeForm = useSelector(state => state.global.newRecipe)
   const dispatch = useDispatch();
 
+  const { recipeDescription } = recipeForm
+
   const handleChange = e => {
     dispatch(newRecipe({ [e.target.name]: e.target.value }))
-    console.log(recipeForm)
+    // console.log(recipeForm)
   }
 
   return (
@@ -39,7 +41,7 @@ export default function RecipeDescription() {
           name="recipeDescription"
           type="text"
           multiline
-          defaultValue={recipeForm.recipeDescription}
+          defaultValue={recipeDescription}
           sx={{
             width: '100%',
             borderTopRightRadius: 0,

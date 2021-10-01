@@ -10,6 +10,7 @@ import {
   TextField,
   Box,
   Paper, 
+  Typography,
 } from '@mui/material'
 
 // Icons....
@@ -23,11 +24,11 @@ export default function EditableStep({ step, index }) {
   const dirObj = { ...directions[step.stepId] }
   // console.log('dirObj', dirObj)
 
-  const { stepId, stepText } = dirObj
+  const { stepId, stepText, errors } = dirObj
 
   const handleChange = e => {
     let editedDirObj = { ...dirObj }
-    console.log('editedDirObj', editedDirObj)
+    // console.log('editedDirObj', editedDirObj)
     editedDirObj = { ...editedDirObj, [e.target.name]: e.target.value }
     dispatch(newRecipe({
       directions: {
@@ -35,8 +36,8 @@ export default function EditableStep({ step, index }) {
         [stepId]: editedDirObj
       }
     }))
-    console.log('directions', directions);
-    console.log('directions[stepId]', directions[stepId]);
+    // console.log('directions', directions);
+    // console.log('directions[stepId]', directions[stepId]);
   }
 
   return (
@@ -70,6 +71,7 @@ export default function EditableStep({ step, index }) {
                 type="text"
                 multiline
                 defaultValue={stepText}
+                error={errors.stepText}
                 color="backdrop"
                 sx={{
                   width: '100%',
@@ -86,6 +88,7 @@ export default function EditableStep({ step, index }) {
                 <DragIndicatorIcon size={15} color="grey"/>
               </Box>
             </Box>
+              {errors.stepText && <Typography variant="subtitle2" color="error" sx={{mx: 2}}>Please provide information for this step</Typography>}
           </Paper>
         </Box>
       )}

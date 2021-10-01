@@ -37,6 +37,7 @@ export const initialState = {
     },
     ingredientErrors: [],
     directionErrors: [],
+    formCleared: false,
   },
   currentRecipe: {}, // object that contains the currentRecipes information from db
   easyCookView: false, //show the fullscreen step by step view USE MUI MOBILE STEPPER FOR DISPLAY

@@ -134,7 +134,7 @@ export default function IngredientsSection() {
 
     // merge delete ids with ingredient ids
     const newIngredientIds = ingredientIds.concat(deleteIds);
-    console.log(newIngredientIds);
+    // console.log(newIngredientIds);
 
     // new state for returning to-be-deleted items to ingredients column, and clearing deleteIngCol itemIds
     const newState = {
@@ -162,7 +162,7 @@ export default function IngredientsSection() {
 
     // merge delete itemIds with deletedIds
     const newDeletedIds = deletedIds.concat(deleteIds);
-    console.log(newDeletedIds);
+    // console.log(newDeletedIds);
 
     // Remove selected ingredients from the ingredients object
     await deleteIds.forEach(item => {
@@ -190,7 +190,8 @@ export default function IngredientsSection() {
     
     // Push to globalState
     await dispatch(newRecipe(newColState));
-    console.log('newColState', columns);
+    // console.log('newColState', columns);
+
 
     // await dispatch(newRecipe(newIngState)); FOR SOME REASON ENABLING THIS BREAKS SORTING?!?!?!?!
     // console.log('newIngState', ingredients);

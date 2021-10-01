@@ -11,15 +11,6 @@ import {
   ToggleButton,
 } from '@mui/material'
 
-// Other Components/Hooks.... 
-import {
-  usePopupState,
-  bindPopover,
-  bindTrigger,
-  bindHover,
-} from 'material-ui-popup-state/hooks'
-import HoverPopover from 'material-ui-popup-state/HoverPopover'
-
 // Icons....
 import { AiOutlineEye } from "react-icons/ai";
 
@@ -29,36 +20,15 @@ export default function PublicSwitch() {
 
   const handleChange = e => {
     dispatch(newRecipe({ [e.target.name]: e.target.value }))
-    console.log(recipeForm)
+    // console.log(recipeForm)
   };
-
-  const publicPopState = usePopupState({
-    variant: 'popover',
-    popupId: 'publicPopover',
-  });
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
       <AiOutlineEye
         size={25} style={{ marginRight: '1rem' }}
-        {...bindTrigger(publicPopState)}
-        {...bindHover(publicPopState)}
       />
-      <HoverPopover
-        {...bindPopover(publicPopState)}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-      >
-        <Box>
-          <p sx={{ margin: "2px 5px" }}>Would you like to make this recipe visible to other CooKit users?</p>
-        </Box>
-      </HoverPopover>
+      
       <ToggleButtonGroup
         color="primary"
         name="isPublic"

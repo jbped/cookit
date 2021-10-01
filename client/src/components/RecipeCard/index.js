@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 ///Icons.... 
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
 
@@ -12,38 +11,16 @@ import {
   Card, 
   CardHeader, 
   CardContent,
-  CardActions,
-  Collapse,
   IconButton,
   Typography,
   Box,
   Button, 
 } from '@mui/material'
-import { styled } from '@mui/system';
-
-// ExpandMoreIcon,
-
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
 
 export default function RecipeReviewCard({recipe}) {
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   let editedDateArr = recipe.createdAt.split(' at ')
   
-
   return (
       <Card sx={{ boxShadow: 4, height: '100%'}}>
         <Button
@@ -87,30 +64,6 @@ export default function RecipeReviewCard({recipe}) {
             </Box>
           </Box>
         </CardContent>
-        {/* <CardActions disableSpacing>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label='show more'
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
-        <Collapse in={expanded} timeout='auto' unmountOnExit>
-          <CardContent sx={{px: 2}}>
-            <Typography paragraph>Ingredients:</Typography>
-            {recipe.ingredients.map((ingredient, i) => (
-              <Typography
-                paragraph
-                key={`ingredient-${i}`}
-                value={ingredient.ingredientName}
-              >
-                {`${ingredient.ingredientName}`}
-              </Typography>
-            ))}
-          </CardContent>
-        </Collapse> */}
       </Card>
   );
 }

@@ -1,11 +1,31 @@
-import React, { useEffect } from 'react'
-import { Prompt } from 'react-router'
+import React, { useEffect, useState } from 'react'
+import { useHistory, Prompt } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 
-import {
-  Box,
-} from '@mui/material'
+export default function ConfirmLeavePage() {
+  const cleared = useSelector(state => state.global.newRecipe.formCleared)
+  const [locations, setLocations] = useState([])
+  const history = useHistory();
+  // console.log(cleared)
 
-export default function ConfirmLeavePage(props) {
+
+  useEffect(() => {
+    return history.listen(location => {
+      if (history.action === 'PUSH') {
+        setLocations([location.key])
+      }
+
+      if (history.action === 'POP') {
+        if (locations[1] === location.key) {
+          setLocations(([_, ...keys]) => keys)
+          alertUser()
+        } else {
+          setLocations((keys) => [location.key, ...keys])
+          alertUser()
+        }
+      }
+    })
+  }, [locations, ])
 
   useEffect(() => {
     window.addEventListener('beforeunload', alertUser)
@@ -18,13 +38,10 @@ export default function ConfirmLeavePage(props) {
     e.preventDefault()
     e.returnValue = ''
   }
-
   return (
-    <Box>
-      <Prompt
-        when={props.completed}
-        message={() => 'You have unsaved changes! Please save!'}
-      />
-    </Box>
+    <Prompt
+      when={!cleared}
+      message={() => 'You have unsaved changes! Please save your recipe before leaving!'}
+    />
   )
 }
