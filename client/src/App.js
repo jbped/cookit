@@ -8,6 +8,7 @@ import theme from './theme.js'
 // React Router Pages....
 import NewRecipePage from './pages/NewRecipe';
 import ViewRecipe from './pages/ViewRecipe';
+import EditRecipe from './pages/ViewRecipe';
 import MyKit from './pages/MyKit';
 import LoginSignup from './pages/LoginSignup';
 import RecipeFeed from './pages/RecipeFeed'
@@ -44,6 +45,7 @@ function App() {
             <Route exact path="/"><LoginSignup page={'/'} /></Route>
             <Route exact path="/new-recipe" component={NewRecipePage}></Route>
             <Route exact path="/recipe/:id" component={ViewRecipe}></Route>
+            <Route exact path="/recipe/:id/edit" component={EditRecipe}></Route>
             <Route exact path="/my-kit" component={MyKit}></Route>
             <Route exact path="/discover" component={RecipeFeed}></Route>
             <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
