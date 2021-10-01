@@ -1,59 +1,74 @@
-// import React from 'react'
-// import { useQuery, useMutation } from '@apollo/client';
+import React from 'react'
+import { useQuery } from '@apollo/client';
 
-// import {
-//   QUERY_ME,
-//   QUERY_RECIPES
-// } from '../utils/queries';
+import {
+  QUERY_RECIPES
+} from '../utils/queries';
 
-// import {
-//   Typography,
-// } from '@mui/material'
+import {
+    Grid,
+    Box,
+    Typography,
+    List,
+  } from '@mui/material';
 
-// import RecipeListItem from '../components/RecipeListItem';
+import Loader from '../components/Loader'
+  
 
-// export default function RecipeFeed() {
+import RecipeListItem from '../components/RecipeListItem';
 
-//   const [loading, data ] = useQuery(QUERY_RECIPES)
-//   console.log(data)
-//   const recipes = data || {};
+export default function RecipeFeed() {
 
-//   return (
-//     // <Box mx={{ xs: 0, md: 5, xl: 20 }}>
-//       <Box
-//         sx={{
-//           pt: 2,
-//           display: 'flex',
-//           justifyContent: 'space-between',
-//           alignItems: 'center',
-//           marginTop: '.4rem',
-//           borderBottom: 1,
-//           borderColor: 'divider',
-//         }}
-//       >
-//         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-//           <Typography variant='h4' fontWeight='bold' color='primary'>
-//             All Recipes
-//           </Typography>
-//         </Box>
-//       </Box>
-//       
+  const { loading, data } = useQuery(QUERY_RECIPES)
+  console.log("All recipes", data)
 
-//       
-//         <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
-//             {recipes.map((recipe) => (
-//               <Box key={recipe._id}>
-//                 <RecipeListItem key={recipe._id} recipe={recipe}></RecipeListItem>
-//               </Box>
-//             ))}
-//         </List>
-//       
-//       <Grid container>
-//         <Grid item xs={12} md={6}></Grid>
-//         {/* Forked Recipes */}
-//         <Grid item xs={12} md={6}></Grid>
-//       </Grid>
-//     </Box>
-//   );
-// }
+
+  if (loading) {
+    return <Loader></Loader>;
+  }
+  
+
+
+  const recipes = data.recipes || {};
+
+
+
+  return (
+    <Box mx={{ xs: 0, md: 5, xl: 20 }}>
+      <Box
+        sx={{
+          pt: 2,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: '.4rem',
+          borderBottom: 1,
+          borderColor: 'divider',
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant='h4' fontWeight='bold' color='primary'>
+            All Recipes
+          </Typography>
+        </Box>
+      </Box>
+      
+
+      
+        <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
+            {recipes.map((recipe) => (
+              <Box key={recipe._id}>
+                <RecipeListItem key={recipe._id} recipe={recipe}></RecipeListItem>
+              </Box>
+            ))}
+        </List>
+      
+      <Grid container>
+        <Grid item xs={12} md={6}></Grid>
+        {/* Forked Recipes */}
+        <Grid item xs={12} md={6}></Grid>
+      </Grid>
+    </Box>
+  );
+}
 

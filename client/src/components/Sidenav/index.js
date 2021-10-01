@@ -33,6 +33,7 @@ import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import { /*IoIosJournal,*/ IoIosLogIn } from 'react-icons/io';
 import { MdSearch, /*MdSettings*/ } from 'react-icons/md';
 import { GiKnifeFork, /*GiForkKnifeSpoon */ } from 'react-icons/gi';
+import FeedOutlinedIcon from '@mui/icons-material/FeedOutlined';
 // import { RiCompassDiscoverLine } from 'react-icons/ri';
 // import { VscChecklist } from 'react-icons/vsc'
 
@@ -226,6 +227,29 @@ export default function Sidenav() {
                   <ListItemText>
                     <Typography variant="h6">
                       New Recipe
+                    </Typography>
+                  </ ListItemText>
+                </MenuItem>
+              </Button>
+
+              <Button component={Link} to="/feed" variant="text" sx={{ mt: 2 }}>
+                <MenuItem
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      marginRight: '.1rem'
+                    }}
+                  >
+                    <FeedOutlinedIcon />
+                  </ListItemIcon>
+                  <ListItemText>
+                    <Typography variant="h6">
+                      Discover
                     </Typography>
                   </ ListItemText>
                 </MenuItem>
