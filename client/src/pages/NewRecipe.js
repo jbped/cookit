@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
@@ -71,7 +71,7 @@ export default function NewRecipePage() {
     let directionsLength = Object.keys(directions).length
 
     // If conditions are met update appropriate key in softChecks to true, else turn it to false
-    recipeTitle.length > 5 && recipeTitle !== 'New Recipe' ? softChecks.recipeTitle = true : softChecks.recipeTitle = false;
+    recipeTitle.length >= 2 && recipeTitle !== 'New Recipe' ? softChecks.recipeTitle = true : softChecks.recipeTitle = false;
     cookTime.length ? softChecks.cookTime = true : softChecks.cookTime = false;
     recipeDescription.length >= 5 ? softChecks.recipeDescription = true : softChecks.recipeDescription = false;
     ingredientsLength > 0 ? softChecks.ingredients = true : softChecks.ingredients = false;
@@ -79,12 +79,12 @@ export default function NewRecipePage() {
     ingredientsCol.itemIds.length > 0  ? softChecks.ingredientsOrder = true : softChecks.ingredientsOrder = false;
     directionsCol.itemIds.length > 0  ? softChecks.directionsOrder = true : softChecks.directionsOrder = false;
 
-    // console.log('softChecks', softChecks)
+    console.log('softChecks', softChecks)
 
     // If all keys in softChecks are true update softComplete state to true
     softChecks.recipeTitle && softChecks.cookTime && softChecks.recipeDescription && softChecks.ingredients && softChecks.directions && softChecks.ingredientsOrder && softChecks.directionsOrder ? setSoftComplete(true) : setSoftComplete(false)
 
-    // console.log('softComplete', softComplete)
+    console.log('softComplete', softComplete)
 
   }, [recipeForm, cookTime.length, directions, directionsCol.itemIds.length, ingredients, ingredientsCol.itemIds.length, recipeTitle, recipeDescription.length])
 

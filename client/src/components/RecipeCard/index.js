@@ -1,36 +1,27 @@
 import * as React from 'react';
-import { BrowserRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-// Queries/Mutations
-import { useQuery, useMutation } from '@apollo/client';
-import {
-  QUERY_ME,
-  QUERY_RECIPE_BASIC
-} from '../../utils/queries';
-
-// React Components
-import ViewRecipe from '../../pages/ViewRecipe';
-
-// Auth
-import Auth from '../../utils/auth';
-
-// React Icons
-import { IoMdTimer, IoIosPeople } from 'react-icons/io';
-
-// Import Material UI components
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+///Icons.... 
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
 
-import Loader from '../Loader'
+
+
+import {
+  Card, 
+  CardHeader, 
+  CardContent,
+  CardActions,
+  Collapse,
+  IconButton,
+  Typography,
+  Box,
+  Button, 
+} from '@mui/material'
+import { styled } from '@mui/system';
+
+// ExpandMoreIcon,
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -43,151 +34,58 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  height: 60,
-  lineHeight: '60px',
-}));
-
-export default function RecipeReviewCard({ recipe }) {
+export default function RecipeReviewCard({recipe}) {
   const [expanded, setExpanded] = React.useState(false);
-
-  // Get QUERY_ME data
-  const { userLoading, userData } = useQuery(QUERY_ME);
-  console.log('query_me data', userLoading, userData);
-  const myData = userData?.me || {};
-
-  const token = Auth.loggedIn() ? Auth.getToken() : null;
-  // console.log(recipe)
-
-  // Hardcoded recipes
-  // recipe = {
-  //   _id: '614fe7e963526de392b539b5',
-  //   isPublic: true,
-  //   creator: 'BoDee_Angus',
-  //   createdAt: '09/25/2021 at 9:24 PM',
-  //   recipeTitle: 'Fried Eggs',
-  //   recipeDescription:
-  //     'Eggs fried in a pan filled with butter, salted and peppered to perfection.',
-  //   type: 'Dinner',
-  //   season: 'All',
-  //   difficulty: 1,
-  //   servings: 6,
-  //   cookTime: '1 hour',
-  //   directions: [
-  //     {
-  //       stepId: 'step-1',
-  //       stepText: 'First, melt butter on pan at medium heat.',
-  //     },
-  //     {
-  //       stepId: 'step-2',
-  //       stepText: 'Then, crack eggs onto pan gently.',
-  //     },
-  //     {
-  //       stepId: 'step-3',
-  //       stepText:
-  //         'Salt and pepper the eggs, and then wait until the edges solidify completely.',
-  //     },
-  //     {
-  //       stepId: 'step-4',
-  //       stepText:
-  //         'Flip eggs over, and let sit for a minute or two. After take off heat and serve.',
-  //     },
-  //   ],
-  //   directionsOrder: ['step-1', 'step-2', 'step-3', 'step-4'],
-  //   ingredients: [
-  //     {
-  //       ingredientId: 'ingredient-1',
-  //       measurement: null,
-  //       ingredientName: 'Eggs',
-  //       quantity: '2',
-  //       preparationNotes: 'large',
-  //     },
-  //     {
-  //       ingredientId: 'ingredient-2',
-  //       measurement: 'Tbsp',
-  //       ingredientName: 'Butter',
-  //       quantity: '2',
-  //       preparationNotes: 'Salted',
-  //     },
-  //     {
-  //       ingredientId: 'ingredient-3',
-  //       measurement: 'c',
-  //       ingredientName: 'Sour Cream',
-  //       quantity: '1/2',
-  //       preparationNotes: '',
-  //     },
-  //   ],
-  //   ingredientsOrder: ['ingredient-1', 'ingredient-3', 'ingredient-2'],
-  //   comments: [
-  //     {
-  //       _id: '614fe7f963526de392b539d0',
-  //       commentText: 'Wow this was delicious!',
-  //       username: 'BoDee_Angus',
-  //       upvotes: [
-  //         {
-  //           _id: '614feb27c6da2f76bdc176f2',
-  //           username: null,
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   upvotes: [
-  //     {
-  //       _id: '614feb21c6da2f76bdc176ee',
-  //       username: 'BoDee_Angus',
-  //     },
-  //   ],
-  // };
-
-  
-
-  
-
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  let editedDateArr = recipe.createdAt.split(' at ')
   
 
   return (
-    <Item>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ boxShadow: 4, height: '100%'}}>
         <Button
           component={Link}
           to={`/recipe/${recipe._id}`}
-          // variant="text"
-          // color="text.secondary"
+          sx={{
+            display: 'flex',
+            justifyContent: 'start',
+            p: 2
+          }}
         >
           <CardHeader
             sx={{
-              color: 'white',
+              color: 'primary',
+              padding: 0,
             }}
             action={<IconButton aria-label='settings'></IconButton>}
             title={recipe.recipeTitle}
-            subheader={`added: ${recipe.createdAt} by ${recipe.creator}`}
+            subheader={`Created: ${editedDateArr[0][0] === '0' ? editedDateArr[0].slice(1) : editedDateArr[0]}`}
           />
         </Button>
-        <CardContent>
+        <CardContent sx={{py: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <Typography
-            sx={{
-              marginBottom: '.5rem',
-            }}
-            variant='body2'
-            color='text.white'
+            variant='body1'
+            color='text.light'
           >
             {recipe.recipeDescription}
           </Typography>
-          <Typography>
-            <IoMdTimer /> Cook Time:
-          </Typography>
-          <Typography>{recipe.cookTime}</Typography>
-          <Typography>
-            <IoIosPeople /> Serves: {`${recipe.servings}`}
-          </Typography>
+          <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 2}}>
+            <Box sx={{ display: 'flex', alignContent: 'center'}}>
+              <AccessAlarmIcon color="secondary" sx={{mr: 1}}/>
+              <Typography>
+                {recipe.cookTime}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignContent: 'center'}}>
+              <PeopleAltIcon  color="secondary" sx={{mr: 1}}/>
+              <Typography>
+                {recipe.servings}
+              </Typography>
+            </Box>
+          </Box>
         </CardContent>
         <CardActions disableSpacing>
           <ExpandMore
@@ -200,7 +98,7 @@ export default function RecipeReviewCard({ recipe }) {
           </ExpandMore>
         </CardActions>
         <Collapse in={expanded} timeout='auto' unmountOnExit>
-          <CardContent>
+          <CardContent sx={{px: 2}}>
             <Typography paragraph>Ingredients:</Typography>
             {recipe.ingredients.map((ingredient) => (
               <Typography
@@ -215,6 +113,5 @@ export default function RecipeReviewCard({ recipe }) {
           </CardContent>
         </Collapse>
       </Card>
-    </Item>
   );
 }

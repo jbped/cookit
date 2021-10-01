@@ -10,6 +10,7 @@ import NewRecipePage from './pages/NewRecipe';
 import ViewRecipe from './pages/ViewRecipe';
 import MyKit from './pages/MyKit';
 import LoginSignup from './pages/LoginSignup';
+import RecipeFeed from './pages/RecipeFeed'
 
 // Components....
 import { Box, ThemeProvider } from '@mui/system';
@@ -43,6 +44,7 @@ function App() {
             <Route exact path="/new-recipe" component={NewRecipePage}></Route>
             <Route exact path="/recipe/:id" component={ViewRecipe}></Route>
             <Route exact path="/my-kit" component={MyKit}></Route>
+            <Route exact path="/feed" component={RecipeFeed}></Route>
             <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
             <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>
           </Switch>

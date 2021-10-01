@@ -61,87 +61,13 @@ export default function ViewRecipe() {
   const easyCookView = useSelector(state => state.global.easyCookView);
   const dispatch = useDispatch();
 
-  const receivedData = {
-    _id: "614fe7e963526de392b539b5",
-    isPublic: true,
-    creator: "BoDee_Angus",
-    createdAt: "09/25/2021 at 9:24 PM",
-    recipeTitle: "Fried Eggs",
-    recipeDescription: "Eggs fried in a pan filled with butter, salted and peppered to perfection.",
-    type: "Dinner",
-    season: "All",
-    difficulty: 1,
-    servings: 6,
-    cookTime: "1 hour",
-    directions: [
-      {
-        stepId: "step-1",
-        stepText: "First, melt butter on pan at medium heat.",
-      },
-      {
-        stepId: "step-2",
-        stepText: "Then, crack eggs onto pan gently.",
-      },
-      {
-        stepId: "step-3",
-        stepText: "Salt and pepper the eggs, and then wait until the edges solidify completely.",
-      },
-      {
-        stepId: "step-4",
-        stepText: "Flip eggs over, and let sit for a minute or two. After take off heat and serve.",
-      }
-    ],
-    directionsOrder: ["step-1", "step-2", "step-3", "step-4"],
-    ingredients: [
-      {
-        ingredientId: "ingredient-1",
-        measurement: null,
-        ingredientName: "Eggs",
-        quantity: "2",
-        preparationNotes: "large"
-      },
-      {
-        ingredientId: "ingredient-2",
-        measurement: "Tbsp",
-        ingredientName: "Butter",
-        quantity: "2",
-        preparationNotes: "Salted"
-      },
-      {
-        ingredientId: "ingredient-3",
-        measurement: "c",
-        ingredientName: "Sour Cream",
-        quantity: "1/2",
-        preparationNotes: ""
-      }
-    ],
-    ingredientsOrder: ["ingredient-1", "ingredient-3", "ingredient-2"],
-    comments: [
-      {
-        _id: "614fe7f963526de392b539d0",
-        commentText: "Wow this was delicious!",
-        username: "BoDee_Angus",
-        upvotes: [
-          {
-            _id: "614feb27c6da2f76bdc176f2",
-            username: null
-          }
-        ]
-      }
-    ],
-    upvotes: [
-      {
-        _id: "614feb21c6da2f76bdc176ee",
-        username: "BoDee_Angus"
-      }
-    ]
-  }
-
   // Query for the recipe
   const params = useParams();
-  
-  const recipeId = params.recipeId
-  
+  console.log("params", params)
+
+  const recipeId = params.id
+  console.log("Recipe ID", recipeId)
+
   const { loading, data } = useQuery(QUERY_RECIPE, {
     variables: { recipeId: recipeId }
   });
@@ -154,52 +80,52 @@ export default function ViewRecipe() {
   }
 
   // Destructuring of the keys in the recipe object received from the database
-  const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = receivedData;
+  const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = recipe
 
   let orderedIngredients = [];
   let orderedDirections = []
   let editedDateArr = []
   let col1 = []
   let col2 = []
-  
+
   if (!loading && data.recipe !== undefined) {
-  // Splits the createdAt string into to indexes DD/MM/YYYY and time
-  editedDateArr = createdAt.split(' at ');
+    // Splits the createdAt string into to indexes DD/MM/YYYY and time
+    editedDateArr = createdAt.split(' at ');
 
-  // Create new array of ingredients that is ordered appropriately by the ingredientsOrder
-  
-  ingredientsOrder.forEach(id => {
-    ingredients.filter(ingredient => {
-      if (ingredient.ingredientId === id) {
+    // Create new array of ingredients that is ordered appropriately by the ingredientsOrder
 
-        // Base ingredient information 'quantitymeasurement ingredientName' or 'quantity ingredientNate'
-        const quantityText = `${ingredient.quantity} ${(ingredient.measurement && !ingredient.measurement !== 'n/a') ? ingredient.measurement : ''} ${ingredient.ingredientName}`
-        // Preparation notes 'preparationNotes' or ''
-        const prepNotesText = ingredient.preparationNotes ? `${ingredient.preparationNotes}` : ''
-        orderedIngredients.push({ ...ingredient, quantityText, prepNotesText })
+    ingredientsOrder.forEach(id => {
+      ingredients.filter(ingredient => {
+        if (ingredient.ingredientId === id) {
+
+          // Base ingredient information 'quantitymeasurement ingredientName' or 'quantity ingredientNate'
+          const quantityText = `${ingredient.quantity} ${(ingredient.measurement && !ingredient.measurement !== 'n/a') ? ingredient.measurement : ''} ${ingredient.ingredientName}`
+          // Preparation notes 'preparationNotes' or ''
+          const prepNotesText = ingredient.preparationNotes ? `${ingredient.preparationNotes}` : ''
+          orderedIngredients.push({ ...ingredient, quantityText, prepNotesText })
+          return orderedIngredients;
+        }
         return orderedIngredients;
-      }
-      return orderedIngredients;
+      })
     })
-  })
 
 
-  // Convert directions array to an object organized by the directionsOrder
-  
-  directionsOrder.forEach(id => {
-    directions.filter(direction => {
-      if (direction.stepId === id) {
-        orderedDirections.push({ ...direction })
+    // Convert directions array to an object organized by the directionsOrder
+
+    directionsOrder.forEach(id => {
+      directions.filter(direction => {
+        if (direction.stepId === id) {
+          orderedDirections.push({ ...direction })
+          return orderedDirections;
+        }
         return orderedDirections;
-      }
-      return orderedDirections;
-    })
-  });
-
-  const mid = Math.ceil(orderedIngredients.length / 2)
-  col1 = orderedIngredients.slice(0, mid)
-  col2 = orderedIngredients.slice(mid, orderedIngredients.length)
-  // }
+      })
+    });
+    
+    const mid = Math.ceil(orderedIngredients.length / 2)
+    col1 = orderedIngredients.slice(0, mid)
+    col2 = orderedIngredients.slice(mid, orderedIngredients.length)
+  }
   // // state for the time hover popover effect
   // const timePopState = usePopupState({
   //   variant: 'popover',
@@ -313,8 +239,8 @@ export default function ViewRecipe() {
             <Box sx={{ display: 'flex', alignItems: "center" }}>
               <MdAccessAlarm
                 size={25}
-                // {...bindTrigger(timePopState)}
-                // {...bindHover(timePopState)}
+              // {...bindTrigger(timePopState)}
+              // {...bindHover(timePopState)}
               />
 
               {/* <HoverPopover
@@ -342,8 +268,8 @@ export default function ViewRecipe() {
             <Box sx={{ mt: 2, display: 'flex', alignItems: "center" }}>
               <BsPeople
                 size={25}
-                // {...bindTrigger(servingPopState)}
-                // {...bindHover(servingPopState)}
+              // {...bindTrigger(servingPopState)}
+              // {...bindHover(servingPopState)}
               />
 
               {/* <HoverPopover
@@ -533,7 +459,7 @@ export default function ViewRecipe() {
           >
             <Typography>{`Step ${parseInt(easyCookStep) + 1}`}</Typography>
           </Paper>
-          <Box px={{xs: 1, md: '20%', xl: '25%'}}sx={{ width: '100%', my: 'auto', textAlign: 'center'}}>
+          <Box px={{ xs: 1, md: '20%', xl: '25%' }} sx={{ width: '100%', my: 'auto', textAlign: 'center' }}>
             <Typography variant="h4">
               {orderedDirections[easyCookStep].stepText}
             </Typography>
@@ -564,4 +490,4 @@ export default function ViewRecipe() {
       </Dialog>
     </Box>
   )
-}
+};
