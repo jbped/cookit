@@ -21,7 +21,7 @@ const recipeSchema = new Schema(
             required: 'Recipe must have a title.',
             trim: true,
             minLength: 2,
-            maxlength: 30,
+            maxlength: 50,
             unique: false
         },
         recipeDescription: {
