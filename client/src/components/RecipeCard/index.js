@@ -1,28 +1,27 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-// React Icons
-import { IoMdTimer, IoIosPeople } from 'react-icons/io';
-import {
-  BsPeople
-} from "react-icons/bs";
-
-// Import Material UI components
-import { styled } from '@mui/material/styles';
-
-
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+///Icons.... 
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
 
-import Loader from '../Loader'
+
+
+import {
+  Card, 
+  CardHeader, 
+  CardContent,
+  CardActions,
+  Collapse,
+  IconButton,
+  Typography,
+  Box,
+  Button, 
+} from '@mui/material'
+import { styled } from '@mui/system';
+
+// ExpandMoreIcon,
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -35,14 +34,6 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  height: 60,
-  lineHeight: '60px',
-}));
-
 export default function RecipeReviewCard({recipe}) {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -50,43 +41,51 @@ export default function RecipeReviewCard({recipe}) {
     setExpanded(!expanded);
   };
 
+  let editedDateArr = recipe.createdAt.split(' at ')
   
 
   return (
-    <Item>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ boxShadow: 4, height: '100%'}}>
         <Button
           component={Link}
           to={`/recipe/${recipe._id}`}
-          // variant="text"
-          // color="text.secondary"
+          sx={{
+            display: 'flex',
+            justifyContent: 'start',
+            p: 2
+          }}
         >
           <CardHeader
             sx={{
-              color: 'white',
+              color: 'primary',
+              padding: 0,
             }}
             action={<IconButton aria-label='settings'></IconButton>}
             title={recipe.recipeTitle}
-            subheader={`added: ${recipe.createdAt} by ${recipe.creator}`}
+            subheader={`Created: ${editedDateArr[0][0] === '0' ? editedDateArr[0].slice(1) : editedDateArr[0]}`}
           />
         </Button>
-        <CardContent>
+        <CardContent sx={{py: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <Typography
-            sx={{
-              marginBottom: '.5rem',
-            }}
-            variant='body2'
-            color='text.white'
+            variant='body1'
+            color='text.light'
           >
             {recipe.recipeDescription}
           </Typography>
-          <Typography>
-            <IoMdTimer /> Cook Time:
-          </Typography>
-          <Typography>{recipe.cookTime}</Typography>
-          <Typography>
-            <IoIosPeople /> Serves: {`${recipe.servings}`}
-          </Typography>
+          <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 2}}>
+            <Box sx={{ display: 'flex', alignContent: 'center'}}>
+              <AccessAlarmIcon color="secondary" sx={{mr: 1}}/>
+              <Typography>
+                {recipe.cookTime}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignContent: 'center'}}>
+              <PeopleAltIcon  color="secondary" sx={{mr: 1}}/>
+              <Typography>
+                {recipe.servings}
+              </Typography>
+            </Box>
+          </Box>
         </CardContent>
         <CardActions disableSpacing>
           <ExpandMore
@@ -99,7 +98,7 @@ export default function RecipeReviewCard({recipe}) {
           </ExpandMore>
         </CardActions>
         <Collapse in={expanded} timeout='auto' unmountOnExit>
-          <CardContent>
+          <CardContent sx={{px: 2}}>
             <Typography paragraph>Ingredients:</Typography>
             {recipe.ingredients.map((ingredient) => (
               <Typography
@@ -114,6 +113,5 @@ export default function RecipeReviewCard({recipe}) {
           </CardContent>
         </Collapse>
       </Card>
-    </Item>
   );
 }

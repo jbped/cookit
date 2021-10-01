@@ -13,6 +13,7 @@ import { toggleMyKitView } from '../utils/globalSlice';
 // Queries/Mutations
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_ME, QUERY_RECIPE_BASIC } from '../utils/queries';
+import { Redirect } from 'react-router-dom';
 
 // Auth
 import Auth from '../utils/auth.js';
@@ -41,12 +42,16 @@ export default function MyKit() {
   const view = useSelector((state) => state.global.myKitView);
   const dispatch = useDispatch();
 
+  // Get QUERY_ME data
+  const { loading, data } = useQuery(QUERY_ME);
+  
+  if (!Auth.loggedIn()) {
+    return <Redirect to="/feed" />
+  }
+
   const toggleView = () => {
     dispatch(toggleMyKitView());
   };
-
-  // Get QUERY_ME data
-  const { loading, data } = useQuery(QUERY_ME);
 
   const myData = data?.me || {};
   console.log('query_me data', loading, myData);
@@ -114,86 +119,21 @@ export default function MyKit() {
         </List>
       ) : (
         // False === Tiles
-        <Grid container>
+        <Grid container mt={2} rowSpacing={2} columnSpacing={{ xs: 2, sm: 2, md: 3 }}>
           {recipes.map((recipe) => (
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
               <RecipeCard key={recipe._id} recipe={recipe}></RecipeCard>
             </Grid>
           ))}
         </Grid>
       )}
-      <Grid container>
-        <Grid item xs={12} md={6}></Grid>
-        {/* Forked Recipes */}
-        <Grid item xs={12} md={6}></Grid>
-      </Grid>
+      
     </Box>
   );
 }
 
-/*    <Box
-        mx={{ xs: 0, md: 5, xl: 20 }}
-        sx={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Box px={{ md: 5, xl: 20 }}>
-          <Box
-            sx={{
-              mt: 2,
-              borderBottom: 1,
-              borderColor: 'divider',
-              margin: 2
-            }}
-          >
-            <Typography variant='h5' color='secondary'>
-              My Recipes
-            </Typography>
-          </Box>
-          <Grid container spacing={{ md: 5, lg: 10 }}>
-            <Grid item xs={12} md={6}>
-              <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
-                <Box key={`-box`}>
-                  {recipes.map(recipe => (
-                    <ListItem>
-                      <RecipeCard key={recipe._id} recipe={recipe} />
-                    </ListItem>
-                  ))}
-                </Box>
-              </List>
-            </Grid>
-          </Grid>
-          {view ?
-            (
-              <Grid item xs={12} md={6}>
-                <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
-                  <Box key={`-box`}>
-                    {recipes.map(recipe => (<Typography>hello world</Typography>))}
-                  </Box>
-                </List>
-              </Grid>
-            )
-            :
-            (
-              <Grid item xs={12} md={6}>
-                <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
-                  <Box key={`-box`}>
-                    {recipes.map(recipe => (
-                      <ListItem>
-                        <RecipeListItem key={recipe._id} recipe={recipe} />
-                      </ListItem>
-                    )
-                    )}
-                  </Box>
-                </List>
-              </Grid>
-            )
-          }
-        </Box>*/
+//<Grid container>
+  //      <Grid item xs={12} md={6}></Grid>
+    //    {/* Forked Recipes */}
+      //  <Grid item xs={12} md={6}></Grid>
+//</Grid>

@@ -54,7 +54,8 @@ const resolvers = {
 
         //Recipe queries
         recipes: async () => {
-            return Recipe.find();
+            return Recipe.find()
+                .select('_id recipeTitle creator cookTime servings createdAt');
         },
 
         recipesShort: async (parent, args, { user: { username } }) => {
