@@ -54,7 +54,7 @@ const resolvers = {
 
         //Recipe queries
         recipes: async () => {
-            return Recipe.find()
+            return Recipe.find({ isPublic: true })
                 .select('_id recipeTitle creator cookTime servings createdAt');
         },
 

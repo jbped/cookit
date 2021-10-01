@@ -188,7 +188,7 @@ export default function Sidenav() {
             <Divider />
 
             <MenuList>
-              <Button component={Link} to="/feed" variant="text" sx={{ mt: 2 }}>
+              <Button component={Link} to="/discover" variant="text" sx={{ mt: 2 }}>
                 <MenuItem
                   sx={{
                     display: 'flex',
