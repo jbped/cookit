@@ -11,15 +11,6 @@ import {
   MenuItem,
 } from '@mui/material'
 
-// Other Components/Hooks.... 
-import {
-  usePopupState,
-  bindPopover,
-  bindTrigger,
-  bindHover,
-} from 'material-ui-popup-state/hooks'
-import HoverPopover from 'material-ui-popup-state/HoverPopover'
-
 // Icons....
 import {
   MdAccessAlarm,
@@ -79,37 +70,16 @@ export default function RecipeTime() {
 
   const handleChange = e => {
     dispatch(newRecipe({ [e.target.name]: e.target.value }))
-    console.log(recipeForm)
+    // console.log(recipeForm)
   }
-
-  const timePopState = usePopupState({
-    variant: 'popover',
-    popupId: 'timePopover',
-  });
 
   return (
     < Box sx={{ display: 'flex', alignItems: 'center' }}>
       <MdAccessAlarm
         size={25}
         style={{ marginRight: '1rem' }}
-        {...bindTrigger(timePopState)}
-        {...bindHover(timePopState)}
       />
-      <HoverPopover
-        {...bindPopover(timePopState)}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-      >
-        <div>
-          <p sx={{ margin: "2px 5px" }}>Total time to prepare, cook, and serve</p>
-        </div>
-      </HoverPopover>
+      
       <TextField
         id="time-to-serve"
         name="cookTime"

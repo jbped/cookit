@@ -10,7 +10,8 @@ import {
   TextField,
   Box,
   MenuItem,
-  Paper
+  Paper,
+  Typography,
 } from '@mui/material'
 
 // Icons....
@@ -27,7 +28,7 @@ export default function EditableIngredient({ ing, index }) {
   const { ingredients } = state;
   const ingObj = {...ingredients[ing.ingredientId]}
 
-  const { ingredientId, quantity, measurementTypeShort, ingredient, notes } = ingObj;
+  const { ingredientId, quantity, measurementTypeShort, ingredient, notes, errors } = ingObj;
 
   const measurementTypes = [
     {
@@ -94,7 +95,7 @@ export default function EditableIngredient({ ing, index }) {
     if (e.target.name === 'measurementType') {
       let { type, short } = measurementTypes.find(measurement => measurement.short === e.target.value);
       editedIngObj =  { ...editedIngObj, measurementType: type, measurementTypeShort: short };
-      console.log(type, short);
+      // console.log(type, short);
     } else {
       editedIngObj = {...editedIngObj, [e.target.name]: e.target.value}
     }
@@ -141,6 +142,7 @@ export default function EditableIngredient({ ing, index }) {
                   name="quantity"
                   type="text"
                   defaultValue={quantity}
+                  error={errors.quantity}
                   color="backdrop"
                   sx={{
                     width: 100,
@@ -182,6 +184,7 @@ export default function EditableIngredient({ ing, index }) {
                 <DragIndicatorIcon size={15} color="grey"/>
               </Box>
             </Box>
+            {errors.ingredient && <Typography variant="subtitle2" color="error" sx={{mx:2}}>Ingredient quantity is required</Typography>}
             <Box
               sx={{
                 mt: 2,
@@ -194,6 +197,7 @@ export default function EditableIngredient({ ing, index }) {
                 name="ingredient"
                 type="text"
                 defaultValue={ingredient}
+                error={errors.ingredient}
                 color="backdrop"
                 sx={{
                   width: '100%',
@@ -205,6 +209,7 @@ export default function EditableIngredient({ ing, index }) {
                 InputLabelProps={{ shrink: true, color: 'secondary' }}
                 onBlur={handleChange}
               />
+              {errors.ingredient && <Typography variant="subtitle2" color="error">Please provide an ingredient</Typography>}
             </Box>
             <Box
               sx={{

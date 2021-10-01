@@ -28,7 +28,7 @@ export default function NewRecipeTitle() {
       return;
     }
     dispatch(newRecipe({ [e.target.name]: e.target.value }))
-    console.log(recipeForm)
+    // console.log(recipeForm)
   }
 
   const saveName = (e) => {

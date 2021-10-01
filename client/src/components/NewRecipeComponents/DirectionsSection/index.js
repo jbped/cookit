@@ -43,7 +43,7 @@ export default function DirectionsSection() {
 
   // Logic for when an ingredient was moved
   const onDragEnd = result => {
-    console.log(result)
+    // console.log(result)
     const { destination, source, draggableId } = result;
 
     // If no destination was found return out of function
@@ -116,7 +116,7 @@ export default function DirectionsSection() {
 
     // merge delete ids with ingredient ids
     const newStepIds = stepIds.concat(deleteIds);
-    console.log(newStepIds);
+    // console.log(newStepIds);
 
     // new state for returning to-be-deleted items to ingredients column, and clearing deleteIngCol itemIds
     const newState = {
@@ -144,7 +144,7 @@ export default function DirectionsSection() {
 
     // merge delete itemIds with deletedIds
     const newDeletedIds = deletedIds.concat(deleteIds);
-    console.log(newDeletedIds);
+    // console.log(newDeletedIds);
 
     // Remove selected ingredients from the ingredients object
     await deleteIds.forEach(item => {
@@ -173,7 +173,7 @@ export default function DirectionsSection() {
     // Push to globalState
     await dispatch(newRecipe(newColState));
     console.log('newColState', columns);
-
+// 
     // await dispatch(newRecipe(newDirState)); FOR SOME REASON ENABLING THIS BREAKS SORTING?!?!?!?!
     // console.log('newDirState', ingredients);
   }

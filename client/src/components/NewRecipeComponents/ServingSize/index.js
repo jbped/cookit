@@ -11,15 +11,6 @@ import {
   Button,
 } from '@mui/material';
 
-// Other Components/Hooks.... 
-import {
-  usePopupState,
-  bindPopover,
-  bindTrigger,
-  bindHover,
-} from 'material-ui-popup-state/hooks'
-import HoverPopover from 'material-ui-popup-state/HoverPopover';
-
 // Icons....
 import {
   BsPeople
@@ -34,7 +25,7 @@ export default function ServingSize() {
 
   const handleChange = e => {
     dispatch(newRecipe({ [e.target.name]: e.target.value }))
-    console.log(recipeForm)
+    // console.log(recipeForm)
   };
 
   const handleCounter = e => {
@@ -46,37 +37,16 @@ export default function ServingSize() {
       let count = recipeForm.servings - 1
       dispatch(newRecipe({ servings: count }))
     }
-    console.log(recipeForm)
+    // console.log(recipeForm)
   };
-
-  const servingPopState = usePopupState({
-    variant: 'popover',
-    popupId: 'servingsPopover',
-  });
 
   return (
     < Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
       <BsPeople
         size={25}
         style={{ marginRight: '1rem' }}
-        {...bindTrigger(servingPopState)}
-        {...bindHover(servingPopState)} />
-      <HoverPopover color="backdrop"
-        {...bindPopover(servingPopState)}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-      >
-        <Box color="backdrop">
-          <p sx={{ margin: "2px 5px" }}>Servings</p>
-        </Box>
-      </HoverPopover>
-
+      />
+      
       <Button
         variant="contained"
         onClick={handleCounter}
