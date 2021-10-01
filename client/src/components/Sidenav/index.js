@@ -212,7 +212,7 @@ export default function Sidenav() {
               </Button>
 
               {loggedIn && (
-                <>
+                <Box>
                   <Button component={Link} to="/my-kit" variant="text" sx={{ mt: 2 }}>
                     <MenuItem
                       sx={{
@@ -254,7 +254,7 @@ export default function Sidenav() {
                       </ ListItemText>
                     </MenuItem>
                   </Button>
-                </>
+                </Box>
               )}
 
 
