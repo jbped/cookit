@@ -86,7 +86,7 @@ export default function NewRecipePage() {
 
     console.log('softComplete', softComplete)
 
-  }, [recipeForm, cookTime.length, directions, directionsCol.itemIds.length, ingredients, ingredientsCol.itemIds.length, recipeTitle, recipeDescription.length])
+  }, [recipeForm, cookTime.length, directions, directionsCol.itemIds.length, ingredients, ingredientsCol.itemIds.length, recipeTitle, recipeDescription.length, softComplete])
 
   const formCheck = e => {
     e.preventDefault();

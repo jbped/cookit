@@ -17,6 +17,7 @@ import { Box, ThemeProvider } from '@mui/system';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/Header'
 import Sidenav from "./components/Sidenav";
+import UnknownPage from './components/404';
 
 function App() {
   let location = useLocation();
@@ -36,7 +37,7 @@ function App() {
 
         <Box sx={{
           px: 2,
-          mt: '61px',
+          pt: '55px',
           zIndex: 1,
         }}>
           <Switch>
@@ -44,9 +45,10 @@ function App() {
             <Route exact path="/new-recipe" component={NewRecipePage}></Route>
             <Route exact path="/recipe/:id" component={ViewRecipe}></Route>
             <Route exact path="/my-kit" component={MyKit}></Route>
-            <Route exact path="/feed" component={RecipeFeed}></Route>
+            <Route exact path="/discover" component={RecipeFeed}></Route>
             <Route exact path="/login" ><LoginSignup page={'login'} /></Route>
             <Route exact path="/signup" ><LoginSignup page={'signup'} /></Route>
+            <Route component={UnknownPage}/>
           </Switch>
         </Box>
 

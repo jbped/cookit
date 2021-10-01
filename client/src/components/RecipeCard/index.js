@@ -87,7 +87,7 @@ export default function RecipeReviewCard({recipe}) {
             </Box>
           </Box>
         </CardContent>
-        <CardActions disableSpacing>
+        {/* <CardActions disableSpacing>
           <ExpandMore
             expand={expanded}
             onClick={handleExpandClick}
@@ -100,18 +100,17 @@ export default function RecipeReviewCard({recipe}) {
         <Collapse in={expanded} timeout='auto' unmountOnExit>
           <CardContent sx={{px: 2}}>
             <Typography paragraph>Ingredients:</Typography>
-            {recipe.ingredients.map((ingredient) => (
+            {recipe.ingredients.map((ingredient, i) => (
               <Typography
                 paragraph
-                key={ingredient.ingredientName}
+                key={`ingredient-${i}`}
                 value={ingredient.ingredientName}
               >
                 {`${ingredient.ingredientName}`}
-                {/* Eggs */}
               </Typography>
             ))}
           </CardContent>
-        </Collapse>
+        </Collapse> */}
       </Card>
   );
 }
