@@ -8,6 +8,8 @@ import { QUERY_RECIPE } from '../utils/queries'
 import { useSelector, useDispatch } from 'react-redux';
 import { setEasyCookStep, toggleEasyCookView } from '../utils/globalSlice';
 
+import Auth from '../utils/auth'
+
 // MUI Components....
 import {
   Box,
@@ -27,16 +29,7 @@ import {
   MobileStepper
 } from '@mui/material'
 
-// Other Components/Hooks.... 
-// import {
-//   usePopupState,
-//   bindPopover,
-//   bindTrigger,
-//   bindHover,
-// } from 'material-ui-popup-state/hooks'
-// import HoverPopover from 'material-ui-popup-state/HoverPopover'
 import Loader from '../components/Loader'
-
 
 // Icons....
 import {
@@ -47,6 +40,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 
 import {
   BsPeople
@@ -63,17 +57,17 @@ export default function ViewRecipe() {
 
   // Query for the recipe
   const params = useParams();
-  console.log("params", params)
+  // console.log("params", params)
 
   const recipeId = params.id
-  console.log("Recipe ID", recipeId)
+  // console.log("Recipe ID", recipeId)
 
   const { loading, data } = useQuery(QUERY_RECIPE, {
     variables: { recipeId: recipeId }
   });
 
   const recipe = data?.recipe || {};
-  console.log("this is the recipe returned", recipe)
+  // console.log("this is the recipe returned", recipe)
 
   if (loading) {
     return <Loader></Loader>
@@ -121,32 +115,32 @@ export default function ViewRecipe() {
         return orderedDirections;
       })
     });
-    
+
     const mid = Math.ceil(orderedIngredients.length / 2)
     col1 = orderedIngredients.slice(0, mid)
     col2 = orderedIngredients.slice(mid, orderedIngredients.length)
   }
-  // // state for the time hover popover effect
-  // const timePopState = usePopupState({
-  //   variant: 'popover',
-  //   popupId: 'timePopover',
-  // });
-
-  // // state for the servings hover popover effect
-  // const servingPopState = usePopupState({
-  //   variant: 'popover',
-  //   popupId: 'servingsPopover',
-  // });
 
   const editRecipe = () => {
 
   }
 
+  const forkRecipe = () => {
+
+  }
+
+  // const profile = Auth.getProfile();
+  // const { data: { username } } = profile
+
+  const loggedIn = Auth.loggedIn()
+  const profile = loggedIn ? Auth.getProfile() : null
+  const loggedInCreator = profile ? profile.data.username === creator : false
+
   // Function called when a step button is pressed. Opens easy view to that desired step
   const openStep = e => {
-    const selectedStep = e.target.dataset.stepIndex
+    const selectedStep = parseInt(e.target.dataset.stepIndex)
     dispatch(setEasyCookStep(selectedStep))
-    dispatch(toggleEasyCookView())
+    toggleEasyView()
   }
 
   // Toggled easy view open or closed
@@ -185,31 +179,52 @@ export default function ViewRecipe() {
 
         <Box sx={{ display: "flex", alignItems: 'center', }}>
           <Typography variant="h4" fontWeight="bold" color="primary">{recipeTitle}</Typography>
-          <Typography variant="subtitle1" fontStyle="italic" color="secondary">&nbsp;
-            {isPublic ?
-              '- Public'
-              :
-              '- Private'
-            }
-          </Typography>
+        {loggedIn ? (
+          <Box>
+            {loggedInCreator ? (
+              <IconButton onClick={editRecipe} >
+                <MdEdit
+                  size={25}
+                  sx={{
+                  }}
+                />
+              </IconButton>
+            ) : (
+              <IconButton onClick={forkRecipe} >
+                <RestaurantIcon
+                  size={25}
+                  sx={{
+                  }}
+                />
+              </IconButton>
+            )}
+          </Box>
+        ) : (
+          <Box></Box>
+        )}
         </Box>
 
-        {/* EDIT BUTTONS */}
-        <IconButton onClick={editRecipe} >
-          <MdEdit
-            size={25}
-            sx={{
-              marginLeft: '2rem'
-            }}
-          />
-        </IconButton>
+
 
       </Box>
 
       <Box ml={{ xs: 0, md: 5, xl: 20 }} sx={{ display: 'flex', alignItems: "center", }}>
-        <Typography variant='subtitle1'>
-          By: {creator} - {editedDateArr[0][0] === '0' ? editedDateArr[0].slice(1) : editedDateArr[0]}
+        <Typography variant='subtitle1' mr={{ xs: 'auto', md: 2 }}>
+          {loggedInCreator ? 
+            `Created: ${editedDateArr[0][0] === '0' ? editedDateArr[0].slice(1) : editedDateArr[0]}` 
+            : 
+            `By: ${creator} - ${editedDateArr[0][0] === '0' ? editedDateArr[0].slice(1) : editedDateArr[0]}`
+          }
         </Typography>
+        {loggedInCreator && (
+          <Typography variant="subtitle1" fontStyle="italic" color="secondary">&nbsp;
+            {isPublic ?
+              'Public'
+              :
+              'Private'
+            }
+          </Typography>
+        )}
       </Box>
 
       <Grid container spacing={{ md: 5, lg: 10 }} px={{ md: 5, xl: 20 }}>
@@ -239,26 +254,7 @@ export default function ViewRecipe() {
             <Box sx={{ display: 'flex', alignItems: "center" }}>
               <MdAccessAlarm
                 size={25}
-              // {...bindTrigger(timePopState)}
-              // {...bindHover(timePopState)}
               />
-
-              {/* <HoverPopover
-                {...bindPopover(timePopState)}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-              >
-                <div>
-                  <p sx={{ margin: "2px 5px" }}>Total time to prepare, cook, and serve</p>
-                </div>
-              </HoverPopover> */}
-
               <Typography sx={{ ml: 1 }}>
                 {cookTime}
               </Typography>
@@ -268,25 +264,7 @@ export default function ViewRecipe() {
             <Box sx={{ mt: 2, display: 'flex', alignItems: "center" }}>
               <BsPeople
                 size={25}
-              // {...bindTrigger(servingPopState)}
-              // {...bindHover(servingPopState)}
               />
-
-              {/* <HoverPopover
-                {...bindPopover(servingPopState)}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-              >
-                <div>
-                  <p sx={{ margin: "2px 5px" }}>Servings</p>
-                </div>
-              </HoverPopover> */}
 
               <Typography sx={{ ml: 1 }}>
                 {servings} {servings === 1 ? 'person' : 'people'}
@@ -354,7 +332,7 @@ export default function ViewRecipe() {
                     <ListItem>
                       <ListItemText
                         primary={ingredient.quantityText}
-                        secondary={ingredient.prepNotesText ? ingredient.prepNotesText : ' '}
+                        secondary={ingredient.prepNotesText ? ingredient.prepNotesText : '-'}
                       />
                     </ListItem>
                     <Divider />
@@ -457,7 +435,7 @@ export default function ViewRecipe() {
               bgcolor: 'background.default',
             }}
           >
-            <Typography>{`Step ${parseInt(easyCookStep) + 1}`}</Typography>
+            <Typography>{`Step ${easyCookStep + 1}`}</Typography>
           </Paper>
           <Box px={{ xs: 1, md: '20%', xl: '25%' }} sx={{ width: '100%', my: 'auto', textAlign: 'center' }}>
             <Typography variant="h4">
@@ -468,7 +446,7 @@ export default function ViewRecipe() {
             variant="text"
             steps={orderedDirections.length}
             position="static"
-            activeStep={easyCookStep}
+            activeStep={parseInt(easyCookStep)}
             nextButton={
               <Button
                 size="small"

@@ -19,10 +19,8 @@ import {
   ListItemText,
   MenuList,
   MenuItem,
-  Grid,
   Button,
   Typography,
-  // SwipeableDrawer, StyledBox
 } from '@mui/material/';
 
 // Auth
@@ -30,12 +28,12 @@ import Auth from "../../utils/auth";
 
 // Custom icons
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
-import { /*IoIosJournal,*/ IoIosLogIn } from 'react-icons/io';
-import { MdSearch, /*MdSettings*/ } from 'react-icons/md';
+import LoginIcon from '@mui/icons-material/Login';
+import InboxIcon from '@mui/icons-material/Inbox';
+import SearchIcon from '@mui/icons-material/Search';
 import { GiKnifeFork, /*GiForkKnifeSpoon */ } from 'react-icons/gi';
-import FeedOutlinedIcon from '@mui/icons-material/FeedOutlined';
-// import { RiCompassDiscoverLine } from 'react-icons/ri';
-// import { VscChecklist } from 'react-icons/vsc'
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 // Queries/Mutations
 import { useQuery } from '@apollo/client';
@@ -44,10 +42,6 @@ import { QUERY_ME_BASIC } from '../../utils/queries';
 export default function Sidenav() {
   const state = useSelector(state => state.global.sideNavVisible);
   const dispatch = useDispatch();
-
-  // const anchor = {
-  //   left: false,
-  // };
 
   const toggleDrawer = () => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -61,19 +55,20 @@ export default function Sidenav() {
     Auth.logout();
   }
 
+  const { /*loading,*/ data } = useQuery(QUERY_ME_BASIC);
 
-  const { loading, data } = useQuery(QUERY_ME_BASIC);
-
-  if (loading) {
-    console.log('loading', loading)
-  } else {
-    // console.log("userData", data);
-  }
+  // if (loading) {
+  //   console.log('loading', loading)
+  // } else {
+  //   console.log("userData", data);
+  // }
 
   const userData = data?.me || {};
 
-  const token = Auth.loggedIn() ? Auth.getToken() : null;
-  console.log('token', token)
+  // const token = Auth.loggedIn() ? Auth.getToken() : null;
+  // console.log('token', token)
+
+  const loggedIn = Auth.loggedIn()
 
   const imageData = [
     {
@@ -159,23 +154,26 @@ export default function Sidenav() {
               <ListItem
                 sx={{
                   display: 'flex',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
               >
-                <ListItemIcon
+                {/* <ListItemIcon
                   sx={{
-                    marginRight: '.1rem'
+                    flexGrow: '1',
+                    marginRight: 1,
+                    fontSize: 28,
+                    textAlign: 'right'
                   }}
-                >
-                  <h1><GiKnifeFork /></h1>
-                </ListItemIcon>
+                > */}
+                <GiKnifeFork style={{ fontSize: 28, flexGrow: 1, marginRight: '8px' }} />
                 <ListItemText>
-                  <Typography variant="h4" color="primary" fontWeight="bold" sx={{ textShadow: "0px 4px 3px rgba(0,0,0,0.4), 0px 8px 13px rgba(0,0,0,0.1), 0px 18px 23px rgba(0,0,0,0.1)", }}>
-                    Coo<Typography component="span" variant="h4" color="secondary" fontStyle="italic" fontWeight="bold" sx={{ flexGrow: 1 }}>Kit</Typography>
+                  <Typography variant="h4" color="primary" fontWeight="bold" sx={{ m: 0, p: 0, textShadow: "0px 4px 3px rgba(0,0,0,0.4), 0px 8px 13px rgba(0,0,0,0.1), 0px 18px 23px rgba(0,0,0,0.1)", }}>
+                    Coo<Typography component="span" variant="h4" color="secondary" fontStyle="italic" fontWeight="bold">Kit</Typography>
                   </Typography>
                 </ListItemText>
               </ListItem>
-              {Auth.loggedIn() ?
+              {loggedIn ?
                 (
                   <ListItem>
                     <ListItemText>
@@ -188,50 +186,8 @@ export default function Sidenav() {
               }
             </List>
             <Divider />
+
             <MenuList>
-              <Button component={Link} to="/my-kit" variant="text" sx={{ mt: 2 }}>
-                <MenuItem
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{ marginRight: '.1rem', fontSize: 21 }}
-                  >
-                    <MdSearch />
-                  </ListItemIcon>
-                  <ListItemText>
-                    <Typography variant="h6">
-                      My Kit
-                    </Typography>
-                  </ListItemText>
-                </MenuItem>
-              </Button>
-
-              <Button component={Link} to="/new-recipe" variant="text" sx={{ mt: 2 }}>
-                <MenuItem
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      marginRight: '.1rem'
-                    }}
-                  >
-                    <PostAddOutlinedIcon />
-                  </ListItemIcon>
-                  <ListItemText>
-                    <Typography variant="h6">
-                      New Recipe
-                    </Typography>
-                  </ ListItemText>
-                </MenuItem>
-              </Button>
-
               <Button component={Link} to="/feed" variant="text" sx={{ mt: 2 }}>
                 <MenuItem
                   sx={{
@@ -245,7 +201,7 @@ export default function Sidenav() {
                       marginRight: '.1rem'
                     }}
                   >
-                    <FeedOutlinedIcon />
+                    <SearchIcon />
                   </ListItemIcon>
                   <ListItemText>
                     <Typography variant="h6">
@@ -254,6 +210,54 @@ export default function Sidenav() {
                   </ ListItemText>
                 </MenuItem>
               </Button>
+
+              {loggedIn && (
+                <>
+                  <Button component={Link} to="/my-kit" variant="text" sx={{ mt: 2 }}>
+                    <MenuItem
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{ marginRight: '.1rem', fontSize: 21 }}
+                      >
+                        <InboxIcon />
+                      </ListItemIcon>
+                      <ListItemText>
+                        <Typography variant="h6">
+                          My Kit
+                        </Typography>
+                      </ListItemText>
+                    </MenuItem>
+                  </Button>
+
+                  <Button component={Link} to="/new-recipe" variant="text" sx={{ mt: 2 }}>
+                    <MenuItem
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          marginRight: '.1rem'
+                        }}
+                      >
+                        <PostAddOutlinedIcon />
+                      </ListItemIcon>
+                      <ListItemText>
+                        <Typography variant="h6">
+                          New Recipe
+                        </Typography>
+                      </ ListItemText>
+                    </MenuItem>
+                  </Button>
+                </>
+              )}
+
+
             </MenuList>
           </Box>
           <ImageList
@@ -261,21 +265,21 @@ export default function Sidenav() {
             cols={1}
             gap={0}
             sx={{
-              padding: 0, 
+              padding: 0,
               margin: 0,
             }}
-            >
+          >
             <ImageListItem
-            sx={{
-              boxShadow: 'inset 0 7px 9px -7px rgba(0,0,0,0.65), inset 0 -7px 9px -7px rgba(0,0,0,0.65)',
-            }}
+              sx={{
+                boxShadow: 'inset 0 7px 9px -7px rgba(0,0,0,0.65), inset 0 -7px 9px -7px rgba(0,0,0,0.65)',
+              }}
             >
               <img
                 src={`${imageData[0].img}?w=248&fit=crop&auto=format`}
                 alt={imageData[0].title}
                 loading="lazy"
                 style={{
-                  opacity: ".5"
+                  opacity: ".8"
                 }}
               />
             </ImageListItem>
@@ -286,7 +290,7 @@ export default function Sidenav() {
         <MenuList
         // sx={{ boxShadow: '0 7px 9px -7px rgba(0,0,0,0.6),' }}
         >
-          {Auth.loggedIn() ?
+          {loggedIn ?
             <Button
               variant="text"
               value="Logout"
@@ -305,7 +309,7 @@ export default function Sidenav() {
                     fontSize: 20,
                     fontWeight: 'bold'
                   }}>
-                  <IoIosLogIn />
+                  <LogoutIcon />
                 </ListItemIcon>
                 <ListItemText>
                   <Typography variant="h6">
@@ -315,30 +319,56 @@ export default function Sidenav() {
               </MenuItem>
             </Button>
             :
-            <Button
-              component={Link}
-              to="/login"
-              variant="text"
-              value="Login"
-            // onClick={toggleDrawer()}
-            >
-              <MenuItem
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center'
-                }}
+            <Box sx={{ display: 'flex', justifyContent: "space-between" }}>
+              <Button
+                component={Link}
+                to="/login"
+                variant="text"
+                value="Login"
+              // onClick={toggleDrawer()}
               >
-                <ListItemIcon
+                <MenuItem
                   sx={{
-                    marginRight: '.1rem'
-                  }}>
-                  <IoIosLogIn />
-                </ListItemIcon>
-                <ListItemText>
-                  Login
-                </ListItemText>
-              </MenuItem>
-            </Button>
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      marginRight: '.1rem'
+                    }}>
+                    <LoginIcon />
+                  </ListItemIcon>
+                  <ListItemText>
+                    Login
+                  </ListItemText>
+                </MenuItem>
+              </Button>
+              <Button
+                component={Link}
+                to="/signup"
+                variant="text"
+                value="Signup"
+              // onClick={toggleDrawer()}
+              >
+                <MenuItem
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      marginRight: '.1rem'
+                    }}>
+                    <PersonAddAlt1Icon />
+                  </ListItemIcon>
+                  <ListItemText>
+                    Signup
+                  </ListItemText>
+                </MenuItem>
+              </Button>
+            </Box>
           }
         </MenuList>
       </Box>

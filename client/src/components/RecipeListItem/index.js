@@ -1,12 +1,6 @@
 // React
 import * as React from 'react';
-import { BrowserRouter, Link } from 'react-router-dom';
-
-// React Components
-import ViewRecipe from '../../pages/ViewRecipe';
-
-// Auth
-import Auth from '../../utils/auth';
+import { Link } from 'react-router-dom';
 
 // Material UI components
 import {
