@@ -43,6 +43,7 @@ export const initialState = {
   easyCookView: false, //show the fullscreen step by step view USE MUI MOBILE STEPPER FOR DISPLAY
   easyCookStep: 0, // last step visited by user. Needs to be cleared upon leaving the main recipe page
   myKitView: true, //true === row, false === tiled
+  discoverView: true, //true === row, false === tiled
   sideNavVisible: false, // true === sideNav appears
 };
 
@@ -73,6 +74,9 @@ export const globalSlice = createSlice({
     toggleMyKitView: (state) => {
       state.myKitView = !state.myKitView;
     },
+    toggleDiscoverView: (state) => {
+      state.discoverView = !state.discoverView;
+    },
     sideNavVisible: (state) => {
       state.sideNavVisible = !state.sideNavVisible;
     }
@@ -88,6 +92,7 @@ export const {
   toggleEasyCookView, 
   setEasyCookStep, 
   toggleMyKitView,
+  toggleDiscoverView,
   sideNavVisible } = actions;
 
 export default reducer;
