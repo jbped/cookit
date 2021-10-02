@@ -29,9 +29,9 @@ export default function SignupForm() {
   const initialState = {
     serverError: '',
     username: '',
-    usernameError: false,
+    usernameError: '',
     email: '',
-    emailError: false,
+    emailError: '',
     password: '',
     passwordError: false,
     showPassword: false,
@@ -62,23 +62,23 @@ export default function SignupForm() {
   const signupCheck = e => {
     e.preventDefault();
     let errors = {
-      username: false,
-      email: false,
+      username: null,
+      email: null,
       password: false,
     }
     if (values.username.length > 0 && /^[\w\.-]+$/.test(values.username)) {
-      setValues(prevState => ({ ...prevState, usernameError: false }))
+      setValues(prevState => ({ ...prevState, usernameError: null }))
       errors.username = false;
     } else {
-      setValues(prevState => ({ ...prevState, usernameError: true }))
+      setValues(prevState => ({ ...prevState, usernameError: 'validation' }))
       errors.username = true;
     }
 
     if (values.email.length > 0 && /^([\w\.-]+)@([\w\.-]+)\.([a-z\.]{2,6})$/.test(values.email)) {
-      setValues(prevState => ({ ...prevState, emailError: false }))
+      setValues(prevState => ({ ...prevState, emailError: null }))
       errors.email = false;
     } else {
-      setValues(prevState => ({ ...prevState, emailError: true }))
+      setValues(prevState => ({ ...prevState, emailError: 'validation' }))
       errors.email = true;
     }
 
@@ -123,7 +123,14 @@ export default function SignupForm() {
       Auth.login(token)
       // setValues(initialState)
     } catch (e) {
-      console.error('Signup error:', e)
+      console.error('Signup error:', e);
+      if (e.toString().includes('username')) { 
+        setValues(prevState => ({ ...prevState, usernameError: 'duplicate' }))
+        setValues(prevState => ({ ...prevState, errorText: true }))
+      } else if (e.toString().includes('email')) {
+        setValues(prevState => ({ ...prevState, emailError: 'duplicate' }))
+        setValues(prevState => ({ ...prevState, errorText: true }))
+      }
     }
     // Clear return values state to initialState
   }
@@ -163,7 +170,16 @@ export default function SignupForm() {
         onChange={handleChange('username')}
         autoComplete="new-username"
       />
-      {values.usernameError && <Typography variant="subtitle2" color="error">Please provide a username</Typography>}
+      {(values.usernameError === 'validation') ? 
+        <Typography variant="subtitle2" color="error">
+          Please provide a valid username
+        </Typography>
+      :
+      (values.usernameError === 'duplicate') &&
+        <Typography variant="subtitle2" color="error">
+          Username already exists
+        </Typography>
+      }
       
       <TextField
         id="email-required"
@@ -177,7 +193,16 @@ export default function SignupForm() {
         onChange={handleChange('email')}
         autoComplete="new-password"
       />
-      {values.emailError && <Typography variant="subtitle2" color="error">Please provide a valid email address</Typography>}
+      {(values.emailError === 'validation') ? 
+        <Typography variant="subtitle2" color="error">
+          Please provide a valid email address
+        </Typography>
+      :
+      (values.emailError === 'duplicate') &&
+        <Typography variant="subtitle2" color="error">
+          Email is already in use
+        </Typography>
+      }
       
       <FormControl sx={{ mt: 2, }} variant="outlined" fullWidth>
         <InputLabel htmlFor="password" color="secondary" error={values.passwordError}>Password *</InputLabel>
@@ -209,8 +234,8 @@ export default function SignupForm() {
           </Typography>
           :
           <Typography variant="subtitle2" color="grey" sx={{ fontStyle: 'italic' }}>
-          Password must be a minimum of 5 characters
-        </Typography>
+            Password must be a minimum of 5 characters
+          </Typography>
         }
         
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
