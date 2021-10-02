@@ -233,46 +233,45 @@ export const QUERY_RECIPES = gql`
 export const QUERY_RECIPE = gql`
     query Query($recipeId: ID!) {
         recipe(_id: $recipeId) {
-            _id
-            isPublic
-            creator
-            createdAt
-            recipeTitle
-            recipeDescription
-            servings
-            cookTime
-            forked
+                _id
+                isPublic
+                creator
+                createdAt
+                recipeTitle
+                recipeDescription
+                servings
+                cookTime
+                forked
             directions {
-            _id
-            stepText
-            stepId
+                _id
+                stepText
+                stepId
             }
             ingredients {
-            _id
-            ingredientName
-            measurement
-            quantity
-            preparationNotes
-            ingredientId
+                _id
+                ingredientName
+                measurement
+                quantity
+                preparationNotes
+                ingredientId
             }
             cookware {
-            _id
-            cookwareName
+                _id
+                cookwareName
             }
             comments {
-            _id
-            commentText
-            username
-            createdAt
+                _id
+                commentText
+                username
+                createdAt
+                upvotes {
+                    _id
+                    username
+                }
+            }
             upvotes {
                 _id
                 username
-            }
-            
-            }
-            upvotes {
-            _id
-            username
             }
             directionsOrder
             ingredientsOrder

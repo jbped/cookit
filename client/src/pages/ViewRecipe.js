@@ -29,7 +29,8 @@ import {
   MobileStepper
 } from '@mui/material'
 
-import Loader from '../components/Loader'
+import Loader from '../components/Loader';
+import UpvoteHeart from '../components/UpvoteHeart';
 
 // Icons....
 import {
@@ -66,12 +67,13 @@ export default function ViewRecipe() {
     variables: { recipeId: recipeId }
   });
 
-  const recipe = data?.recipe || {};
-  // console.log("this is the recipe returned", recipe)
-
   if (loading) {
     return <Loader></Loader>
   }
+
+  const recipe = data.recipe || {};
+  // console.log("this is the recipe returned", recipe)
+  console.log(recipe);
 
   // Destructuring of the keys in the recipe object received from the database
   const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = recipe
@@ -91,9 +93,8 @@ export default function ViewRecipe() {
     ingredientsOrder.forEach(id => {
       ingredients.filter(ingredient => {
         if (ingredient.ingredientId === id) {
-
           // Base ingredient information 'quantitymeasurement ingredientName' or 'quantity ingredientNate'
-          const quantityText = `${ingredient.quantity} ${(ingredient.measurement && !ingredient.measurement !== 'n/a') ? ingredient.measurement : ''} ${ingredient.ingredientName}`
+          const quantityText = `${ingredient.quantity} ${(ingredient.measurement && ingredient.measurement !== 'n/a') ? ingredient.measurement : ''} ${ingredient.ingredientName}`
           // Preparation notes 'preparationNotes' or ''
           const prepNotesText = ingredient.preparationNotes ? `${ingredient.preparationNotes}` : ''
           orderedIngredients.push({ ...ingredient, quantityText, prepNotesText })
@@ -176,8 +177,8 @@ export default function ViewRecipe() {
           borderColor: 'divider',
         }}
       >
-
-        <Box sx={{ display: "flex", alignItems: 'center', }}>
+        <Box sx={{ display: "flex", alignItems: 'center' }}>
+          <UpvoteHeart></UpvoteHeart>
           <Typography variant="h4" fontWeight="bold" color="primary">{recipeTitle}</Typography>
         {loggedIn ? (
           <Box>
