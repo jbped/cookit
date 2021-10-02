@@ -1,6 +1,6 @@
 // React
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // Material UI components
 import {
@@ -16,12 +16,19 @@ import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 
 export default function RecipeListItem({ recipe }) {
+  let location = useLocation();
+  const discover = location.pathname.includes('discover');
+
   return (
     <Paper sx={{ display: 'flex', flexDirection: 'column', mt: 2, boxShadow: 4 }}>
       <Button component={Link} to={`/recipe/${recipe._id}`} variant='text' sx={{ display: 'flex', justifyContent: 'space-between', py: 1.5 }}>
         <Grid container>
           <Grid item xs={12} md={8}>
-            <Typography variant="h6" color="primary" sx={{ ml: 1 }}>{recipe.recipeTitle}</Typography>
+            <Box sx={{display: 'flex'}} justifyContent={{xs: 'space-between', md: 'flex-start'}}>
+              <Typography variant="h6" color="primary" sx={{ ml: 1 }}>{recipe.recipeTitle}</Typography>
+              {discover &&
+                <Typography variant="body2" color="backdrop.light" sx={{ mr: 1, display: 'inline-block' }} ml={{md: 2}}>Created by <Typography variant="body2" color="primary" sx={{display: 'inline-block'}}>{recipe.creator}</Typography></Typography>}
+            </Box>
           </Grid>
           {/* <p>Recipe Name</p> */}
 
