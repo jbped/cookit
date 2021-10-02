@@ -145,3 +145,14 @@ export const ADD_DIRECTION = gql`
         }
     }
 `;
+
+//Upvote
+
+export const UPVOTE_RECIPE = gql`
+    mutation upvoteRecipe($recipeId: ID!) {
+        upvoteRecipe(recipeId: $recipeId) {
+            _id,
+            username
+        }
+    }
+`;
