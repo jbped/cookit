@@ -32,6 +32,7 @@ export default function LoginForm() {
     password: '',
     passwordError: false,
     showPassword: false,
+    errorText: ''
   }
 
   const [values, setValues] = useState(initialState);
@@ -82,11 +83,11 @@ export default function LoginForm() {
   // Else initiate login function 
   const errorHandler = ({ username, password }) => {
     if (username || password) {
-      setValues(prevState => ({ ...prevState, errorText: true }))
+      setValues(prevState => ({ ...prevState, errorText: 'error' }))
       return;
     }
 
-    setValues(prevState => ({ ...prevState, errorText: false }))
+    setValues(prevState => ({ ...prevState, errorText: null }))
     loginUser()
   }
 
@@ -106,6 +107,9 @@ export default function LoginForm() {
       mutationResponse && setValues(initialState)
     } catch (e) {
       console.error('Login Error', e)
+      if (e.toString().includes('Incorrect credentials')) {
+        setValues(prevState => ({ ...prevState, errorText: 'credentials' }));
+      }
     }
     // Clear return values state to initialState
   }
@@ -125,10 +129,14 @@ export default function LoginForm() {
     >
       <Box sx={{ display: 'flex' }}>
         <Typography variant="h5" sx={{ fontWeight: 'bold' }} color="primary">Login</Typography>
-        {values.errorText &&
-          <Typography variant="h6" color="error" sx={{ fontStyle: 'italic' }}>
-            &nbsp;- Error!
-          </Typography>
+        {(values.errorText === 'error') ?
+            <Typography variant="h6" color="error" sx={{ fontStyle: 'italic' }}>
+              &nbsp;- Error!
+            </Typography>
+          : (values.errorText === 'credentials') &&
+            <Typography variant="h6" color="error" sx={{ fontStyle: 'italic' }}>
+              &nbsp;- Invalid username or password
+            </Typography>
         }
       </Box>
       <TextField
@@ -139,7 +147,7 @@ export default function LoginForm() {
         name="username"
         sx={{ mt: 2 }}
         value={values.username}
-        error={values.usernameError}
+        error={values.usernameError || values.errorText}
         color="backdrop"
         InputLabelProps={{ color: "secondary" }}
         onChange={handleChange}
@@ -152,7 +160,7 @@ export default function LoginForm() {
           id="password-required"
           type={values.showPassword ? 'text' : 'password'}
           value={values.password}
-          error={values.passwordError}
+          error={values.passwordError || values.errorText}
           name="password"
           onChange={handleChange}
           color="backdrop"
@@ -179,6 +187,5 @@ export default function LoginForm() {
         <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>Login</Button>
       </Box>
     </Paper>
-
   )
 }
