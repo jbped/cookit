@@ -6,7 +6,7 @@ import { QUERY_RECIPE } from '../utils/queries'
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
-import { setEasyCookStep, toggleEasyCookView } from '../utils/globalSlice';
+import { setEasyCookStep, toggleEasyCookView, editThisRecipe } from '../utils/globalSlice';
 
 import Auth from '../utils/auth'
 
@@ -55,12 +55,15 @@ export default function ViewRecipe() {
   const easyCookView = useSelector(state => state.global.easyCookView);
   const dispatch = useDispatch();
 
+  const editRecipeGS = useSelector(state => state.global.editRecipe);
+  
+
   // Query for the recipe
   const params = useParams();
   // console.log("params", params)
 
   const recipeId = params.id
-  // console.log("Recipe ID", recipeId)
+  console.log("Recipe ID", recipeId)
 
   const { loading, data } = useQuery(QUERY_RECIPE, {
     variables: { recipeId: recipeId }
@@ -123,10 +126,73 @@ export default function ViewRecipe() {
 
   const editRecipe = () => {
 
+    const convertedPublic = isPublic ? 'public' : 'private'
+
+    let recipeObj = {
+      recipeTitle,
+      type: [],
+      cookTime,
+      servings,
+      isPublic: convertedPublic,
+      recipeDescription,
+      columns: {
+        ingredientsCol: {
+          id: 'ingredientsCol',
+          title: 'Ingredients',
+          itemIds: ingredientsOrder // ingredientsOrder in DB
+        },
+        directionsCol: {
+          id: 'directionsCol',
+          title: 'Directions',
+          itemIds: directionsOrder //directionsOrder in DB
+        },
+        deleteIngCol: {
+          id: 'deleteIngCol',
+          title: 'Delete',
+          itemIds: [],
+          deletedIds: []
+        },
+        deleteDirCol: {
+          id: 'deleteDirCol',
+          title: 'Delete',
+          itemIds: [],
+          deletedIds: []
+        }
+      },
+      ingredientErrors: [],
+      directionErrors: [],
+      formCleared: false,
+    }
+    
+    let ingObj = {}
+    let dirObj = {}
+
+    ingredients.forEach(ingredient => {
+      ingObj = {...ingObj, [ingredient.ingredientId]: {...ingredient}}
+    })
+
+    recipeObj.ingredients = ingObj
+
+    directions.forEach(step => {
+      dirObj = {...dirObj, [step.stepId]: {...step}}
+    })
+
+    recipeObj.directions = dirObj
+
+    pushToGlobal(recipeObj);
+
+    // dispatch(editRecipe(recipeObj))
+
+    console.log("editRecipe global state", editRecipeGS);
+
+ window.location.assign(`${recipeId}/edit`)
   }
 
   const forkRecipe = () => {
 
+  }
+  const pushToGlobal = (recipeObj) => {
+    dispatch(editThisRecipe(recipeObj));
   }
 
   // const profile = Auth.getProfile();
@@ -182,7 +248,9 @@ export default function ViewRecipe() {
         {loggedIn ? (
           <Box>
             {loggedInCreator ? (
-              <IconButton onClick={editRecipe} >
+                <IconButton
+                  onClick={editRecipe}
+                >
                 <MdEdit
                   size={25}
                   sx={{

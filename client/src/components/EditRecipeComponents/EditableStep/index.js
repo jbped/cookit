@@ -3,7 +3,7 @@ import { Draggable } from 'react-beautiful-dnd';
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
-import { editRecipe } from '../../../utils/globalSlice';
+import { editThisRecipe } from '../../../utils/globalSlice';
 
 // MUI Components....
 import {
@@ -17,7 +17,7 @@ import {
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
 export default function EditableStep({ step, index }) {
-  const state = useSelector(state => state.global.editRecipe)
+  const state = useSelector(state => state.global.editThisRecipe)
   const dispatch = useDispatch();
 
   const { directions } = state;
@@ -30,7 +30,7 @@ export default function EditableStep({ step, index }) {
     let editedDirObj = { ...dirObj }
     // console.log('editedDirObj', editedDirObj)
     editedDirObj = { ...editedDirObj, [e.target.name]: e.target.value }
-    dispatch(editRecipe({
+    dispatch(editThisRecipe({
       directions: {
         ...directions,
         [stepId]: editedDirObj

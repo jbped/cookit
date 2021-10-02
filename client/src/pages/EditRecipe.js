@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
-import { editRecipe} from '../utils/globalSlice';
+import { editThisRecipe} from '../utils/globalSlice';
 import { initialState as initGlobalState } from '../utils/globalSlice'
 
 // MUI Components....
@@ -48,11 +48,11 @@ export default function EditRecipePage() {
   const dispatch = useDispatch();
   // Ensures that on mount recipe state is cleared
   useEffect(() => {
-    dispatch(editRecipe(initGlobalState.editRecipe))
+    dispatch(editThisRecipe(initGlobalState.editThisRecipe))
   }, [])
 
   const { recipeTitle, cookTime, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm;
-  const [editRecipe] = useMutation(EDIT_RECIPE)
+  const [editRecipeMutation] = useMutation(EDIT_RECIPE)
   // console.log(recipeForm)
 
   // If true display the save button
@@ -88,7 +88,7 @@ export default function EditRecipePage() {
 
     // If all keys in softChecks are true update softComplete state to true
     softChecks.recipeTitle && softChecks.cookTime && softChecks.recipeDescription && softChecks.ingredients && softChecks.directions && softChecks.ingredientsOrder && softChecks.directionsOrder ? setSoftComplete(true) : setSoftComplete(false);
-    (!softChecks.recipeTitle || !softChecks.cookTime || !softChecks.recipeDescription || !softChecks.ingredients || !softChecks.directions || !softChecks.ingredientsOrder || !softChecks.directionsOrder) && dispatch(editRecipe({formCleared: false}));
+    (!softChecks.recipeTitle || !softChecks.cookTime || !softChecks.recipeDescription || !softChecks.ingredients || !softChecks.directions || !softChecks.ingredientsOrder || !softChecks.directionsOrder) && dispatch(editThisRecipe({formCleared: false}));
 
     // console.log('softComplete', softComplete)
 
@@ -178,12 +178,12 @@ export default function EditRecipePage() {
       // console.log('directions', directions[step].errors)
     })
     // console.log(`batch`, batch)
-    // Push batch to editRecipe NOTE: THIS IS A COMPLETE OVERWRITE OF EDIT RECIPE    
+    // Push batch to editThisRecipe NOTE: THIS IS A COMPLETE OVERWRITE OF EDIT RECIPE    
     dispatchHandler(batch)
   }
   
   const dispatchHandler = batch => {
-    dispatch(editRecipe(batch))
+    dispatch(editThisRecipe(batch))
     // console.log('recipeForm', recipeForm)
     console.log('ingredientErrors.length: ', batch.ingredientErrors.length, '\ndirectionErrors.length: ', batch.directionErrors.length)
 
@@ -192,7 +192,7 @@ export default function EditRecipePage() {
       return;
     } else {
       // console.log('editRecipe')
-      dispatch(editRecipe({formCleared: true}))
+      dispatch(editThisRecipe({formCleared: true}))
       editRecipe()
     }
 
@@ -238,12 +238,12 @@ export default function EditRecipePage() {
     // console.log('recipe edited', formCleared)
 
     try{
-      const { data } = await editRecipe({
+      const { data } = await editRecipeMutation({
         variables: {...editRecipeObj}
       });
 
       // console.log(data.editRecipe._id)
-      data && dispatch(editRecipe(initGlobalState.editRecipe))
+      data && dispatch(editThisRecipe(initGlobalState.editRecipe))
       window.location.assign(`/recipe/${data.editRecipe._id}`)
     } catch (e) {
       console.error('Edit Recipe Error: ', e)
@@ -251,28 +251,28 @@ export default function EditRecipePage() {
   }
   
 // Convert ingredients array to an object organized by the ingredientsOrder
-ingredientsOrder.forEach(id => {
-  ingredients.filter(ingredient => {
-    if (ingredient.ingredientId === id) {
-      ingredientsObject[ingredient.ingredientId] = {...ingredient}
-      return ingredientsObject;
-    }
-    return ingredientsObject;
-  })
-});
-console.log('ingredientsObject', ingredientsObject)
+// ingredientsOrder.forEach(id => {
+//   ingredients.filter(ingredient => {
+//     if (ingredient.ingredientId === id) {
+//       ingredientsObject[ingredient.ingredientId] = {...ingredient}
+//       return ingredientsObject;
+//     }
+//     return ingredientsObject;
+//   })
+// });
+// console.log('ingredientsObject', ingredientsObject)
 
-  // Convert directions array to an object organized by the directionsOrder
-  const directionsObject = {}
-  directionsOrder.forEach(id => {
-    directions.filter(direction => {
-      if (direction.stepId === id) {
-        directionsObject[direction.stepId] = {...direction}
-        return directionsObject;
-      }
-      return directionsObject;
-    })
-  });
+//   // Convert directions array to an object organized by the directionsOrder
+//   const directionsObject = {}
+//   directionsOrder.forEach(id => {
+//     directions.filter(direction => {
+//       if (direction.stepId === id) {
+//         directionsObject[direction.stepId] = {...direction}
+//         return directionsObject;
+//       }
+//       return directionsObject;
+//     })
+//   });
 
   return (
     <Box component="form" onSubmit={formCheck}>

@@ -3,7 +3,7 @@ import { Draggable } from 'react-beautiful-dnd';
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
-import { editRecipe } from '../../../utils/globalSlice';
+import { editThisRecipe } from '../../../utils/globalSlice';
 
 // MUI Components....
 import {
@@ -99,7 +99,7 @@ export default function EditableIngredient({ ing, index }) {
     } else {
       editedIngObj = {...editedIngObj, [e.target.name]: e.target.value}
     }
-    dispatch(editRecipe({
+    dispatch(editThisRecipe({
       ingredients: {
         ...ingredients,
         [ingredientId]: editedIngObj
