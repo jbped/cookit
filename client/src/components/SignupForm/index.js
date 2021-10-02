@@ -66,7 +66,7 @@ export default function SignupForm() {
       email: null,
       password: false,
     }
-    if (values.username.length > 0 && /^[\w\.-]+$/.test(values.username)) {
+    if (values.username.length > 0 && /^[\w.-]+$/.test(values.username)) {
       setValues(prevState => ({ ...prevState, usernameError: null }))
       errors.username = false;
     } else {
@@ -74,7 +74,7 @@ export default function SignupForm() {
       errors.username = true;
     }
 
-    if (values.email.length > 0 && /^([\w\.-]+)@([\w\.-]+)\.([a-z\.]{2,6})$/.test(values.email)) {
+    if (values.email.length > 0 && /^([\w.-]+)@([\w.-]+)\.([a-z.]{2,6})$/.test(values.email)) {
       setValues(prevState => ({ ...prevState, emailError: null }))
       errors.email = false;
     } else {

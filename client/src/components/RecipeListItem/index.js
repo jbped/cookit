@@ -42,7 +42,6 @@ export default function RecipeListItem({ recipe }) {
                   alignItems: 'center',
                   flexGrow: 1,
                   ml: 1,
-                  alignItems: 'center',
                 }}
                 mr={{xs: 3, md: 0}}
               >

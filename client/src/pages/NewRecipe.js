@@ -46,10 +46,10 @@ function HideOnScroll({ children }) {
 export default function NewRecipePage() {
   const recipeForm = useSelector(state => state.global.newRecipe)
   const dispatch = useDispatch();
-  // Ensures that on mount recipe state is cleared
-  useEffect(() => {
-    dispatch(newRecipe(initGlobalState.newRecipe))
-  }, [])
+  // // Ensures that on mount recipe state is cleared
+  // useEffect(() => {
+  //   dispatch(newRecipe(initGlobalState.newRecipe))
+  // }, [])
 
   const { recipeTitle, cookTime, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm;
   const [addRecipe] = useMutation(ADD_RECIPE)
@@ -84,7 +84,7 @@ export default function NewRecipePage() {
     ingredientsCol.itemIds.length > 0  ? softChecks.ingredientsOrder = true : softChecks.ingredientsOrder = false;
     directionsCol.itemIds.length > 0  ? softChecks.directionsOrder = true : softChecks.directionsOrder = false;
 
-    // console.log('softChecks', softChecks)
+    console.log('softChecks', softChecks)
 
     // If all keys in softChecks are true update softComplete state to true
     softChecks.recipeTitle && softChecks.cookTime && softChecks.recipeDescription && softChecks.ingredients && softChecks.directions && softChecks.ingredientsOrder && softChecks.directionsOrder ? setSoftComplete(true) : setSoftComplete(false);
