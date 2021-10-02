@@ -29,7 +29,8 @@ import {
   MobileStepper
 } from '@mui/material'
 
-import Loader from '../components/Loader'
+import Loader from '../components/Loader';
+import UpvoteHeart from '../components/UpvoteHeart';
 
 // Icons....
 import {
@@ -69,21 +70,25 @@ export default function ViewRecipe() {
     variables: { recipeId: recipeId }
   });
 
-  const recipe = data?.recipe || {};
-  // console.log("this is the recipe returned", recipe)
-
   if (loading) {
     return <Loader></Loader>
   }
 
+  const recipe = data.recipe || {};
+  // console.log("this is the recipe returned", recipe)
+  console.log(recipe);
+
   // Destructuring of the keys in the recipe object received from the database
-  const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = recipe
+  const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = recipe;
 
   let orderedIngredients = [];
   let orderedDirections = []
   let editedDateArr = []
   let col1 = []
   let col2 = []
+
+  let recipeLength = Object.keys(recipe).length
+  console.log(recipeLength)
 
   if (!loading && data.recipe !== undefined) {
     // Splits the createdAt string into to indexes DD/MM/YYYY and time
@@ -95,7 +100,7 @@ export default function ViewRecipe() {
       ingredients.filter(ingredient => {
         if (ingredient.ingredientId === id) {
 
-          // Base ingredient information 'quantitymeasurement ingredientName' or 'quantity ingredientNate'
+          // Base ingredient information 'quantity measurement ingredientName' or 'quantity ingredientNate'
           const quantityText = `${ingredient.quantity} ${(ingredient.measurement && !ingredient.measurement !== 'n/a') ? ingredient.measurement : ''} ${ingredient.ingredientName}`
           // Preparation notes 'preparationNotes' or ''
           const prepNotesText = ingredient.preparationNotes ? `${ingredient.preparationNotes}` : ''
@@ -108,7 +113,6 @@ export default function ViewRecipe() {
 
 
     // Convert directions array to an object organized by the directionsOrder
-
     directionsOrder.forEach(id => {
       directions.filter(direction => {
         if (direction.stepId === id) {
@@ -125,6 +129,7 @@ export default function ViewRecipe() {
   }
 
   const editRecipe = () => {
+<<<<<<< HEAD
 
     const convertedPublic = isPublic ? 'public' : 'private'
 
@@ -186,6 +191,9 @@ export default function ViewRecipe() {
     console.log("editRecipe global state", editRecipeGS);
 
  window.location.assign(`${recipeId}/edit`)
+=======
+    
+>>>>>>> 993e715af412c44c809caac9d45670ade242fae9
   }
 
   const forkRecipe = () => {
@@ -242,10 +250,10 @@ export default function ViewRecipe() {
           borderColor: 'divider',
         }}
       >
-
-        <Box sx={{ display: "flex", alignItems: 'center', }}>
+        <Box sx={{ display: "flex", alignItems: 'center' }}>
+          <UpvoteHeart></UpvoteHeart>
           <Typography variant="h4" fontWeight="bold" color="primary">{recipeTitle}</Typography>
-        {loggedIn ? (
+        {loggedIn && (
           <Box>
             {loggedInCreator ? (
                 <IconButton
@@ -267,8 +275,6 @@ export default function ViewRecipe() {
               </IconButton>
             )}
           </Box>
-        ) : (
-          <Box></Box>
         )}
         </Box>
 
