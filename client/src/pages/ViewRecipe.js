@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useHistory} from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_RECIPE } from '../utils/queries'
@@ -182,7 +182,17 @@ export default function ViewRecipe() {
     let dirObj = {}
 
     ingredients.forEach(ingredient => {
-      ingObj = { ...ingObj, [ingredient.ingredientId]: { ...ingredient, errors:{ quantity: false, ingredient: false} } }
+      ingObj = {
+        ...ingObj,
+        [ingredient.ingredientId]: {
+          ingredientId: ingredient.ingredientId,
+          quantity: ingredient.quantity,
+          measurementTypeShort: ingredient.measurement,
+          ingredient: ingredient.ingredientName,
+          notes: ingredient.preparationNotes,
+          errors: { quantity: false, ingredient: false }
+        }
+      }
     })
 
     recipeObj.ingredients = ingObj
@@ -202,9 +212,9 @@ export default function ViewRecipe() {
 
   const forkRecipe = async () => {
     console.log('forked recipe')
-    try{
+    try {
       const { data } = await saveForkedRecipe({
-        variables: {recipeId}
+        variables: { recipeId }
       });
 
       console.log(data)
