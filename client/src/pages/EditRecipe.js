@@ -52,7 +52,7 @@ export default function EditRecipePage() {
   const initRecipeForm = {...recipeForm.editRecipe}
   const [editRecipeMutation] = useMutation(EDIT_RECIPE)
   const [softComplete, setSoftComplete] = useState(false)
-  !initRecipeForm.recipeName && history.push(`/recipe/${recipeId}`)
+  !initRecipeForm.recipeTitle && history.push(`/recipe/${recipeId}`)
 
 
   console.log(recipeForm)
