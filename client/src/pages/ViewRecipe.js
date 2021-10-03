@@ -182,7 +182,14 @@ export default function ViewRecipe() {
     let dirObj = {}
 
     ingredients.forEach(ingredient => {
-      ingObj = { ...ingObj, [ingredient.ingredientId]: { ...ingredient, errors:{ quantity: false, ingredient: false} } }
+      ingObj = { ...ingObj, [ingredient.ingredientId]: {
+        ingredientId: ingredient.ingredientId,
+        quantity: ingredient.quantity,
+        measurementTypeShort: ingredient.measurement ? ingredient.measurement : "n/a",
+        ingredient: ingredient.ingredientName,
+        notes: ingredient.preparationNotes,
+        errors: { quantity: false, ingredient: false }
+      } }
     })
 
     recipeObj.ingredients = ingObj

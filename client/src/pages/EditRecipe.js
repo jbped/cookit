@@ -212,13 +212,14 @@ export default function EditRecipePage() {
       ingredientsOrder: ingredientsCol.itemIds,
       directionsOrder: directionsCol.itemIds,
     }
-    // console.log('editRecipeObj', editRecipeObj)
+    console.log('editRecipeObj', editRecipeObj)
 
     let ingredientsArr = []
     let directionsArr = []
 
     let publicBool = isPublic === 'private' ? false : true
     editRecipeObj.isPublic = publicBool
+
 
     await ingredientsCol.itemIds.forEach(item => {
       let trimmedIngredient = {
@@ -231,6 +232,7 @@ export default function EditRecipePage() {
       ingredientsArr.push(trimmedIngredient);
     });
     editRecipeObj.ingredients = ingredientsArr
+
 
     await directionsCol.itemIds.forEach(item => {
       let trimmedStep = {
@@ -259,30 +261,6 @@ export default function EditRecipePage() {
     }
   }
   
-// Convert ingredients array to an object organized by the ingredientsOrder
-// ingredientsOrder.forEach(id => {
-//   ingredients.filter(ingredient => {
-//     if (ingredient.ingredientId === id) {
-//       ingredientsObject[ingredient.ingredientId] = {...ingredient}
-//       return ingredientsObject;
-//     }
-//     return ingredientsObject;
-//   })
-// });
-// console.log('ingredientsObject', ingredientsObject)
-
-//   // Convert directions array to an object organized by the directionsOrder
-//   const directionsObject = {}
-//   directionsOrder.forEach(id => {
-//     directions.filter(direction => {
-//       if (direction.stepId === id) {
-//         directionsObject[direction.stepId] = {...direction}
-//         return directionsObject;
-//       }
-//       return directionsObject;
-//     })
-//   });
-
   return (
     <Box component="form" onSubmit={formCheck}>
       <Box px={{ md: 5, xl: 20 }}>

@@ -314,7 +314,7 @@ export default function IngredientsSection() {
                     // textAlign: 'center',
                   }}
                 >
-                  {/* {columns.deleteIngCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)} */}
+                  {columns.deleteIngCol.itemIds.map((ingredient, i) => <EditableIngredient key={ingredients[ingredient].id} ing={ingredients[ingredient]} index={i}></EditableIngredient>)}
                   {provided.placeholder}
                 </Box>
               )}
