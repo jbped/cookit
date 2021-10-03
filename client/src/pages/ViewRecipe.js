@@ -64,7 +64,7 @@ export default function ViewRecipe() {
   // console.log("params", params)
 
   const recipeId = params.id
-  console.log("Recipe ID", recipeId)
+  // console.log("Recipe ID", recipeId)
 
   const { loading, data, refetch } = useQuery(QUERY_RECIPE, {
     variables: { recipeId: recipeId }
@@ -76,7 +76,7 @@ export default function ViewRecipe() {
 
   const recipe = data.recipe || {};
   // console.log("this is the recipe returned", recipe)
-  console.log(data);
+  // console.log(data);
 
   // Destructuring of the keys in the recipe object received from the database
   const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = recipe;
@@ -87,12 +87,11 @@ export default function ViewRecipe() {
   let col1 = []
   let col2 = []
 
-  let recipeLength = Object.keys(recipe).length
-  console.log(recipeLength)
-  console.log(recipe.ingredients)
+  // let recipeLength = Object.keys(recipe).length
+  // console.log(recipeLength)
+  // console.log(recipe.ingredients)
 
-  if (!recipe.ingredients[0].ingredient) {
-    console.log('refetch')
+  if (!recipe.ingredients || !recipe.ingredients[0]?.ingredient) {
     refetch()
   }
 
@@ -204,6 +203,7 @@ export default function ViewRecipe() {
   const forkRecipe = () => {
 
   }
+
   const pushToGlobal = (recipeObj) => {
     dispatch(editThisRecipe(recipeObj));
   }
