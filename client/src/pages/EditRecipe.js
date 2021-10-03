@@ -55,7 +55,7 @@ export default function EditRecipePage() {
   !initRecipeForm.recipeTitle && history.push(`/recipe/${recipeId}`)
 
 
-  console.log(recipeForm)
+  // console.log(recipeForm)
   // console.log(recipeForm)
   
   const { recipeTitle, cookTime, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm?.editRecipe;
@@ -94,7 +94,7 @@ export default function EditRecipePage() {
 
     // console.log('softComplete', softComplete)
 
-  }, [recipeForm]);
+  }, [recipeForm.editRecipe]);
   
 
   const formCheck = e => {
@@ -104,7 +104,7 @@ export default function EditRecipePage() {
     }
 
     // All error statuses are pushed to batch object which is a spread of the editRecipe global state
-    let batch = {...recipeForm}
+    let batch = {...recipeForm.editRecipe}
 
     // Verify that each item has required elements
     batch.columns.ingredientsCol.itemIds.forEach(item => {
