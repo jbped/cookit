@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_RECIPE } from '../utils/queries'
@@ -7,7 +7,7 @@ import { SAVE_RECIPE } from '../utils/mutations'
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
-import { setEasyCookStep, toggleEasyCookView, editThisRecipe } from '../utils/globalSlice';
+import { setEasyCookStep, toggleEasyCookView, editThisRecipe, createEditRecipe } from '../utils/globalSlice';
 
 import Auth from '../utils/auth'
 
@@ -58,6 +58,8 @@ export default function ViewRecipe() {
   const dispatch = useDispatch();
   const [saveForkedRecipe] = useMutation(SAVE_RECIPE)
   const editRecipeGS = useSelector(state => state.global.editRecipe);
+
+  let history = useHistory()
 
 
   // Query for the recipe
@@ -180,24 +182,21 @@ export default function ViewRecipe() {
     let dirObj = {}
 
     ingredients.forEach(ingredient => {
-      ingObj = { ...ingObj, [ingredient.ingredientId]: { ...ingredient } }
+      ingObj = { ...ingObj, [ingredient.ingredientId]: { ...ingredient, errors:{ quantity: false, ingredient: false} } }
     })
 
     recipeObj.ingredients = ingObj
 
     directions.forEach(step => {
-      dirObj = { ...dirObj, [step.stepId]: { ...step } }
+      dirObj = { ...dirObj, [step.stepId]: { ...step, errors: { stepText: false } } }
     })
 
     recipeObj.directions = dirObj
-
+    console.log(recipeObj)
     pushToGlobal(recipeObj);
+    // console.log('editRecipeGS', editRecipeGS)
 
-    // dispatch(editRecipe(recipeObj))
-
-    console.log("editRecipe global state", editRecipeGS);
-
-    window.location.assign(`${recipeId}/edit`)
+    history.push(`${recipeId}/edit`)
 
   }
 
@@ -215,7 +214,8 @@ export default function ViewRecipe() {
   }
 
   const pushToGlobal = (recipeObj) => {
-    dispatch(editThisRecipe(recipeObj));
+    // console.log(recipeObj)
+    dispatch(createEditRecipe(recipeObj));
   }
 
   // const profile = Auth.getProfile();

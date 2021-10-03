@@ -17,7 +17,7 @@ import {
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
 export default function EditableStep({ step, index }) {
-  const state = useSelector(state => state.global.editThisRecipe)
+  const state = useSelector(state => state.global.editRecipe)
   const dispatch = useDispatch();
 
   const { directions } = state;
