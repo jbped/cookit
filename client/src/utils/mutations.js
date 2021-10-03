@@ -83,8 +83,8 @@ export const ADD_RECIPE = gql`
 `;
 
 export const SAVE_RECIPE = gql`
-    mutation saveRecipe($_id: ID) {
-        saveRecipe(_id: $_id) {
+    mutation saveRecipe($recipeId: ID) {
+        saveRecipe(recipeId: $recipeId) {
             _id
         }
     }

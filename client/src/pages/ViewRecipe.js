@@ -1,8 +1,9 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_RECIPE } from '../utils/queries'
+import { SAVE_RECIPE } from '../utils/mutations'
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
@@ -55,7 +56,7 @@ export default function ViewRecipe() {
   const easyCookStep = useSelector(state => state.global.easyCookStep);
   const easyCookView = useSelector(state => state.global.easyCookView);
   const dispatch = useDispatch();
-
+  const [saveForkedRecipe] = useMutation(SAVE_RECIPE)
   const editRecipeGS = useSelector(state => state.global.editRecipe);
 
 
@@ -200,8 +201,17 @@ export default function ViewRecipe() {
 
   }
 
-  const forkRecipe = () => {
+  const forkRecipe = async () => {
+    console.log('forked recipe')
+    try{
+      const { data } = await saveForkedRecipe({
+        variables: {recipeId}
+      });
 
+      console.log(data)
+    } catch (e) {
+      console.error('New Recipe Error: ', e)
+    }
   }
 
   const pushToGlobal = (recipeObj) => {
