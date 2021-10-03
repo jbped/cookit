@@ -53,9 +53,13 @@ const resolvers = {
         },
 
         //Recipe queries
-        recipes: async () => {
-            return Recipe.find({ isPublic: true })
+        recipes: async (parent, args, { user: { username } }) => {
+            const recipes = await Recipe.find({ isPublic: true, forked: false })
                 .select('_id recipeTitle creator cookTime servings createdAt');
+                
+            const filteredRecipes = recipes.filter(recipe => recipe.creator != username && recipe);
+
+            return filteredRecipes;
         },
 
         recipesShort: async (parent, args, { user: { username } }) => {
