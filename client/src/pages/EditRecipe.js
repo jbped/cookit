@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { editThisRecipe} from '../utils/globalSlice';
 import { initialState as initGlobalState } from '../utils/globalSlice'
 
+import Auth from '../utils/auth'
+
 // MUI Components....
 import {
   Box,
@@ -52,18 +54,24 @@ export default function EditRecipePage() {
   const initRecipeForm = {...recipeForm.editRecipe}
   const [editRecipeMutation] = useMutation(EDIT_RECIPE)
   const [softComplete, setSoftComplete] = useState(false)
+
+  // If there is no information for the edit recipe redirect user to the view page
   !initRecipeForm.recipeTitle && history.push(`/recipe/${recipeId}`)
-
-
+  
   // console.log(recipeForm)
   // console.log(recipeForm)
   
-  const { recipeTitle, cookTime, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm?.editRecipe;
+  const { recipeTitle, cookTime, forked, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm?.editRecipe;
   
+  const loggedIn = Auth.loggedIn()
+  const profile = loggedIn ? Auth.getProfile() : null
+  const loggedInCreator = profile ? profile.data.username === recipeForm.editRecipe.creator : false
+
+  // If user is not the creator redirect them to the recipe view page.
+  (!loggedInCreator || (forked && loggedIn)) && history.push(`/recipe/${recipeId}`)
+
   // Runs every time recipeForm state updates
   useEffect(() => {
-
-    console.log('edited recipe', recipeForm.editRecipe);
 
     // Booleans that are updated if minimum items are provided. This is a soft check, hard check will come when user subs form.
     const softChecks = {
@@ -212,7 +220,7 @@ export default function EditRecipePage() {
       ingredientsOrder: ingredientsCol.itemIds,
       directionsOrder: directionsCol.itemIds,
     }
-    console.log('editRecipeObj', editRecipeObj)
+    // console.log('editRecipeObj', editRecipeObj)
 
     let ingredientsArr = []
     let directionsArr = []
@@ -244,6 +252,7 @@ export default function EditRecipePage() {
     editRecipeObj.directions = directionsArr
     // console.log('recipe edited', formCleared)
 
+    // console.log(editRecipeObj)
     
     try{
       const { data } = await editRecipeMutation({
@@ -253,9 +262,11 @@ export default function EditRecipePage() {
         }
       });
 
-      // console.log(data.editRecipe._id)
+      // console.log('data', data)
       data && dispatch(editThisRecipe(initGlobalState.editRecipe))
-      history.push(`/recipe/${data.editRecipe._id}`)
+      // history.push(`/recipe/${data.editRecipe._id}`)
+      // history.push(`/my-kit`)
+      // history.goBack()
     } catch (e) {
       console.error('Edit Recipe Error: ', e)
     }

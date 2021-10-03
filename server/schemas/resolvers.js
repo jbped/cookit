@@ -461,12 +461,14 @@ const resolvers = {
                     )
                 }));
 
-                await Promise.all(oldRecipe.cookware.map(async ware => {
-                    await Cookware.findOneAndDelete(
-                        { _id: ware },
-                        { new: true }
-                    )
-                }));
+                if (oldRecipe.cookware) {
+                    await Promise.all(oldRecipe.cookware.map(async ware => {
+                        await Cookware.findOneAndDelete(
+                            { _id: ware },
+                            { new: true }
+                        )
+                    }));
+                }
 
                 const newRecipe = await Recipe.findOneAndReplace(
                     { _id: recipeId },
@@ -492,14 +494,16 @@ const resolvers = {
                     );
                 }));
 
-                await Promise.all(cookware.map(async ware => {
-                    const cookware = await Cookware.create(ware);
-                    await Recipe.findByIdAndUpdate(
-                        newRecipe._id,
-                        { $push: { cookware: cookware._id } },
-                        { new: true }
-                    );
-                }));
+                if(cookware) {
+                    await Promise.all(cookware.map(async ware => {
+                        const cookware = await Cookware.create(ware);
+                        await Recipe.findByIdAndUpdate(
+                            newRecipe._id,
+                            { $push: { cookware: cookware._id } },
+                            { new: true }
+                        );
+                    }));
+                }
 
                 return newRecipe;
             }
