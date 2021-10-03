@@ -156,3 +156,12 @@ export const UPVOTE_RECIPE = gql`
         }
     }
 `;
+
+export const DELETE_UPVOTE_RECIPE = gql`
+    mutation deleteUpvoteRecipe($recipeId: ID!) {
+        deleteUpvoteRecipe(recipeId: $recipeId) {
+            _id,
+            username
+        }
+    }
+`;

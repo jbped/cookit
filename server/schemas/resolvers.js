@@ -207,12 +207,12 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in!');
         },
 
-        deleteUpvoteRecipe: async (parent, { _id, recipeId }, context) => {
+        deleteUpvoteRecipe: async (parent, { recipeId }, context) => {
             if (context.user) {
-                const upvote = await Upvote.findOneAndDelete(_id);
+                const upvote = await Upvote.findOneAndDelete({ username: context.user.username });
                 await Recipe.findByIdAndUpdate(
                     recipeId,
-                    { $pull: { upvotes: _id } },
+                    { $pull: { upvotes: upvote._id } },
                     { new: true }
                 );
 

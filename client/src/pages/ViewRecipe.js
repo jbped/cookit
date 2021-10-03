@@ -80,7 +80,7 @@ export default function ViewRecipe() {
   // console.log(data);
 
   // Destructuring of the keys in the recipe object received from the database
-  const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = recipe;
+  const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder, upvotes } = recipe;
 
   let orderedIngredients = [];
   let orderedDirections = []
@@ -267,7 +267,7 @@ export default function ViewRecipe() {
       >
         <Box sx={{ display: "flex", alignItems: 'center' }}>
           {(loggedIn && !loggedInCreator) && (
-            <UpvoteHeart />
+            <UpvoteHeart recipeId={recipeId} upvotes={upvotes}></UpvoteHeart>
           )}
           <Typography variant="h4" fontWeight="bold" color="primary">{recipeTitle}</Typography>
           {loggedIn && (

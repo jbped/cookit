@@ -94,7 +94,7 @@ const typeDefs = gql`
         #Upvote-
             #UpvoteRecipe
         upvoteRecipe(recipeId: ID!, username: String): Upvote
-        deleteUpvoteRecipe(_id: ID! recipeId: ID!): Upvote
+        deleteUpvoteRecipe(recipeId: ID!): Upvote
             #UpvoteComment
         upvoteComment(commentId: ID!, username: String): Upvote
         deleteUpvoteComment(_id: ID!, commentId: ID!): Upvote
