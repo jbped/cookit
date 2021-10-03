@@ -64,12 +64,13 @@ const resolvers = {
         },
 
         recipe: async (parent, { _id }) => {
-            return await Recipe.findOne({_id})
+            const recipe = await Recipe.findOne({_id})
                 .populate('directions')
                 .populate('ingredients')
                 .populate('cookware')
                 .populate('comments')
                 .populate('upvotes');
+            return recipe;
         },
 
         userUpvotedRecipes: async (parent, args, context) => {

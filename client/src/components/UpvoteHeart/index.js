@@ -14,11 +14,15 @@ export default function UpvoteHeart({ recipeId, upvotes }) {
     const [deleteUpvoteRecipe] = useMutation(DELETE_UPVOTE_RECIPE);
     const { data: { username } } = Auth.getProfile();
 
-    let defaultHeart = upvotes.map(upvote => {
-        if (upvotes.username === username) {
-            return true;
-        }
-    })
+    console.log(upvotes);
+    let defaultHeart;
+    if (upvotes) {
+        const users = upvotes.map(upvote => upvote.username);
+        (users.includes(username)) ? defaultHeart = true : defaultHeart = false;
+    } else {
+        defaultHeart = false;
+    }
+
     const [upvote, setUpvote] = useState(defaultHeart ? true : false);
 
     const handleUpvote = async () => {
