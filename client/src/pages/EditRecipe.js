@@ -63,6 +63,8 @@ export default function EditRecipePage() {
   // Runs every time recipeForm state updates
   useEffect(() => {
 
+    console.log('edited recipe', recipeForm.editRecipe);
+
     // Booleans that are updated if minimum items are provided. This is a soft check, hard check will come when user subs form.
     const softChecks = {
       recipeTitle: false,

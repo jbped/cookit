@@ -42,7 +42,16 @@ const DeleteDiv = styled.div`
 export default function IngredientsSection() {
   const recipeForm = useSelector(state => state.global.editRecipe)
   const dispatch = useDispatch();
-  const [newIngredient, setNewIngredient] = useState(1);
+
+  let numArray = []
+  Object.keys(recipeForm.ingredients).forEach(key => {
+  let ingId = parseInt(key.split('ingredient-').pop())
+  numArray.push(ingId)
+  numArray = numArray.sort((a, b) => a - b)
+  })
+  const startNumber = numArray.pop() + 1
+  
+  const [newIngredient, setNewIngredient] = useState(startNumber);
 
   const { columns, ingredients } = recipeForm;
   const { ingredientsCol, deleteIngCol, deleteIngCol: { deletedIds }, ingredientsCol: { itemIds } } = columns;

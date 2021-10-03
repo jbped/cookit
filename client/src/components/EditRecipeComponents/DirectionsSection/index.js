@@ -36,10 +36,21 @@ const DeleteDiv = styled.div`
 export default function DirectionsSection() {
   const recipeForm = useSelector(state => state.global.editRecipe)
   const dispatch = useDispatch();
-  const [newStep, setNewStep] = useState(1);
 
   const { columns, directions } = recipeForm
   const { directionsCol, deleteDirCol, deleteDirCol: { deletedIds }, directionsCol: { itemIds } } = columns;
+
+
+  let numArray = []
+  Object.keys(directions).forEach(key => {
+  let ingId = parseInt(key.split('step-').pop())
+  numArray.push(ingId)
+  numArray = numArray.sort((a, b) => a - b)
+  })
+  
+  const startNumber = numArray.pop() + 1
+
+  const [newStep, setNewStep] = useState(startNumber);
 
   // Logic for when an ingredient was moved
   const onDragEnd = result => {
