@@ -39,7 +39,43 @@ export const initialState = {
     directionErrors: [],
     formCleared: false,
   },
-  editRecipe: {},
+  editRecipe: {
+    recipeTitle: 'New Recipe',
+    type: [],
+    cookTime: '',
+    servings: 1,
+    isPublic: 'private',
+    recipeDescription: '',
+    ingredients: {},
+    directions: {},
+    columns: {
+      ingredientsCol: {
+        id: 'ingredientsCol',
+        title: 'Ingredients',
+        itemIds: [] // ingredientsOrder in DB
+      },
+      directionsCol: {
+        id: 'directionsCol',
+        title: 'Directions',
+        itemIds: [] //directionsOrder in DB
+      },
+      deleteIngCol: {
+        id: 'deleteIngCol',
+        title: 'Delete',
+        itemIds: [],
+        deletedIds: []
+      },
+      deleteDirCol: {
+        id: 'deleteDirCol',
+        title: 'Delete',
+        itemIds: [],
+        deletedIds: []
+      }
+    },
+    ingredientErrors: [],
+    directionErrors: [],
+    formCleared: false,
+  },
   currentRecipe: {}, // object that contains the currentRecipes information from db
   easyCookView: false, //show the fullscreen step by step view USE MUI MOBILE STEPPER FOR DISPLAY
   easyCookStep: 0, // last step visited by user. Needs to be cleared upon leaving the main recipe page

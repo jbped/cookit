@@ -20,6 +20,7 @@ export default function EditableStep({ step, index }) {
   const state = useSelector(state => state.global.editRecipe)
   const dispatch = useDispatch();
 
+
   const { directions } = state;
   const dirObj = { ...directions[step.stepId] }
   // console.log('dirObj', dirObj)

@@ -49,10 +49,10 @@ export default function EditRecipePage() {
   const history = useHistory();
   const params = useParams()
   const recipeId = params.id
-  const recipeLength = Object.keys(recipeForm.editRecipe).length
+  const initRecipeForm = {...recipeForm.editRecipe}
   const [editRecipeMutation] = useMutation(EDIT_RECIPE)
   const [softComplete, setSoftComplete] = useState(false)
-  !recipeLength && history.push(`/recipe/${recipeId}`)
+  !initRecipeForm.recipeName && history.push(`/recipe/${recipeId}`)
 
 
   console.log(recipeForm)
@@ -281,7 +281,8 @@ export default function EditRecipePage() {
     <Box component="form" onSubmit={formCheck}>
       <Box px={{ md: 5, xl: 20 }}>
         <EditRecipeTitle />
-        <ConfirmLeavePage completed={false} />
+        {initRecipeForm.recipeName &&
+        <ConfirmLeavePage />}
       </Box>
       <Grid container spacing={{ md: 5, xl: 10 }} px={{ md: 5, xl: 20 }} >
 
