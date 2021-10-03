@@ -101,8 +101,8 @@ export const DELETE_RECIPE = gql`
 `;
 
 export const EDIT_RECIPE = gql`
-    mutation editRecipe($recipeId: ID!, $isPublic: Boolean, $recipeTitle: String, $recipeDescription: String, $type: String!, $season: String!, $difficulty: Int!, $servings: Int!, $cookTime: String!, $directions: [directionInput], $ingredients: [ingredientInput], $cookware: [cookwareInput], $directionsOrder: [String], $ingredientsOrder: [String]) {
-        editRecipe(recipeId: $recipeId, isPublic: $isPublic, recipeTitle: $recipeTitle, recipeDescription: $recipeDescription, type: $type, season: $season, difficulty: $difficulty, servings: $servings, cookTime: $cookTime, directions: $directions, ingredients: $ingredients, cookware: $cookware, directionsOrder: $directionsOrder, ingredientsOrder: $ingredientsOrder) {
+    mutation editRecipe($recipeId: ID!, $isPublic: Boolean!, $recipeTitle: String!, $recipeDescription: String!,  $servings: Int!, $cookTime: String!, $directions: [directionInput], $ingredients: [ingredientInput],  $directionsOrder: [String], $ingredientsOrder: [String]) {
+        editRecipe(recipeId: $recipeId, isPublic: $isPublic, recipeTitle: $recipeTitle, recipeDescription: $recipeDescription, servings: $servings, cookTime: $cookTime, directions: $directions, ingredients: $ingredients, directionsOrder: $directionsOrder, ingredientsOrder: $ingredientsOrder) {
             _id
             isPublic,
             creator,

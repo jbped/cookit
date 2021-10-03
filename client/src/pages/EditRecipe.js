@@ -242,14 +242,18 @@ export default function EditRecipePage() {
     editRecipeObj.directions = directionsArr
     // console.log('recipe edited', formCleared)
 
+    
     try{
       const { data } = await editRecipeMutation({
-        variables: {...editRecipeObj}
+        variables: {
+          recipeId,
+          ...editRecipeObj
+        }
       });
 
       // console.log(data.editRecipe._id)
       data && dispatch(editThisRecipe(initGlobalState.editRecipe))
-      window.location.assign(`/recipe/${data.editRecipe._id}`)
+      history.push(`/recipe/${data.editRecipe._id}`)
     } catch (e) {
       console.error('Edit Recipe Error: ', e)
     }
