@@ -46,7 +46,7 @@ export default function MyKit() {
   const { loading, data } = useQuery(QUERY_ME);
 
   if (!Auth.loggedIn()) {
-    return <Redirect to="/feed" />
+    return <Redirect to="/discover" />
   }
 
   const handleChange = (event, newValue) => {

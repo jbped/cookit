@@ -1,7 +1,7 @@
+require('dotenv').config()
 const jwt = require('jsonwebtoken');
 
-const secret = 'CooKit-Secret';
-
+const secret = process.env.JWT_SECRET;
 
 module.exports = {
     authMiddleware: function ({ req }) {

@@ -12,9 +12,15 @@ export default function AlertDialog() {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = (e) => {
+    const option = e.target.value
+    console.log(option)
     setOpen(false);
   };
+
+  const deleteRecipe = () => {
+
+  }
 
   return (
     <div>
@@ -25,12 +31,11 @@ export default function AlertDialog() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
+          {"Delete this recipe?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
+            Would you like to delete this recipe? This cannot be undone
           </DialogContentText>
         </DialogContent>
         <DialogActions>

@@ -40,7 +40,7 @@ export const initialState = {
     formCleared: false,
   },
   editRecipe: {
-    recipeTitle: 'New Recipe',
+    recipeTitle: '',
     type: [],
     cookTime: '',
     servings: 1,
