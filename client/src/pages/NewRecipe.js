@@ -191,7 +191,7 @@ export default function NewRecipePage() {
       console.log('Errors found, cannot create a new recipe')
       return;
     } else {
-      // console.log('createNewRecipe')
+      // console.log('createNewRecipe')      
       dispatch(newRecipe({formCleared: true}))
       createNewRecipe()
     }

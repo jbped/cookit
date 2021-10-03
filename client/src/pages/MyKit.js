@@ -13,7 +13,8 @@ import { QUERY_ME } from '../utils/queries';
 import { Redirect } from 'react-router-dom';
 
 // Auth
-import Auth from '../utils/auth.js';
+import Auth from '../utils/auth';
+import { idbPromise } from '../utils/helpers';
 
 // Import MUI components
 import {
@@ -68,6 +69,18 @@ export default function MyKit() {
   const recipes = Object.keys(myData).length > 0 ? [...myData.recipeKit] : [];
   const forkedRecipes = Object.keys(myData).length > 0 ? [...myData.savedRecipes] : [];
   // console.log('recipes', recipes);
+
+  if (recipes.length) {
+    recipes.forEach((recipe) => {
+      idbPromise('recipes', 'put', recipe)
+    })
+  }
+
+  if (forkedRecipes.length) {
+    forkedRecipes.forEach((forkedRecipe) => {
+      idbPromise('forkedRecipes', 'put', forkedRecipes);
+    })
+  }
 
   return (
     <Box mx={{ xs: 0, md: 5, xl: 20 }}>

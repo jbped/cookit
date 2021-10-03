@@ -8,7 +8,8 @@ export function idbPromise(kitName, method, object) {
             const db = request.result;
 
             db.createObjectStore('recipes', { keyPath: '_id' });
-            db.createObjectStore('ingredients', { keyPath: '_id' });
+            db.createObjectStore('forkedRecipes', { keyPath: '_id' });
+            db.createObjectStore('recipeFeed', { keyPath: '_id' });
         };
 
         request.onerror = function (e) {
