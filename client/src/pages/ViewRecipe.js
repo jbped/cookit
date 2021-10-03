@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory} from 'react-router-dom';
 
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_RECIPE } from '../utils/queries'

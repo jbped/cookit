@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import { Redirect } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom'
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
@@ -44,19 +44,25 @@ function HideOnScroll({ children }) {
 }
 
 export default function EditRecipePage() {
-  const recipeForm = useSelector(state => state.global.editRecipe)
+  const recipeForm = useSelector(state => state.global)
   const dispatch = useDispatch();
-
-  const { recipeTitle, cookTime, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm;
+  const history = useHistory();
+  const params = useParams()
+  const recipeId = params.id
+  const recipeLength = Object.keys(recipeForm.editRecipe).length
   const [editRecipeMutation] = useMutation(EDIT_RECIPE)
+  const [softComplete, setSoftComplete] = useState(false)
+  !recipeLength && history.push(`/recipe/${recipeId}`)
+
+
   console.log(recipeForm)
   // console.log(recipeForm)
-
-  // If true display the save button
-  const [softComplete, setSoftComplete] = useState(false)
-
+  
+  const { recipeTitle, cookTime, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm?.editRecipe;
+  
   // Runs every time recipeForm state updates
   useEffect(() => {
+
     // Booleans that are updated if minimum items are provided. This is a soft check, hard check will come when user subs form.
     const softChecks = {
       recipeTitle: false,
@@ -67,7 +73,6 @@ export default function EditRecipePage() {
       ingredientsOrder: false,
       directionsOrder: false
     }
-
     // Get ingredients and directions object lengths
     let ingredientsLength = Object.keys(ingredients).length
     let directionsLength = Object.keys(directions).length
@@ -89,7 +94,8 @@ export default function EditRecipePage() {
 
     // console.log('softComplete', softComplete)
 
-  }, [recipeForm, cookTime.length, directions, directionsCol.itemIds.length, ingredients, ingredientsCol.itemIds.length, recipeTitle, recipeDescription.length, softComplete]);
+  }, [recipeForm]);
+  
 
   const formCheck = e => {
     e.preventDefault();
