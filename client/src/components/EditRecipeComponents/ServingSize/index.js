@@ -2,7 +2,7 @@ import React from 'react';
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
-import { editRecipe } from '../../../utils/globalSlice';
+import { editThisRecipe } from '../../../utils/globalSlice';
 
 // MUI Components....
 import {
@@ -24,18 +24,18 @@ export default function ServingSize() {
   const dispatch = useDispatch();
 
   const handleChange = e => {
-    dispatch(editRecipe({ [e.target.name]: e.target.value }))
+    dispatch(editThisRecipe({ [e.target.name]: e.target.value }))
     // console.log(recipeForm)
   };
 
   const handleCounter = e => {
     if (e.target.innerText === '+') {
       let count = recipeForm.servings + 1
-      dispatch(editRecipe({ servings: count }))
+      dispatch(editThisRecipe({ servings: count }))
     }
     else if (recipeForm.servings > 1) {
       let count = recipeForm.servings - 1
-      dispatch(editRecipe({ servings: count }))
+      dispatch(editThisRecipe({ servings: count }))
     }
     // console.log(recipeForm)
   };

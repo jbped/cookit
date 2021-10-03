@@ -2,7 +2,7 @@ import React from 'react'
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
-import { editRecipe } from '../../../utils/globalSlice';
+import { editThisRecipe } from '../../../utils/globalSlice';
 
 // MUI Components....
 import {
@@ -69,7 +69,7 @@ export default function RecipeTime() {
   ]
 
   const handleChange = e => {
-    dispatch(editRecipe({ [e.target.name]: e.target.value }))
+    dispatch(editThisRecipe({ [e.target.name]: e.target.value }))
     // console.log(recipeForm)
   }
 

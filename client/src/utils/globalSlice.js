@@ -39,43 +39,7 @@ export const initialState = {
     directionErrors: [],
     formCleared: false,
   },
-  editRecipe: {
-    recipeTitle: '',
-    type: [],
-    cookTime: '',
-    servings: 1,
-    isPublic: '',
-    recipeDescription: '',
-    ingredients: {},
-    directions: {},
-    columns: {
-      ingredientsCol: {
-        id: '',
-        title: '',
-        itemIds: [] // ingredientsOrder in DB
-      },
-      directionsCol: {
-        id: '',
-        title: '',
-        itemIds: [] //directionsOrder in DB
-      },
-      deleteIngCol: {
-        id: '',
-        title: '',
-        itemIds: [],
-        deletedIds: []
-      },
-      deleteDirCol: {
-        id: '',
-        title: '',
-        itemIds: [],
-        deletedIds: []
-      }
-    },
-    ingredientErrors: [],
-    directionErrors: [],
-    formCleared: false,
-  },
+  editRecipe: {},
   currentRecipe: {}, // object that contains the currentRecipes information from db
   easyCookView: false, //show the fullscreen step by step view USE MUI MOBILE STEPPER FOR DISPLAY
   easyCookStep: 0, // last step visited by user. Needs to be cleared upon leaving the main recipe page
@@ -99,12 +63,15 @@ export const globalSlice = createSlice({
         })
       // state.newRecipe = action.payload
     },
-    editRecipe: (state, action) => {
+    editThisRecipe: (state, action) => {
       Object.keys(action.payload)
         .forEach(function eachKey(key) {
           state.editRecipe[key] = action.payload[key]
         })
       // state.editRecipe = action.payload
+    },
+    createEditRecipe: (state, action) => {
+      state.editRecipe = action.payload;
     },
     currentRecipe: (state, action) => {
       state.currentRecipe = action.payload;
@@ -131,7 +98,9 @@ const { actions, reducer } = globalSlice
 
 export const { 
   toggleDarkMode, 
-  newRecipe, 
+  newRecipe,
+  editThisRecipe,
+  createEditRecipe,
   currentRecipe, 
   toggleEasyCookView, 
   setEasyCookStep, 

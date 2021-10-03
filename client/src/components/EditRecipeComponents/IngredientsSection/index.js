@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
-import { editRecipe } from '../../../utils/globalSlice';
+import { editThisRecipe } from '../../../utils/globalSlice';
 
 // MUI Components....
 import {
@@ -97,7 +97,7 @@ export default function IngredientsSection() {
         }
       }
 
-      dispatch(editRecipe(newState))
+      dispatch(editThisRecipe(newState))
       // console.log(recipeForm.columns)
       return;
     }
@@ -124,7 +124,7 @@ export default function IngredientsSection() {
         [newFinish.id]: newFinish
       }
     }
-    dispatch(editRecipe(newState))
+    dispatch(editThisRecipe(newState))
   };
 
   // Handler for cancelling delete for selected items (returns them to the ingredients column)
@@ -152,7 +152,7 @@ export default function IngredientsSection() {
     }
 
     // update global state
-    dispatch(editRecipe(newState))
+    dispatch(editThisRecipe(newState))
   };
 
   // Delete ingredients in the Delete Column
@@ -189,11 +189,11 @@ export default function IngredientsSection() {
     // }
     
     // Push to globalState
-    await dispatch(editRecipe(newColState));
+    await dispatch(editThisRecipe(newColState));
     // console.log('newColState', columns);
 
 
-    // await dispatch(editRecipe(newIngState)); FOR SOME REASON ENABLING THIS BREAKS SORTING?!?!?!?!
+    // await dispatch(editThisRecipe(newIngState)); FOR SOME REASON ENABLING THIS BREAKS SORTING?!?!?!?!
     // console.log('newIngState', ingredients);
   }
 
@@ -204,7 +204,7 @@ export default function IngredientsSection() {
 
     // update newRecipe in global state with the ingredient in the ingredients obj and 
     const newIngIdArr = [...itemIds, ingredientId]
-    dispatch(editRecipe({
+    dispatch(editThisRecipe({
       ingredients: {
         ...ingredients,
         [ingredientId]: {

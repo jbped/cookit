@@ -8,7 +8,7 @@ import theme from './theme.js'
 // React Router Pages....
 import NewRecipePage from './pages/NewRecipe';
 import ViewRecipe from './pages/ViewRecipe';
-import EditRecipe from './pages/ViewRecipe';
+import EditRecipe from './pages/EditRecipe';
 import MyKit from './pages/MyKit';
 import LoginSignup from './pages/LoginSignup';
 import RecipeFeed from './pages/RecipeFeed'

@@ -6,7 +6,7 @@ import { QUERY_RECIPE } from '../utils/queries'
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
-import { setEasyCookStep, toggleEasyCookView } from '../utils/globalSlice';
+import { setEasyCookStep, toggleEasyCookView, editThisRecipe } from '../utils/globalSlice';
 
 import Auth from '../utils/auth'
 
@@ -56,12 +56,15 @@ export default function ViewRecipe() {
   const easyCookView = useSelector(state => state.global.easyCookView);
   const dispatch = useDispatch();
 
+  const editRecipeGS = useSelector(state => state.global.editRecipe);
+
+
   // Query for the recipe
   const params = useParams();
   // console.log("params", params)
 
   const recipeId = params.id
-  // console.log("Recipe ID", recipeId)
+  console.log("Recipe ID", recipeId)
 
   const { loading, data, refetch } = useQuery(QUERY_RECIPE, {
     variables: { recipeId: recipeId }
@@ -69,130 +72,200 @@ export default function ViewRecipe() {
 
   if (loading) {
     return <Loader></Loader>
-  } else {
+  }
 
-    const recipe = data.recipe || {};
-    // console.log("this is the recipe returned", recipe)
-    console.log(data);
-  
-    // Destructuring of the keys in the recipe object received from the database
-    const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = recipe;
-  
-    let orderedIngredients = [];
-    let orderedDirections = []
-    let editedDateArr = []
-    let col1 = []
-    let col2 = []
-  
-    let recipeLength = Object.keys(recipe).length
-    console.log(recipeLength)
-    console.log(recipe.ingredients)
+  const recipe = data.recipe || {};
+  // console.log("this is the recipe returned", recipe)
+  console.log(data);
 
-    if (!recipe.ingredients[0].ingredient) {
-      console.log('refetch')
-      refetch()
-    }
-  
-    if (!loading && data.recipe !== undefined) {
-      // Splits the createdAt string into to indexes DD/MM/YYYY and time
-      editedDateArr = createdAt.split(' at ');
-  
-      // Create new array of ingredients that is ordered appropriately by the ingredientsOrder
-  
-      ingredientsOrder.forEach(id => {
-        ingredients.filter(ingredient => {
-          if (ingredient.ingredientId === id) {
-  
-            // Base ingredient information 'quantity measurement ingredientName' or 'quantity ingredientNate'
-            const quantityText = `${ingredient.quantity} ${(ingredient.measurement && !ingredient.measurement !== 'n/a') ? ingredient.measurement : ''} ${ingredient.ingredientName}`
-            // Preparation notes 'preparationNotes' or ''
-            const prepNotesText = ingredient.preparationNotes ? `${ingredient.preparationNotes}` : ''
-            orderedIngredients.push({ ...ingredient, quantityText, prepNotesText })
-            return orderedIngredients;
-          }
+  // Destructuring of the keys in the recipe object received from the database
+  const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder } = recipe;
+
+  let orderedIngredients = [];
+  let orderedDirections = []
+  let editedDateArr = []
+  let col1 = []
+  let col2 = []
+
+  let recipeLength = Object.keys(recipe).length
+  console.log(recipeLength)
+  console.log(recipe.ingredients)
+
+  if (!recipe.ingredients[0].ingredient) {
+    console.log('refetch')
+    refetch()
+  }
+
+  if (!loading && data.recipe !== undefined) {
+    // Splits the createdAt string into to indexes DD/MM/YYYY and time
+    editedDateArr = createdAt.split(' at ');
+
+    // Create new array of ingredients that is ordered appropriately by the ingredientsOrder
+
+    ingredientsOrder.forEach(id => {
+      ingredients.filter(ingredient => {
+        if (ingredient.ingredientId === id) {
+
+          // Base ingredient information 'quantity measurement ingredientName' or 'quantity ingredientNate'
+          const quantityText = `${ingredient.quantity} ${(ingredient.measurement && !ingredient.measurement !== 'n/a') ? ingredient.measurement : ''} ${ingredient.ingredientName}`
+          // Preparation notes 'preparationNotes' or ''
+          const prepNotesText = ingredient.preparationNotes ? `${ingredient.preparationNotes}` : ''
+          orderedIngredients.push({ ...ingredient, quantityText, prepNotesText })
           return orderedIngredients;
-        })
+        }
+        return orderedIngredients;
       })
-  
-  
-      // Convert directions array to an object organized by the directionsOrder
-      directionsOrder.forEach(id => {
-        directions.filter(direction => {
-          if (direction.stepId === id) {
-            orderedDirections.push({ ...direction })
-            return orderedDirections;
-          }
+    })
+
+
+    // Convert directions array to an object organized by the directionsOrder
+    directionsOrder.forEach(id => {
+      directions.filter(direction => {
+        if (direction.stepId === id) {
+          orderedDirections.push({ ...direction })
           return orderedDirections;
-        })
-      });
-  
-      const mid = Math.ceil(orderedIngredients.length / 2)
-      col1 = orderedIngredients.slice(0, mid)
-      col2 = orderedIngredients.slice(mid, orderedIngredients.length)
+        }
+        return orderedDirections;
+      })
+      return orderedDirections;
+    })
+
+
+    const mid = Math.ceil(orderedIngredients.length / 2)
+    col1 = orderedIngredients.slice(0, mid)
+    col2 = orderedIngredients.slice(mid, orderedIngredients.length)
+  }
+
+  const editRecipe = () => {
+
+    const convertedPublic = isPublic ? 'public' : 'private'
+
+    let recipeObj = {
+      recipeTitle,
+      type: [],
+      cookTime,
+      servings,
+      isPublic: convertedPublic,
+      recipeDescription,
+      columns: {
+        ingredientsCol: {
+          id: 'ingredientsCol',
+          title: 'Ingredients',
+          itemIds: ingredientsOrder // ingredientsOrder in DB
+        },
+        directionsCol: {
+          id: 'directionsCol',
+          title: 'Directions',
+          itemIds: directionsOrder //directionsOrder in DB
+        },
+        deleteIngCol: {
+          id: 'deleteIngCol',
+          title: 'Delete',
+          itemIds: [],
+          deletedIds: []
+        },
+        deleteDirCol: {
+          id: 'deleteDirCol',
+          title: 'Delete',
+          itemIds: [],
+          deletedIds: []
+        }
+      },
+      ingredientErrors: [],
+      directionErrors: [],
+      formCleared: false,
     }
-  
-    const editRecipe = () => {
-      
-    }
-  
-    const forkRecipe = () => {
-  
-    }
-  
-    // const profile = Auth.getProfile();
-    // const { data: { username } } = profile
-  
-    const loggedIn = Auth.loggedIn()
-    const profile = loggedIn ? Auth.getProfile() : null
-    const loggedInCreator = profile ? profile.data.username === creator : false
-  
-    // Function called when a step button is pressed. Opens easy view to that desired step
-    const openStep = e => {
-      const selectedStep = parseInt(e.target.dataset.stepIndex)
-      dispatch(setEasyCookStep(selectedStep))
-      toggleEasyView()
-    }
-  
-    // Toggled easy view open or closed
-    const toggleEasyView = e => {
-      dispatch(toggleEasyCookView())
-    }
-  
-    // Progresses Easy View to next step
-    const handleNext = () => {
-      dispatch(setEasyCookStep(easyCookStep + 1));
-    };
-    // Regresses Easy View to previous step
-    const handleBack = () => {
-      dispatch(setEasyCookStep(easyCookStep - 1));
-    };
-  
-    if (loading) {
-      return <Loader></Loader>
-    }
-  
-    return (
-      <Box>
-        {/* Recipe Title */}
-        <Box
-          mx={{ xs: 0, md: 5, xl: 20 }}
-          sx={{
-            pt: 2,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: 'center',
-            marginTop: '.4rem',
-            borderBottom: 1,
-            borderColor: 'divider',
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: 'center' }}>
-            <UpvoteHeart></UpvoteHeart>
-            <Typography variant="h4" fontWeight="bold" color="primary">{recipeTitle}</Typography>
+
+    let ingObj = {}
+    let dirObj = {}
+
+    ingredients.forEach(ingredient => {
+      ingObj = { ...ingObj, [ingredient.ingredientId]: { ...ingredient } }
+    })
+
+    recipeObj.ingredients = ingObj
+
+    directions.forEach(step => {
+      dirObj = { ...dirObj, [step.stepId]: { ...step } }
+    })
+
+    recipeObj.directions = dirObj
+
+    pushToGlobal(recipeObj);
+
+    // dispatch(editRecipe(recipeObj))
+
+    console.log("editRecipe global state", editRecipeGS);
+
+    window.location.assign(`${recipeId}/edit`)
+
+  }
+
+  const forkRecipe = () => {
+
+  }
+  const pushToGlobal = (recipeObj) => {
+    dispatch(editThisRecipe(recipeObj));
+  }
+
+  // const profile = Auth.getProfile();
+  // const { data: { username } } = profile
+
+  const loggedIn = Auth.loggedIn()
+  const profile = loggedIn ? Auth.getProfile() : null
+  const loggedInCreator = profile ? profile.data.username === creator : false
+
+  // Function called when a step button is pressed. Opens easy view to that desired step
+  const openStep = e => {
+    const selectedStep = parseInt(e.target.dataset.stepIndex)
+    dispatch(setEasyCookStep(selectedStep))
+    toggleEasyView()
+  }
+
+  // Toggled easy view open or closed
+  const toggleEasyView = e => {
+    dispatch(toggleEasyCookView())
+  }
+
+  // Progresses Easy View to next step
+  const handleNext = () => {
+    dispatch(setEasyCookStep(easyCookStep + 1));
+  };
+  // Regresses Easy View to previous step
+  const handleBack = () => {
+    dispatch(setEasyCookStep(easyCookStep - 1));
+  };
+
+  if (loading) {
+    return <Loader></Loader>
+  }
+
+  return (
+    <Box>
+      {/* Recipe Title */}
+      <Box
+        mx={{ xs: 0, md: 5, xl: 20 }}
+        sx={{
+          pt: 2,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: 'center',
+          marginTop: '.4rem',
+          borderBottom: 1,
+          borderColor: 'divider',
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: 'center' }}>
+          {(loggedIn && !loggedInCreator) && (
+            <UpvoteHeart />
+          )}
+          <Typography variant="h4" fontWeight="bold" color="primary">{recipeTitle}</Typography>
           {loggedIn && (
             <Box>
               {loggedInCreator ? (
-                <IconButton onClick={editRecipe} >
+                <IconButton
+                  onClick={editRecipe}
+                >
                   <MdEdit
                     size={25}
                     sx={{
@@ -210,17 +283,16 @@ export default function ViewRecipe() {
               )}
             </Box>
           )}
-          </Box>
-  
-  
-  
+
         </Box>
-  
+      </Box>
+      <Box>
+
         <Box ml={{ xs: 0, md: 5, xl: 20 }} sx={{ display: 'flex', alignItems: "center", }}>
           <Typography variant='subtitle1' mr={{ xs: 'auto', md: 2 }}>
-            {loggedInCreator ? 
-              `Created: ${editedDateArr[0][0] === '0' ? editedDateArr[0].slice(1) : editedDateArr[0]}` 
-              : 
+            {loggedInCreator ?
+              `Created: ${editedDateArr[0][0] === '0' ? editedDateArr[0].slice(1) : editedDateArr[0]}`
+              :
               `By: ${creator} - ${editedDateArr[0][0] === '0' ? editedDateArr[0].slice(1) : editedDateArr[0]}`
             }
           </Typography>
@@ -234,10 +306,10 @@ export default function ViewRecipe() {
             </Typography>
           )}
         </Box>
-  
+
         <Grid container spacing={{ md: 5, lg: 10 }} px={{ md: 5, xl: 20 }}>
           <Grid item xs={12} md={6}>
-  
+
             <Box
               sx={{
                 mt: 2,
@@ -257,7 +329,7 @@ export default function ViewRecipe() {
                 borderColor: 'backdrop.dark',
               }}
             >
-  
+
               {/* TIME */}
               <Box sx={{ display: 'flex', alignItems: "center" }}>
                 <MdAccessAlarm
@@ -267,24 +339,21 @@ export default function ViewRecipe() {
                   {cookTime}
                 </Typography>
               </Box>
-  
+
               {/* SERVING SIZE */}
               <Box sx={{ mt: 2, display: 'flex', alignItems: "center" }}>
                 <BsPeople
                   size={25}
                 />
-  
                 <Typography sx={{ ml: 1 }}>
                   {servings} {servings === 1 ? 'person' : 'people'}
                 </Typography>
-  
               </Box>
-  
+
             </Paper>
-  
+
           </Grid>
-  
-  
+
           <Grid item xs={12} md={6}>
             {/* Description */}
             <Box sx={{
@@ -307,9 +376,9 @@ export default function ViewRecipe() {
               <Typography>{recipeDescription}</Typography>
             </Paper>
           </Grid>
-  
+
         </Grid>
-  
+
         {/* Ingredients */}
         <Box px={{ md: 5, xl: 20 }}>
           <Box
@@ -332,7 +401,7 @@ export default function ViewRecipe() {
             }}
           >
             <Grid container spacing={{ md: 5, lg: 10 }}>
-  
+
               <Grid item xs={12} md={6}>
                 <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
                   {col1.map(ingredient => (
@@ -349,7 +418,7 @@ export default function ViewRecipe() {
                   )}
                 </List>
               </Grid>
-  
+
               <Grid item xs={12} md={6}>
                 <List sx={{ m: 0, p: 0, pt: 0, pb: 0 }}>
                   {col2.map(ingredient => (
@@ -366,12 +435,12 @@ export default function ViewRecipe() {
                   )}
                 </List>
               </Grid>
-  
+
             </Grid>
           </Paper>
         </Box>
-  
-  
+
+
         {/* Directions */}
         <Box px={{ md: 5, xl: 20 }} sx={{ my: 2 }}>
           <Box
@@ -475,6 +544,6 @@ export default function ViewRecipe() {
           </Box>
         </Dialog>
       </Box>
-    )
-  }
+    </Box>
+  )
 };
