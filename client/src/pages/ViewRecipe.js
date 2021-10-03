@@ -186,7 +186,7 @@ export default function ViewRecipe() {
         ...ingObj,
         [ingredient.ingredientId]: {
           ingredientId: ingredient.ingredientId,
-          quantity: ingredientQuantity,
+          quantity: ingredient.quantity,
           measurementTypeShort: ingredient.measurement,
           ingredient: ingredient.ingredientName,
           notes: ingredient.preparationNotes,
