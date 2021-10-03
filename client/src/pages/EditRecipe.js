@@ -281,7 +281,7 @@ export default function EditRecipePage() {
     <Box component="form" onSubmit={formCheck}>
       <Box px={{ md: 5, xl: 20 }}>
         <EditRecipeTitle />
-        {initRecipeForm.recipeName &&
+        {(initRecipeForm.recipeTitle && !recipeForm.editRecipe.formCleared) &&
         <ConfirmLeavePage />}
       </Box>
       <Grid container spacing={{ md: 5, xl: 10 }} px={{ md: 5, xl: 20 }} >

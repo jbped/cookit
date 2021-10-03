@@ -198,7 +198,7 @@ export default function ViewRecipe() {
     recipeObj.ingredients = ingObj
 
     directions.forEach(step => {
-      dirObj = { ...dirObj, [step.stepId]: { ...step, errors: { stepText: false } } }
+      dirObj = { ...dirObj, [step.stepId]: { stepId: step.stepId, stepText: step.stepText, errors: { stepText: false } } }
     })
 
     recipeObj.directions = dirObj

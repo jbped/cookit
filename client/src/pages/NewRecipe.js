@@ -254,7 +254,8 @@ export default function NewRecipePage() {
     <Box component="form" onSubmit={formCheck}>
       <Box px={{ md: 5, xl: 20 }}>
         <NewRecipeTitle />
-        <ConfirmLeavePage completed={false} />
+        {(!recipeForm.formCleared) &&
+        <ConfirmLeavePage />}
       </Box>
       <Grid container spacing={{ md: 5, xl: 10 }} px={{ md: 5, xl: 20 }} >
 
