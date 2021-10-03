@@ -46,13 +46,10 @@ function HideOnScroll({ children }) {
 export default function EditRecipePage() {
   const recipeForm = useSelector(state => state.global.editRecipe)
   const dispatch = useDispatch();
-  // Ensures that on mount recipe state is cleared
-  useEffect(() => {
-    dispatch(editThisRecipe(initGlobalState.editThisRecipe))
-  }, [])
 
   const { recipeTitle, cookTime, servings, isPublic, recipeDescription, ingredients, directions, columns: { ingredientsCol, directionsCol }, ingredientErrors, directionErrors } = recipeForm;
   const [editRecipeMutation] = useMutation(EDIT_RECIPE)
+  console.log(recipeForm)
   // console.log(recipeForm)
 
   // If true display the save button
