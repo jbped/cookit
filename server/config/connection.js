@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cookit', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cookit');
 
 module.exports = mongoose.connection;
