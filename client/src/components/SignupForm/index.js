@@ -109,7 +109,7 @@ export default function SignupForm() {
   // Collects username, email, and password from values state, mutates them, returns values to initialState
   const signup = async () => {
     // Send values.username, values.email, values.password to GraphQL
-    console.log(`Signup created: \n   Username: ${values.username}\n   Email: ${values.email}\n   Password: ${values.password}`)
+    // console.log(`Signup created: \n   Username: ${values.username}\n   Email: ${values.email}\n   Password: ${values.password}`)
     try {
       const { data } = await addUser({
         variables: {
@@ -118,7 +118,7 @@ export default function SignupForm() {
           Password: values.password
         }
       });
-      console.log("1", data)
+      // console.log("1", data)
       const token = data.addUser.token
       Auth.login(token)
       // setValues(initialState)

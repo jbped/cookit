@@ -94,7 +94,7 @@ export default function LoginForm() {
   // Collects username, email, and password from values state, mutates them, returns values to initialState
   const loginUser = async () => {
     // Send values.username, values.email, values.password to GraphQL
-    console.log(`Login: \n   Username: ${values.username}\n   Password: ${values.password}`)
+    // console.log(`Login: \n   Username: ${values.username}\n   Password: ${values.password}`)
 
     try{
       const mutationResponse = await login({
