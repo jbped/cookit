@@ -1,0 +1,40 @@
+{
+  "short_name": "CooKit",
+  "name": "CooKit",
+  "description": "A one-stop shop for all the best recipes.",
+  "icons": [
+    {
+      "src": "./CooKit_Logo_16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },{
+      "src": "./CooKit_Logo_24x24.png",
+      "sizes": "24x24",
+      "type": "image/png"
+    },{
+      "src": "./CooKit_Logo_32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },{
+      "src": "./CooKit_Logo_64x64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },{
+      "src": "./CooKit_Logo_128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },{
+      "src": "./CooKit_Logo_192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },{
+      "src": "./CooKit_Logo_512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#e76f51",
+  "background_color": "#022F40"
+}
