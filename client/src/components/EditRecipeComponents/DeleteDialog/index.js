@@ -18,9 +18,9 @@ import { toggleDeleteDialog } from '../../../utils/globalSlice'
 export default function DeleteDialog() {
   const [deleteRecipe] = useMutation(DELETE_RECIPE);
   const open = useSelector(state => state.global.editRecipe.deleteDialog);
-  const forked = useSelector(state => state.global.editRecipe.forked);
+  // const forked = useSelector(state => state.global.editRecipe.forked);
   const dispatch = useDispatch();
-  const history = useHistory()
+  // const history = useHistory()
 
   const handleClose = (e) => {
     const option = e.target.innerText

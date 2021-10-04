@@ -28,7 +28,7 @@ export default function UpvoteHeart({ recipeId, upvotes }) {
     const handleUpvote = async () => {
         if (!upvote) {
             try{
-                const { data } = await upvoteRecipe({
+                await upvoteRecipe({
                     variables: {recipeId}
                 });
                 setUpvote(true);
@@ -37,7 +37,7 @@ export default function UpvoteHeart({ recipeId, upvotes }) {
             }
         } else {
             try{
-                const { data } = await deleteUpvoteRecipe({
+                await deleteUpvoteRecipe({
                     variables: {recipeId}
                 });
                 setUpvote(false);

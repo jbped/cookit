@@ -23,7 +23,7 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
 
 // Custom Components.... 
-import ConfirmLeavePage from '../components/ConfirmLeavePage'
+// import ConfirmLeavePage from '../components/ConfirmLeavePage'
 import EditRecipeTitle from '../components/EditRecipeComponents/EditRecipeTitle';
 import RecipeTime from '../components/EditRecipeComponents/RecipeTime';
 import ServingSize from '../components/EditRecipeComponents/ServingSize';
@@ -51,7 +51,7 @@ export default function EditRecipePage() {
   const history = useHistory();
   const params = useParams()
   const recipeId = params.id
-  const initRecipeForm = {...recipeForm.editRecipe}
+  // const initRecipeForm = {...recipeForm.editRecipe}
   const [editRecipeMutation] = useMutation(EDIT_RECIPE)
   const [softComplete, setSoftComplete] = useState(false)
 

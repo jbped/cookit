@@ -7,7 +7,7 @@ import { SAVE_RECIPE } from '../utils/mutations'
 
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
-import { setEasyCookStep, toggleEasyCookView, editThisRecipe, createEditRecipe } from '../utils/globalSlice';
+import { setEasyCookStep, toggleEasyCookView, createEditRecipe } from '../utils/globalSlice';
 
 import Auth from '../utils/auth'
 
@@ -57,7 +57,7 @@ export default function ViewRecipe() {
   const easyCookView = useSelector(state => state.global.easyCookView);
   const dispatch = useDispatch();
   const [saveForkedRecipe] = useMutation(SAVE_RECIPE)
-  const editRecipeGS = useSelector(state => state.global.editRecipe);
+  // const editRecipeGS = useSelector(state => state.global.editRecipe);
 
   let history = useHistory()
 
@@ -72,13 +72,13 @@ export default function ViewRecipe() {
   const { loading, data, refetch } = useQuery(QUERY_RECIPE, {
     variables: { recipeId: recipeId }
   });
-  console.log('initdata', data)
+  // console.log('initdata', data)
 
   useEffect(() => {
     dispatch(setEasyCookStep(0))
   }, [])
   
-  console.log('loading', loading)
+  // console.log('loading', loading)
   if (loading) {
     return <Loader></Loader>
   } else if (!data.recipe.ingredients.length || !data.recipe.directions.length) {
@@ -93,7 +93,7 @@ export default function ViewRecipe() {
   const { recipeTitle, isPublic, forked, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder, upvotes } = recipe;
   
     if (!ingredients || !ingredients[0]?.ingredientName|| !directions[0]?.stepText) {
-      console.log('refetched')
+      // console.log('refetched')
       refetch()
     }
 
@@ -216,13 +216,13 @@ export default function ViewRecipe() {
   }
 
   const forkRecipe = async () => {
-    console.log('forked recipe')
+    // console.log('forked recipe')
     try{
       const { data } = await saveForkedRecipe({
         variables: {recipeId}
       });
 
-      console.log(data)
+      // console.log(data)
     } catch (e) {
       console.error('New Recipe Error: ', e)
     }
