@@ -1,12 +1,12 @@
 # CooKit
 
-## Live URL: https://goal-getters-app.herokuapp.com/
+## Live URL: https://cookit-book.herokuapp.com/
 
   ## Description 
 
   This app will change the way you see recipes! You can easily add your own recipes and save them for later or see what the newest recipes are from others around the world. Saving recipes from others is easy and if you like something in their recipes you can easily edit it and take it out!
 
-  Link for the deployed application: [CooKit]()
+  Link for the deployed application: [CooKit](https://cookit-book.herokuapp.com/)
 
   ## Table of Contents 
 
