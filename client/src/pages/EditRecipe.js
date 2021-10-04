@@ -268,7 +268,7 @@ export default function EditRecipePage() {
 
   // After a successful edit mutation, update globalState, redirect to the view recipe
   const dispatchRedirect = (data) => {
-    console.log('data', data);
+    // console.log('data', data);
     data && dispatch(editThisRecipe(initGlobalState.editRecipe));
     history.goBack();
   }

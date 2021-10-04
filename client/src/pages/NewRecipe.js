@@ -84,7 +84,7 @@ export default function NewRecipePage() {
     ingredientsCol.itemIds.length > 0  ? softChecks.ingredientsOrder = true : softChecks.ingredientsOrder = false;
     directionsCol.itemIds.length > 0  ? softChecks.directionsOrder = true : softChecks.directionsOrder = false;
 
-    console.log('softChecks', softChecks)
+    // console.log('softChecks', softChecks)
 
     // If all keys in softChecks are true update softComplete state to true
     softChecks.recipeTitle && softChecks.cookTime && softChecks.recipeDescription && softChecks.ingredients && softChecks.directions && softChecks.ingredientsOrder && softChecks.directionsOrder ? setSoftComplete(true) : setSoftComplete(false);
