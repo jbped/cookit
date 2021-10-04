@@ -20,8 +20,8 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "node server.js",
-    "watch": "nodemon server.js"
+    "start": "node server",
+    "watch": "nodemon server"
   },
   "keywords": [],
   "author": "",
