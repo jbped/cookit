@@ -34,8 +34,9 @@ export default function ConfirmLeavePage() {
 
     }
   }, [])
+
   const alertUser = e => {
-    e.preventDefault()
+    e && e.preventDefault()
     e.returnValue = ''
   }
   return (

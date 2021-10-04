@@ -56,7 +56,7 @@ export default function EditRecipePage() {
   const [softComplete, setSoftComplete] = useState(false)
 
   // If there is no information for the edit recipe redirect user to the view page
-  !initRecipeForm.recipeTitle && history.push(`/recipe/${recipeId}`)
+  // !initRecipeForm.recipeTitle && history.push(`/recipe/${recipeId}`)
   
   // console.log(recipeForm)
   // console.log(recipeForm)
@@ -250,9 +250,6 @@ export default function EditRecipePage() {
       directionsArr.push(trimmedStep);
     })
     editRecipeObj.directions = directionsArr
-    // console.log('recipe edited', formCleared)
-
-    // console.log(editRecipeObj)
     
     try{
       const { data } = await editRecipeMutation({
@@ -262,14 +259,18 @@ export default function EditRecipePage() {
         }
       });
 
-      // console.log('data', data)
-      data && dispatch(editThisRecipe(initGlobalState.editRecipe))
-      // history.push(`/recipe/${data.editRecipe._id}`)
-      // history.push(`/my-kit`)
-      // history.goBack()
+      dispatchRedirect(data)
+      
     } catch (e) {
-      console.error('Edit Recipe Error: ', e)
+      console.error('Edit Recipe Error: ', e);
     }
+  }
+
+  // After a successful edit mutation, update globalState, redirect to the view recipe page
+  const dispatchRedirect = (data) => {
+    console.log('data', data);
+    data && dispatch(editThisRecipe(initGlobalState.editRecipe));
+    history.goBack();
   }
   
   return (

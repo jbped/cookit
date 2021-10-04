@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useParams, useHistory} from 'react-router-dom';
 
 import { useQuery, useMutation } from '@apollo/client';
@@ -72,17 +72,30 @@ export default function ViewRecipe() {
   const { loading, data, refetch } = useQuery(QUERY_RECIPE, {
     variables: { recipeId: recipeId }
   });
+  console.log('initdata', data)
+
+  useEffect(() => {
+    dispatch(setEasyCookStep(0))
+  }, [])
   
+  console.log('loading', loading)
   if (loading) {
+    return <Loader></Loader>
+  } else if (!data.recipe.ingredients.length || !data.recipe.directions.length) {
+    refetch()
     return <Loader></Loader>
   }
 
   const recipe = data.recipe || {};
-  // console.log("this is the recipe returned", recipe)
-  console.log('data.recipe', data.recipe);
+  // console.log('data.recipe', data.recipe);
 
   // Destructuring of the keys in the recipe object received from the database
   const { recipeTitle, isPublic, forked, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder, upvotes } = recipe;
+  
+    if (!ingredients || !ingredients[0]?.ingredientName|| !directions[0]?.stepText) {
+      console.log('refetched')
+      refetch()
+    }
 
   let orderedIngredients = [];
   let orderedDirections = [] 
@@ -93,10 +106,6 @@ export default function ViewRecipe() {
   // let recipeLength = Object.keys(recipe).length
   // console.log(recipeLength)
   // console.log(recipe.ingredients)
-
-  if (!recipe.ingredients || !recipe.ingredients[0]?.ingredient || !recipe.directions[0]?.stepText) {
-    refetch()
-  }
 
   if (!loading && data.recipe !== undefined) {
     // Splits the createdAt string into to indexes DD/MM/YYYY and time
@@ -109,7 +118,7 @@ export default function ViewRecipe() {
         if (ingredient.ingredientId === id) {
 
           // Base ingredient information 'quantity measurement ingredientName' or 'quantity ingredientNate'
-          const quantityText = `${ingredient.quantity} ${(ingredient.measurement && !ingredient.measurement !== 'n/a') ? ingredient.measurement : ''} ${ingredient.ingredientName}`
+          const quantityText = `${ingredient.quantity} ${(ingredient.measurement && ingredient.measurement !== 'n/a') ? ingredient.measurement : ''} ${ingredient.ingredientName}`
           // Preparation notes 'preparationNotes' or ''
           const prepNotesText = ingredient.preparationNotes ? `${ingredient.preparationNotes}` : ''
           orderedIngredients.push({ ...ingredient, quantityText, prepNotesText })
@@ -198,7 +207,7 @@ export default function ViewRecipe() {
     })
 
     recipeObj.directions = dirObj
-    console.log(recipeObj)
+    // console.log(recipeObj)
     pushToGlobal(recipeObj);
     // console.log('editRecipeGS', editRecipeGS)
 
