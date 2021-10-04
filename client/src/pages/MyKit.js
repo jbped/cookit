@@ -14,7 +14,7 @@ import { Redirect } from 'react-router-dom';
 
 // Auth
 import Auth from '../utils/auth';
-import { idbPromise } from '../utils/helpers';
+// import { idbPromise } from '../utils/helpers';
 
 // Import MUI components
 import {
@@ -66,21 +66,43 @@ export default function MyKit() {
     return <Loader></Loader>;
   }
 
+  // const idbRecipes = idbPromise('recipes', 'get');
+  // const idbForkedRecipes = idbPromise('forkedRecipes', 'get');
+
+  // let recipes = [];
+  // let forkedRecipes = [];
+
   const recipes = Object.keys(myData).length > 0 ? [...myData.recipeKit] : [];
+  // if (Object.keys(myData).length > 0) {
+  //   recipes = [...myData.recipeKit];
+  // } else if (idbRecipes.length > 0) {
+  //   recipes = idbRecipes;
+  // } else {
+  //   recipes = [];
+  // }
+  
   const forkedRecipes = Object.keys(myData).length > 0 ? [...myData.savedRecipes] : [];
+  // if (Object.keys(myData).length > 0) {
+  //   forkedRecipes = [...myData.savedRecipes];
+  // } else if (idbForkedRecipes.length > 0) {
+  //   forkedRecipes = idbForkedRecipes;
+  // } else {
+  //   forkedRecipes = [];
+  // }
+
   // console.log('recipes', recipes);
 
-  if (recipes.length) {
-    recipes.forEach((recipe) => {
-      idbPromise('recipes', 'put', recipe)
-    })
-  }
+  // if (recipes.length) {
+  //   recipes.forEach((recipe) => {
+  //     idbPromise('recipes', 'put', recipe)
+  //   })
+  // }
 
-  if (forkedRecipes.length) {
-    forkedRecipes.forEach((forkedRecipe) => {
-      idbPromise('forkedRecipes', 'put', forkedRecipes);
-    })
-  }
+  // if (forkedRecipes.length) {
+  //   forkedRecipes.forEach((forkedRecipe) => {
+  //     idbPromise('forkedRecipes', 'put', forkedRecipe);
+  //   })
+  // }
 
   return (
     <Box mx={{ xs: 0, md: 5, xl: 20 }}>

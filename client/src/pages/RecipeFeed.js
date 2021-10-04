@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toggleDiscoverView } from '../utils/globalSlice';
 
 // IndexedDB
-import { idbPromise } from '../utils/helpers';
+// import { idbPromise } from '../utils/helpers';
 
 import {
   QUERY_RECIPES
@@ -44,11 +44,11 @@ export default function RecipeFeed() {
 
   const recipes = data.recipes || {};
 
-  if (recipes.length) {
-    recipes.forEach((recipe) => {
-      idbPromise('recipes', 'put', recipe);
-    })
-  }
+  // if (recipes.length) {
+  //   recipes.forEach((recipe) => {
+  //     idbPromise('recipes', 'put', recipe);
+  //   })
+  // }
 
   return (
     <Box mx={{ xs: 0, md: 5, xl: 20 }}>

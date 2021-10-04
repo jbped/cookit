@@ -9,7 +9,6 @@ export function idbPromise(kitName, method, object) {
 
             db.createObjectStore('recipes', { keyPath: '_id' });
             db.createObjectStore('forkedRecipes', { keyPath: '_id' });
-            db.createObjectStore('recipeFeed', { keyPath: '_id' });
         };
 
         request.onerror = function (e) {
