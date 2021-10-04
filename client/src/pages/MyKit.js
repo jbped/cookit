@@ -43,7 +43,7 @@ export default function MyKit() {
   const [tab, setTab] = React.useState(0)
 
   // Get QUERY_ME data
-  const { loading, data } = useQuery(QUERY_ME);
+  const { loading, data, refetch } = useQuery(QUERY_ME);
 
   if (!Auth.loggedIn()) {
     return <Redirect to="/discover" />
@@ -63,7 +63,9 @@ export default function MyKit() {
   // const token = Auth.loggedIn() ? Auth.getToken() : null;
 
   if (loading) {
-    return <Loader></Loader>;
+    return <Loader></Loader>
+  } else if (!data.me.recipeKit.length || !data.me.savedRecipes.length) {
+    refetch()
   }
 
   // const idbRecipes = idbPromise('recipes', 'get');
@@ -220,6 +222,9 @@ export default function MyKit() {
             <Box mt={2}>
               <Typography variant='h5' color='white' sx={{ textAlign: 'center', flexGrow: 1 }}>
                 Looks awfully empty in here! You can fork your very first recipe by clicking the <RestaurantIcon /> icon found on any recipe. Doing so will save that recipe to your Kit.  <Typography component={Link} to="/discover" variant='h5' color='secondary'>Discover recipes that others have shared!</Typography>
+              </Typography>
+              <Typography variant='h5' color='white' sx={{ textAlign: 'center', flexGrow: 1 }}>
+                If you have recently Forked a recipe try refreshing if you don't see it.
               </Typography>
             </Box>
           )}

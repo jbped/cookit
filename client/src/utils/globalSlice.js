@@ -75,6 +75,7 @@ export const initialState = {
     ingredientErrors: [],
     directionErrors: [],
     formCleared: false,
+    deleteDialog: false
   },
   currentRecipe: {}, // object that contains the currentRecipes information from db
   easyCookView: false, //show the fullscreen step by step view USE MUI MOBILE STEPPER FOR DISPLAY
@@ -105,6 +106,9 @@ export const globalSlice = createSlice({
           state.editRecipe[key] = action.payload[key]
         })
       // state.editRecipe = action.payload
+    },
+    toggleDeleteDialog: (state) => {
+      state.editRecipe.deleteDialog = !state.editRecipe.deleteDialog;
     },
     createEditRecipe: (state, action) => {
       state.editRecipe = action.payload;
@@ -142,6 +146,7 @@ export const {
   setEasyCookStep, 
   toggleMyKitView,
   toggleDiscoverView,
+  toggleDeleteDialog,
   sideNavVisible } = actions;
 
 export default reducer;

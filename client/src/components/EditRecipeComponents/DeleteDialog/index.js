@@ -1,25 +1,46 @@
 import React from 'react'
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import {
+  Button, 
+  Dialog, 
+  DialogActions, 
+  DialogContent, 
+  DialogContentText, 
+  DialogTitle 
+} from '@mui/material';
+import { useParams, useHistory } from 'react-router-dom';
 
-export default function AlertDialog() {
-  const [open, setOpen] = React.useState(false);
+import { useMutation } from '@apollo/client';
+import { DELETE_RECIPE } from '../../../utils/mutations';
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleDeleteDialog } from '../../../utils/globalSlice'
+
+export default function DeleteDialog() {
+  const [deleteRecipe] = useMutation(DELETE_RECIPE);
+  const open = useSelector(state => state.global.editRecipe.deleteDialog);
+  const forked = useSelector(state => state.global.editRecipe.forked);
+  const dispatch = useDispatch();
+  const history = useHistory()
 
   const handleClose = (e) => {
-    const option = e.target.value
-    console.log(option)
-    setOpen(false);
+    const option = e.target.innerText
+    option === "Delete" && handleDeleteRecipe()
+    dispatch(toggleDeleteDialog())
   };
 
-  const deleteRecipe = () => {
+  const params = useParams();
 
+  const recipeId = params.id
+
+  const handleDeleteRecipe = async () => {
+    try{
+      await deleteRecipe({
+        variables: {id: recipeId}
+      });
+      window.location.assign('/my-kit');
+    } catch(e) {
+      console.error('Delete Recipe Error: ', e);
+    }
   }
 
   return (
@@ -30,18 +51,18 @@ export default function AlertDialog() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Delete this recipe?"}
+        <DialogTitle id="alert-dialog-title" color="secondary">
+          {"Delete your recipe?"}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Would you like to delete this recipe? This cannot be undone
+          <DialogContentText id="alert-dialog-description" color="light.main">
+            Please confirm that you wish to delete this recipe? Note, this action can not be undone!
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose} autoFocus>
-            Agree
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button variant="contained" color="error" onClick={handleClose} autoFocus>
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

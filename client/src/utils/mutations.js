@@ -91,11 +91,14 @@ export const SAVE_RECIPE = gql`
 `;
 
 export const DELETE_RECIPE = gql`
-    mutation deleteRecipe($_id: ID) {
-        deleteRecipe(_id: $_id) {
+    mutation DeleteRecipe($id: ID) {
+        deleteRecipe(_id: $id) {
             _id
-            recipeTitle
+            isPublic
+            creator
+            createdAt
             recipeDescription
+            recipeTitle
         }
     }
 `;

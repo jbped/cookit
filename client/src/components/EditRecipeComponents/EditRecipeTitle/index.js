@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 // Redux State.... 
 import { useSelector, useDispatch } from 'react-redux';
 import { editThisRecipe } from '../../../utils/globalSlice';
+import { toggleDeleteDialog } from '../../../utils/globalSlice'
 
 // MUI Components....
 import {
@@ -12,15 +13,19 @@ import {
   Typography
 } from '@mui/material'
 
+// Other Components.... 
+import DeleteDialog from '../DeleteDialog'
+
 // Icons....
 import {
   MdEdit,
   MdSave
 } from "react-icons/md";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function EditRecipeTitle() {
-  const [recipeTitle, setRecipeName] = useState(false)
-  const recipeForm = useSelector(state => state.global.editRecipe)
+  const [recipeTitle, setRecipeName] = useState(false);
+  const recipeForm = useSelector(state => state.global.editRecipe);
   const dispatch = useDispatch();
 
   const handleChange = e => {
@@ -35,6 +40,10 @@ export default function EditRecipeTitle() {
     setRecipeName(false)
   }
 
+  const handleDeleteDialog = () => {
+    dispatch(toggleDeleteDialog())
+  };
+
   return (
     <Box sx={{
       display: 'flex',
@@ -44,6 +53,7 @@ export default function EditRecipeTitle() {
       borderColor: 'divider'
     }
     }>
+      <DeleteDialog />
       {recipeTitle || recipeTitle.length ?
         <>
           <TextField
@@ -73,14 +83,26 @@ export default function EditRecipeTitle() {
         :
         <>
           <Typography variant="h4" fontWeight="bold" color="primary">{recipeForm.recipeTitle}</Typography>
-          <IconButton onClick={() => setRecipeName(true)} >
-            <MdEdit
-              size={25}
-              sx={{
-                marginLeft: '2rem'
-              }}
-            />
-          </IconButton>
+          <Box marginLeft={{ xs: 0, sm: 'auto' }} sx={{
+                  // marginLeft: '1rem',
+                  mb:1,
+                  borderRight: 1,
+                  borderColor: 'divider',
+                  paddingRight: '.5rem'
+                }}>
+            <IconButton onClick={() => setRecipeName(true)} >
+              <MdEdit
+                size={25}
+              />
+            </IconButton>
+          </Box>
+          <Box ml='.5rem' mb={1}>
+            <IconButton onClick={handleDeleteDialog} >
+              <DeleteIcon
+                size={25}
+              />
+            </IconButton>
+          </Box>
         </>
       }
     </Box >

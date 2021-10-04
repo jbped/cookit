@@ -53,13 +53,20 @@ const resolvers = {
         },
 
         //Recipe queries
-        recipes: async (parent, args, { user: { username } }) => {
-            const recipes = await Recipe.find({ isPublic: true, forked: false })
-                .select('_id recipeTitle creator cookTime servings createdAt');
-                
-            const filteredRecipes = recipes.filter(recipe => recipe.creator != username && recipe);
+        recipes: async (parent, args, context) => {
+            if (context.user) {
+                const recipes = await Recipe.find({ isPublic: true, forked: false })
+                    .select('_id recipeTitle creator cookTime servings createdAt');
+                    
+                const filteredRecipes = recipes.filter(recipe => recipe.creator != context.user.username && recipe);
 
-            return filteredRecipes;
+                return filteredRecipes;
+            } else {
+                const recipes = await Recipe.find({ isPublic: true, forked: false })
+                    .select('_id recipeTitle creator cookTime servings createdAt');
+                
+                return recipes;
+            }
         },
 
         recipesShort: async (parent, args, { user: { username } }) => {
@@ -397,12 +404,12 @@ const resolvers = {
             //For ensuring that only logged in users can delete recipes
             if (context.user) {
                 //First find the recipe with the given id and delete it
-                const recipe = await Recipe.findOneAndDelete(_id);
-                const { steps, ingredients, cookware, comments, upvotes } = recipe;
+                const recipe = await Recipe.findOneAndDelete({_id});
+                const { directions, ingredients, cookware, comments, upvotes } = recipe;
 
-                await Promise.all(directions.map(async step => {
-                    await Step.findOneAndDelete(
-                        { _id: step },
+                await Promise.all(directions.map(async direction => {
+                    await Direction.findOneAndDelete(
+                        { _id: direction },
                         { new: true }
                     )
                 }));

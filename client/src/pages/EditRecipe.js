@@ -266,7 +266,7 @@ export default function EditRecipePage() {
     }
   }
 
-  // After a successful edit mutation, update globalState, redirect to the view recipe page
+  // After a successful edit mutation, update globalState, redirect to the view recipe
   const dispatchRedirect = (data) => {
     console.log('data', data);
     data && dispatch(editThisRecipe(initGlobalState.editRecipe));
@@ -277,8 +277,6 @@ export default function EditRecipePage() {
     <Box component="form" onSubmit={formCheck}>
       <Box px={{ md: 5, xl: 20 }}>
         <EditRecipeTitle />
-        {(initRecipeForm.recipeTitle && !recipeForm.editRecipe.formCleared) &&
-        <ConfirmLeavePage />}
       </Box>
       <Grid container spacing={{ md: 5, xl: 10 }} px={{ md: 5, xl: 20 }} >
 
