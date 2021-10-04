@@ -32,7 +32,7 @@ export default function RecipeFeed() {
   const view = useSelector((state) => state.global.discoverView);
   const dispatch = useDispatch();
   const { loading, data } = useQuery(QUERY_RECIPES)
-  console.log("All recipes", data)
+  // console.log("All recipes", data)
 
   const toggleView = () => {
     dispatch(toggleDiscoverView());

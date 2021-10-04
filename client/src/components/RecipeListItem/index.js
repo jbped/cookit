@@ -27,7 +27,7 @@ export default function RecipeListItem({ recipe }) {
             <Box sx={{display: 'flex'}} justifyContent={{xs: 'space-between', md: 'flex-start', alignItems: 'center'}}>
               <Typography variant="h6" color="primary" sx={{ ml: 1 }}>{recipe.recipeTitle}</Typography>
               {discover &&
-                <Typography variant="body2" color="backdrop.light" sx={{ mr: 1, display: 'inline-block' }} ml={{md: 2}}>Created by <Typography variant="body2" color="primary" sx={{display: 'inline-block'}}>{recipe.creator}</Typography></Typography>}
+                <Typography variant="body2" color="backdrop.light" sx={{ mr: 1, display: 'inline-block' }} ml={{md: 2}}>Created by <Typography variant="body2" component='span' color="primary" sx={{display: 'inline-block'}}>{recipe.creator}</Typography></Typography>}
             </Box>
           </Grid>
           {/* <p>Recipe Name</p> */}

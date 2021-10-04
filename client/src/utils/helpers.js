@@ -27,7 +27,7 @@ export function idbPromise(kitName, method, object) {
             switch (method) {
 
                 case 'put':
-                    store.put(object);
+                    store.put({object});
                     resolve(object);
                     break;
                 case 'get':

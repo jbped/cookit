@@ -68,24 +68,24 @@ export default function ViewRecipe() {
 
   const recipeId = params.id
   // console.log("Recipe ID", recipeId)
-
+  
   const { loading, data, refetch } = useQuery(QUERY_RECIPE, {
     variables: { recipeId: recipeId }
   });
-
+  
   if (loading) {
     return <Loader></Loader>
   }
 
   const recipe = data.recipe || {};
   // console.log("this is the recipe returned", recipe)
-  // console.log(data);
+  console.log('data.recipe', data.recipe);
 
   // Destructuring of the keys in the recipe object received from the database
-  const { recipeTitle, isPublic, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder, upvotes } = recipe;
+  const { recipeTitle, isPublic, forked, creator, createdAt, recipeDescription, servings, cookTime, directions, directionsOrder, ingredients, ingredientsOrder, upvotes } = recipe;
 
   let orderedIngredients = [];
-  let orderedDirections = []
+  let orderedDirections = [] 
   let editedDateArr = []
   let col1 = []
   let col2 = []
@@ -94,7 +94,7 @@ export default function ViewRecipe() {
   // console.log(recipeLength)
   // console.log(recipe.ingredients)
 
-  if (!recipe.ingredients || !recipe.ingredients[0]?.ingredient) {
+  if (!recipe.ingredients || !recipe.ingredients[0]?.ingredient || !recipe.directions[0]?.stepText) {
     refetch()
   }
 
@@ -118,7 +118,6 @@ export default function ViewRecipe() {
         return orderedIngredients;
       })
     })
-
 
     // Convert directions array to an object organized by the directionsOrder
     directionsOrder.forEach(id => {
@@ -279,7 +278,7 @@ export default function ViewRecipe() {
           <Typography variant="h4" fontWeight="bold" color="primary">{recipeTitle}</Typography>
           {loggedIn && (
             <Box>
-              {loggedInCreator ? (
+              {(loggedInCreator || forked) ? (
                 <IconButton
                   onClick={editRecipe}
                 >
