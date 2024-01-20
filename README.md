@@ -1,12 +1,12 @@
 # CooKit
 
-## Live URL: https://cookit-book-d276b059de47.herokuapp.com
+## Live URL: https://cookit.pedigo.me
 
   ## Description 
 
   This app will change the way you see recipes! You can easily add your own recipes and save them for later or see what the newest recipes are from others around the world. Saving recipes from others is easy and if you like something in their recipes you can easily edit it and take it out!
 
-  Link for the deployed application: [CooKit](https://cookit-book-d276b059de47.herokuapp.com)
+  Link for the deployed application: [CooKit](https://cookit.pedigo.me)
 
   ## Table of Contents 
 
